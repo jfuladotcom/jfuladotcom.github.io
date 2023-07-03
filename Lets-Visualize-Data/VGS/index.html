@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JFULA Portfolio || Data Visualization</title>
+	<meta name="keywords" content="Design, JFula, Portfolio, UI Design, UX Design"/>
+	<meta name="description" content="Joseph Fula is a designer with over 10 years experience with knowledge ranging from print design to SaaS design. "/>
+	<meta name="subject" content="UX Designer">
+	<meta name="language" content="ES">
+	<meta name="robots" content="index,follow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="css/styles.css"> 	
+	<link rel="icon" href="favicon.png">	
+
+</head>
+<body id="bodyTrack">
+
+	<nav></nav>
+    <header>
+        <div class="greenBoard">
+            <div class="container">
+                <div class="one">Platform:<span id="platform"></span></div>
+                <div class="two">Year:<span id="year"></span></div>
+                <div class="three">Genre:<span id="genre"></span></div>
+                <div class="four">Global Copies Sold:<span id="sold"></span></div>
+                <!-- end of container -->
+            </div>            
+            <!-- end of the green board -->
+        </div>
+    </header>	
+	
+	<section>
+		<div class="main-spaceShip" id="mainShip">	
+            <img id="spaceShip" src="imgs/spaceShip.svg">
+		</div>
+    </section>
+
+    <section>
+		<div class="enemy" id="enemyOne">	
+            <img id="enemyOneShip" src="">
+		</div>
+        <div class="enemy" id="enemyTwo">	
+            <img id="enemyTwoShip" src="">
+		</div>
+        <div class="enemy" id="enemyThree">	
+            <img id="enemyThreeShip" src="">
+		</div>
+        <div class="enemy" id="enemyFour">	
+            <img id="enemyFourShip" src="">
+		</div>      
+    </section>
+
+    <section>
+        <div class="motherShip" id="mShip">
+            <img id="mShipImg" src="">
+        </div>
+
+        <div class="motherShipTwo" id="mShipTwo">
+            <img id="mShipImgTwo" src="">
+        </div>
+
+        <div class="motherShipThree" id="mShipThree">
+            <img id="mShipImgThree" src="">
+        </div>
+
+        <div class="motherShipFour" id="mShipFour">
+            <img id="mShipImgFour" src="">
+        </div>
+
+        <div class="motherShipFive" id="mShipFive">
+            <img id="mShipImgFive" src="imgs/mShipFive.svg">
+        </div>
+    </section>
+
+    <section>
+        <div id="dialog" class="dialog">
+            <p><span id="Gnumber" class="Gnumber"></span></p>
+            <p><span id="gameName">Pokemon Red/Pokemon Blue</span></p>
+            <div class="btn" id="btn">Next Level</div>
+        <!-- end of dialog -->
+        </div>
+    </section>
+
+    <section>
+        <div id="howTo" class="howTo">
+            <h2>Nintendo Video Game Sales and Ratings</h2>
+            <i>Video game sales data from VGChartz with corresponding ratings from Metacritic</i>
+            <p>This data set contains a list of video games with sales greater than 100,000 copies along with critic and user ratings. It is a combined web scrape from VGChartz and Metacritic along with manually entered year of release values for most games with a missing year of release. The original coding was created by Rush Kirubi and can be found here, but it limited the data to only include a subset of video game platforms. Not all of the listed video games have information on Metacritic, so there data set does have missing values.</p>
+            <p><a href="https://www.kaggle.com/datasets/kendallgillies/video-game-sales-and-ratings" target="_blank">Source Found Here</a></p>
+            <h1>How To Play</h1>
+            <p>Your mission is to travel the galaxy and collect the data needed to find the top 5 selling Nintendo games. After each alien hit, you will recieve data populated within one of the four columns on the top of the screen. After defeating all aliens, the ranking game name will be presented along with the ability to advance to the next level. </p>
+            <p>Good Luck Galaxy Fighter!</p>
+            <div class="letsPlay" id="letsPlay">let's Play!</div>
+        <!-- end of dialog -->
+        </div>
+    </section>
+
+    <section>
+        <div id="winner" class="winner">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>#</td>
+                        <td>Name</td>
+                        <td>Platform</td>
+                        <td>Year</td>
+                        <td>Genre</td>
+                        <td>Global Copy Sales</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Wii Sports</td>
+                        <td>Wii</td>
+                        <td>2006</td>
+                        <td>Sports</td>
+                        <td> 82.74 Mill</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Super Mario Bros.</td>
+                        <td>NES</td>
+                        <td>1985</td>
+                        <td>Platform</td>
+                        <td>40.24 Mill</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Mario Kart Wii</td>
+                        <td>Wii</td>
+                        <td>2008</td>
+                        <td>Racing</td>
+                        <td>35.82 Mill</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Wii Sports Resorts</td>
+                        <td>Wii</td>
+                        <td>2009</td>
+                        <td>Sports</td>
+                        <td>33 Mill</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Pokemon Red/Pokemon Blue</td>
+                        <td>Game Boy</td>
+                        <td>1996</td>
+                        <td>Role-Playing</td>
+                        <td>31.37 Mill</td>
+                    </tr>                   
+                    <tr>
+                        <td class="playAgain" colspan="6"><div id="playAgain">- Play Again -</div> </td>                        
+                    </tr>
+                </tbody>
+            </table>
+        <!-- end of dialog -->
+        </div>
+    </section>
+
+    
+	<footer>
+		<div class="footer">
+            <div class="footer-container">
+                <div class="footer-one">
+                    <img src="imgs/health.svg">
+                </div>
+                <div class="footer-two">Ammo <span id="ammo">999</span></div>
+            </div>
+            <a href="https://www.JFula.com" target="_self" title="JFula.com">JFula.com</a> 			
+        </div>
+	</footer>
+    
+   <script src="js/bloatCode.js"></script>
+	
+
+
+</body>
+</html>
