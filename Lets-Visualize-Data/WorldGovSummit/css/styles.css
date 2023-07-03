@@ -1,0 +1,55 @@
+html{ overflow: hidden;}
+body{ }
+html, body{ background-color: #0a1a1d; color: #efefef; padding: 0; margin: 0; font-family: sans-serif; font-size: 12px; }
+html{ background-image: url('../imgs/WGS-summit-logo.svg'); background-size: 50%; background-attachment: fixed; background-position: center; background-repeat: no-repeat;}
+
+a{ text-decoration: none; font-size: 18px; font-weight: bold; color:#efefef;}
+a:hover{ text-decoration:underline; }
+a > img{ width: 15%; transition: 1s all;}
+a > img:hover{ width: 20%;}
+
+.circle{ width: 5px; height: 5px; background-color:#333; margin: 1px;  border-radius:20px; float: left;}
+.output{ position: absolute; top: 50px; left: 50px; color: #efefef; z-index: 99999; width: 100px;  height: 100px; }
+
+/* .container{ position: relative; margin: 0 auto; max-width: 200px; height: 2000000px; padding: 0 15px; border-right: 5px #333333 dotted; } */
+
+.title { font-size: 20px; font-weight: bold; height: 50px; color:#efefef; text-align: center; padding: 100px 50px 0 50px; }
+.data { height: 50px; font-size: 15px; font-weight: bold; color:#05181c; text-align: center; padding: 0 15px; }
+.metric { font-size: 20px; height: 50px; color:#05181c; font-weight: bold; text-align: center; color:#efefef; padding: 10px 0 0 0;}
+.year { font-size: 50px; font-weight: bold; background-color: rgba(8,25,29,.75); text-align: center;}
+.decade {  font-size: 15px; height: 100px; color:#05181c; font-weight: bold; text-align: center; padding: 0 10px; }
+.source {  font-size: 15px; height: 100px; color:#05181c; font-weight: bold; text-align: center; padding: 0 10px;}
+.link { text-align: center; margin: 25px 0;}
+
+
+.overLay{ position: absolute;  width: 100%; height: 90vh;}
+.overLay > div{ position: relative; width: 800px; height: 500px; margin: 0 auto; top:50px; background-color: #efefef; color:#05181c; z-index: 99999;  }
+table{ width: 100%;}
+
+.wrapper{ position: relative; max-width: 900px; padding: 0 0 0 25px; margin: 16% auto 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 75px; grid-auto-rows: minmax(100px, auto); opacity: 0; transition: 1s all;} 
+.wrapper-one { grid-column: 1 / 1; grid-row: 1;  padding: 10px; line-height: 1.5em; cursor: pointer;  }
+.wrapper-two { grid-column: 2 / 2; grid-row: 1;	padding: 10px;  line-height: 1.5em; cursor: pointer;  }
+.wrapper > div{ text-align: center;  border-radius: 200px;  border: 1px #215d9e solid;  height: 300px;  width: 300px; background-color: rgba(10,26,29, .5); transition: 2s all;}
+.wrapper > div:hover{ background-color: rgba(10,26,29, 1); }
+
+.wrapper > div > img{ width: 55%; transition: 1s all; margin: 70px 0 0 0; }
+.wrapper > div > img:hover{ width: 60%;}
+
+
+.circle-holder{ position:absolute; top:0; bottom:0; left:0;right:0;    margin:auto;   border-radius:100%;  transition: 2s all; }
+  
+.CB{width:30px; height:30px; background-color: rgba(84,164,219, 1); border-radius:50%; position:absolute; top:0; bottom:0; left:0;right:0; overflow:hidden; margin:auto; animation: round 5s linear infinite; }
+.CG{width:30px; height:30px; background-color: rgba(126,194,71, 1); border-radius:50%; position:absolute; top:0; bottom:0; left:0;right:0; overflow:hidden; margin:auto; animation: round 5.5s linear infinite; }
+.CO{width:30px; height:30px; background-color: rgba(247,146,38, 1); border-radius:50%; position:absolute; top:0; bottom:0; left:0;right:0; overflow:hidden; margin:auto; animation: round 6s linear infinite; }
+.CR{width:30px; height:30px; background-color: rgba(238,43,47, 1);  border-radius:50%; position:absolute; top:0; bottom:0; left:0;right:0; overflow:hidden; margin:auto; animation: round 6.5s linear infinite; }
+.CY{width:30px; height:30px; background-color: rgba(183,146,52, 1); border-radius:50%; position:absolute; top:0; bottom:0; left:0;right:0; overflow:hidden; margin:auto; animation: round 7s linear infinite; }
+.CP{width:30px; height:30px; background-color: rgba(57,83,164, 1);  border-radius:50%; position:absolute; top:0; bottom:0; left:0;right:0; overflow:hidden; margin:auto; animation: round 7.5s linear infinite; }
+  
+  
+  @keyframes round{
+    0%{  transform:rotate(0deg)    translate(-165px) rotate(0deg);     }
+    100%{ transform:rotate(360deg) translate(-165px) rotate(-360deg);  }
+  }
+  
+  
+  
