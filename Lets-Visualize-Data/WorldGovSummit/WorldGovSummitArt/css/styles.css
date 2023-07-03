@@ -1,0 +1,44 @@
+html{ overflow: hidden;}
+body{ }
+html, body{ background-color: #0a1a1d; color: #efefef; padding: 0; margin: 0; font-family: sans-serif; font-size: 12px; }
+body{ background-image: url('../imgs/WGS-summit-logo.svg'); background-size: 50%; background-attachment: fixed; background-position: center; background-repeat: no-repeat; }
+a{ text-decoration: none; font-size: 18px; font-weight: bold; color:#efefef;}
+a:hover{ text-decoration:underline; }
+a > img{ width: 15%; transition: 1s all;}
+a > img:hover{ width: 20%;}
+
+.circle{ width: 5px; height: 5px; background-color:#333; margin: 1px;  border-radius:20px; float: left;}
+.output{ position: absolute; top: 50px; left: 50px; color: #efefef; z-index: 99999; width: 100px;  height: 100px; }
+
+/* .container{ position: relative; margin: 0 auto; max-width: 200px; height: 2000000px; padding: 0 15px; border-right: 5px #333333 dotted; } */
+
+.wrapper { position:relative; opacity: 0; transition: 1s all; }
+.wrapper > div >  img{ width: 75%;}
+.wrapper > div{ padding: 25px; text-align: center}
+
+
+.wrapper-footer { position: fixed; bottom: 0; margin: 0 auto; padding: 25px 0 15px 0;  width: 100%;  display: grid;  grid-template-columns: repeat(7, 1fr); 
+    gap: 10px; grid-auto-rows: minmax(25px, auto);  transition: 1s all;  }
+.wrapper-footer > div{ text-align: center; cursor: pointer;}
+.footer-I    {  background-color: rgba(84,164,219,.5); font-weight: bold; padding: 10px 0 10px 0; grid-column: 1 / 1; grid-row: 1; border-radius: 25px;  opacity: .45;}
+.footer-II   {  background-color: rgba(126,194,71,.5); font-weight: bold; padding: 10px 0 10px 0; grid-column: 2 / 2; grid-row: 1;  border-radius: 25px; opacity: .45;}
+.footer-III  {  background-color: rgba(247,146,38,.5); font-weight: bold; padding: 10px 0 10px 0; grid-column: 3 / 3; grid-row: 1;  border-radius: 25px; opacity: .45;}    
+.footer-IV   {  background-color: rgba(238,43,47,.5); font-weight: bold; padding: 10px 0 10px 0; grid-column: 4 / 4; grid-row: 1;  border-radius: 25px; opacity: .45;}    
+.footer-V    {  background-color: rgba(183,146,52,.5); font-weight: bold; padding: 10px 0 10px 0; grid-column: 5 / 5; grid-row: 1;  border-radius: 25px; opacity: .45;}    
+.footer-VI   {  background-color: rgba(57,83,164,.5); font-weight: bold; padding: 10px 0 10px 0; grid-column: 6 / 6; grid-row: 1;  border-radius: 25px; opacity: .45;}    
+.footer-VII  {   border: 2px #BDCCD4 solid; font-weight: bold; padding: 10px 0 10px 0; grid-column: 7 / 7; grid-row: 1;  border-radius: 25px; opacity: .45;}    
+  
+.footer-I:hover    { transition: 1s all; background-color: rgba(84,164,219, 1); color: #05181c;opacity: 1;}
+.footer-II:hover   { transition: 1s all; background-color: rgba(126,194,71, 1); color: #05181c; opacity: 1;}
+.footer-III:hover  { transition: 1s all; background-color: rgba(247,146,38, 1); color: #05181c;  opacity: 1;}    
+.footer-IV:hover   { transition: 1s all; background-color: rgba(238,43,47, 1);  color: #05181c; opacity: 1;}     
+.footer-V:hover    { transition: 1s all; background-color: rgba(183,146,52, 1); color: #05181c;  opacity: 1;}    
+.footer-VI:hover   { transition: 1s all; background-color: rgba(57,83,164, 1);  color: #05181c; opacity: 1;}    
+.footer-VII:hover  { transition: 1s all; background-color: rgba(189,204,212, 1); color: #05181c; opacity: 1;}    
+
+
+
+
+
+  
+  
