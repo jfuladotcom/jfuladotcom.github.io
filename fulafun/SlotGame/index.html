@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		html{background-color: #f8f3df; background-image: linear-gradient(to top, #ee5f3d, #f8f3df); height: 100vh; }
+		body{ font-family: sans-serif; font-size: 12px; overflow: hidden;}
+
+		/*#btnPlay{ background-color: #92c8af; }*/
+		
+		.wrapper{ position: relative; max-width: 600px; margin: 0 auto; }
+		.container{ position: relative; max-width: 600px; margin: 10px auto; overflow: hidden; }
+		.center{text-align: center;}
+		.button{ position: relative; max-width: 600px; padding: 8px; margin: 0 auto; overflow: hidden;}
+		.button > div{  float: left; width: 31%; padding: 8px 0; margin: 0 2px;  border-radius: 5px; border:1px #333333 solid; }
+		table{width: 100%;}
+		.border > td{ margin: 3px; border-radius: 10px; border:1px #ececec solid; background-color: rgba(255, 255, 255, 0.3); }
+
+		.game-over{ position: absolute; width: 100%; height: 100%; z-index: 9999; display: none;}
+		.game-over > div{ position: relative; font-style: bold;	width: 85%;  margin: 25px auto;  padding: 25px 8px; background-color: #333333;	border-radius: 10px; color:#efefef; text-align: center; }
+		.blocker{ position: absolute; width: 100%; height: 100%; z-index: 999; display: none; }
+
+		.btnBottom > td > div{ font-size: 18px; color:#efefef; font-weight: bold; background-color: #cf4625; border-radius: 5px; margin: 3px; padding:7px 0 5px 0;  }
+		.btnBottom > td > div > img{ width: 15px; }
+
+		.btnMiddle > td{ border-radius: 10px; font-size: 14px;  padding:8px; background-color:#f8e7a8; color:#555555; border: 1px #ee5f3d solid; font-weight: bold; }
+
+		.btnTop > td > img{ width: 50%; }
+
+	</style>
+</head>
+<body>
+
+	<div class="wrapper">
+
+	<div id="gameOver" class="game-over">
+		<div><img src="imgs/gameover.svg"></div>
+	<!-- end of the gameOver -->	
+	</div>
+
+	<div id="blocker" class="blocker"></div>
+
+	<div><img src="imgs/slotGame.svg"></div>
+
+	<div id="gameOverBoard" class="container">
+		<table>
+			<tbody>
+				<tr class="center border btnTop">
+					<td><img id="slotOneImg" src="imgs/1.svg"></td>
+					<td><img id="slotTwoImg" src="imgs/1.svg"></td>
+					<td><img id="slotThreeImg" src="imgs/1.svg"></td>
+				</tr>				
+			</tbody>
+		</table>
+	<!-- end of container -->
+	</div>
+	
+
+	<div id="gameOverScore" class="container">
+		<table>
+			<tbody>
+				<tr class="btnMiddle">
+					<td>Total: <span id="results"></span></td>
+					<td>Multi: <span id="bet">1</span></td>
+					<td>Credit: <span id="bank"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	<!-- end of container -->
+	</div>
+
+	<div id="gameOverBtns" class="container">
+		<table>
+			<tbody>
+				<tr class="center btnBottom">
+					<td id="betDownBtn"><div><img src="imgs/down.svg"></div></td>
+					<td id="slotBtn"><div id="btnPlay">Play</div></td>
+					<td id="betBtn"><div><img src="imgs/up.svg"></div></td>
+				</tr>
+			</tbody>
+		</table>
+	<!-- end of container -->
+	</div>
+	<!-- endn of wrapper -->
+</div>
+<script src="js/controller.js"></script>
+</body>
+</html>
