@@ -1,0 +1,35 @@
+html{ overflow-x: hidden; } 
+body{ margin: 0; padding: 0; font-family: sans-serif; color:#efefef;  background-color: #10151a; background-image: url('../imgs/bkgrd.png'); background-repeat: repeat-y; background-position: center;
+    background-size: 100%;}
+ul li { list-style: none}
+
+.wrapper{ position: relative; max-width:950px; margin: 0 auto; padding: 15px;  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; grid-auto-rows: minmax(100px, auto); }  
+.wrapper > div{ text-align: center;}
+.wrapper > div > img{ width: 75%;}
+.wrap-one { grid-column: 1 / 2; grid-row: 1;  padding: 10px;  line-height: 1.5em; }
+.wrap-two { grid-column: 2 / 2; grid-row: 1;  padding: 10px;  line-height: 1.5em; }
+
+.header{ position: relative; max-width: 950px; margin: 0 auto; text-align: center; padding: 25px;}
+.header > img{ width: 75%;}
+.me-bkgrd{ height: 50vh; background-image: url('../imgs/bkgrd.svg'); background-size: 100%;  background-position: center; background-repeat: no-repeat; background-size: cover; }
+
+.content{ position: relative; max-width: 650px; margin: 0 auto; padding: 25px; }
+
+.top-indentity{ position: relative; max-width: 650px; margin: 0 auto; padding: 50px 25px;  text-align: center;}
+.top-indentity > img{ width: 75%;}
+
+.detour{ position: relative; max-width: 650px; margin: 0 auto; padding: 25px;  text-align: center;}
+.detour > a > img{ width: 50%;}
+
+.footer{ width: 100%; text-align: center; padding:8px; background-color: #1d232f; color:#efefef; }
+.footer > a{ text-decoration: none; color:#efefef; }
+.footer > a:hover{ text-decoration: underline; }
+
+
+
+@media only screen and (max-width: 600px) {  
+    .wrapper{ grid-template-columns: repeat(1, 1fr); }
+    .wrap-one { grid-column: 1 / 1; grid-row: 1;  padding: 10px;  line-height: 1.5em; }
+    .wrap-two { grid-column: 1 / 1; grid-row: 2;  padding: 10px;  line-height: 1.5em; }
+  
+  }
