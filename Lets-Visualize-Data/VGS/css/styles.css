@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+html{ overflow: hidden; } 
+body{ margin: 0; padding: 0; color:#efefef; height: 100vh; background-color: #000000;  cursor: crosshair; font-family: 'VT323', monospace; 
+    background-image:url('../imgs/bkgrd.png'); background-size: 100%; background-position: center;
+    animation-duration: 30s; animation-name: bkgrd; animation-iteration-count: infinite; transition: 1s all; 
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+a{ text-decoration: none; color: #90e372;}
+
+table{ color: #90e372; width: 100%; height: 200px;}
+tr{ height: 35px;}
+.playAgain{ text-align: center; padding: 15px 0; font-size: larger; font-weight: bold;}
+
+.main-spaceShip{ position: fixed; left: 300px; bottom: 150px; width:100px; height:100px; }
+
+.motherShip{      position: absolute; left:150px; top:75px; width: 300px; }
+.motherShipTwo{   position: absolute; right: 100px; top:100px; width: 200px; opacity: .7;}
+.motherShipThree{ position: absolute; right: 400px; top: 300px; width: 100px; opacity: .5;}
+.motherShipFour{  position: absolute; left: 600px; top: 150px; width: 50px; opacity: .2;}
+.motherShipFive{ position: absolute; left: 35%; top: 133px; width: 50px; opacity: .25; transition: 10s all; 
+    animation-duration: 30s; animation-iteration-count: infinite;}
+
+.enemy{ width: 50px; height: 50px; position: absolute; top: 25%; left: 35%; bottom: 75%; right: 55%; transition: 2s all; z-index: 999;}
+.enemy > img{ width: 100%;}
+
+.greenBoard{ background-color: #080808; color:#90e372;}
+.container {  display: grid;  grid-template-columns: repeat(4, 1fr); gap: 10px; grid-auto-rows: minmax(50px, auto); }
+.container > div{ padding: 25px;}
+.one { grid-column: 1 / 1; grid-row: 1; }
+.two { grid-column: 2 / 2; grid-row: 1; }
+.three { grid-column: 3 / 3; grid-row: 1; }
+.four { grid-column: 4 / 4; grid-row: 1; }
+
+.dialog{ position: relative; margin: 0 auto; padding: 20px 0 0 0; top: -350px; width: 500px; height: 250px; background-color: #111111;border-radius: 25px; z-index: 9999; 
+transition: 1s all; }
+.dialog > p{ text-align: center; font-size: 2em;}
+.btn{ position: absolute; left: 40%; bottom: 25px; padding: 10px 25px; background-color: #111111; color:#90e372; border-radius: 25px; border:1px #90e372 solid; }
+.btn:hover{ background-color: #90e372; color:#111111;  }
+
+.howTo{ position: relative; margin: 0 auto; padding: 20px 40px; top: -250px; width: 500px; background-color: #111111; color:#efefef; border-radius: 25px; z-index: 9999; 
+  transition: 1s all; display: none; }
+.howTo > h2{  color:#90e372; }
+.letsPlay{ position: relative; margin: 0 auto; width:100px; padding: 10px 25px; background-color: #111111; color:#90e372; border:1px #90e372 solid;  border-radius: 25px; text-align: center;}
+.letsPlay:hover{ background-color: #90e372; color:#111111;  }
+
+.Gnumber{ color: #90e372;}
+.winner{ position: relative; width: 600px; margin: 0 auto; top: 100px; display: none;}
+.footer{ position: fixed; bottom: 0; width: 100%; text-align: center;}
+
+.footer-container {  display: grid;  grid-template-columns: repeat(2, 1fr); gap: 10px; grid-auto-rows: minmax(25px, auto); background-color: #080808; color:#90e372; padding: 5px;}
+.footer-one { grid-column: 1 / 1; grid-row: 1; }
+.footer-one > img{ width: 200px;   padding: 5px 0 0 0; }
+.footer-two { grid-column: 2 / 2; grid-row: 1; font-size: 1.6em;}
+
+
+@keyframes bkgrd {
+    from {  background-size: 100%;     }  
+    50% {   background-size: 75%;      }  
+    to {    background-size: 100%;     }
+  }
+
+  @keyframes galaxy {
+    0% {  width: 50px;  opacity: .25; }     
+    10% {  opacity: 1; }     
+    100% {    width: 500px;     }
+  }
