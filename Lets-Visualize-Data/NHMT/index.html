@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JFULA Portfolio || Data Vis Northen Temperature</title>
+	<meta name="keywords" content="Design, JFula, Portfolio, UI Design, UX Design"/>
+	<meta name="description" content="Joseph Fula is a designer with over 10 years experience with knowledge ranging from print design to SaaS design. "/>
+	<meta name="subject" content="UX Designer">
+	<meta name="language" content="ES">
+	<meta name="robots" content="index,follow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="css/styles.css"> 	
+	<link rel="icon" href="favicon.png">	
+
+</head>
+<body>
+
+	<nav>
+        <div class="nav" id="nav">
+            <img id="imgToggle" src="imgs/month.svg" title="Change x-axis">
+        </div>
+    </nav>
+    <header>
+        <div class="header">
+            <h1>Northern Hemisphere Monthly Temperature 1880-2022</h1>
+            <p>NOAA Temperature Anomalies Dataset end of header</p>
+            <p><a href="https://www.kaggle.com/datasets/antoniomartin/northern-hemisphere-monthly-temperature-1880-2022" target="_blank" title="Data Source">Source Here</a></p>
+        </div>        
+    </header>	
+
+    <section>
+        <div class="info" id="info">
+            <img src="imgs/expand.svg" title="View Background History">
+        </div>
+        <div class="info-display" id="infoDisplay">
+            <div class="close" id="close" title="Close Panel"><b>Close X</b></div>
+            <h3>Background and History</h3>
+            <p>The basic GISS temperature analysis scheme was defined in the late 1970s by James Hansen when a method of estimating global temperature change was needed for comparison with one-dimensional global climate models. The analysis method was fully documented in Hansen and Lebedeff (1987). Several papers describing updates to the analysis followed over the following decades, most recently that of Hansen et al. (2010), as well as the uncertainty quantification of Lenssen et al. (2019).</p>
+            <p>For further details, please see the GISTEMP Background, History, and References pages. We also maintain a running record of modifications made to the analysis on our Updates to Analysis page.</p>
+            <p>The GISTEMP analysis is updated regularly. Graphs and tables are posted around the middle of every month using the latest GHCN and ERSST data. The update incorporates reports for the previous month as well as late reports and corrections for earlier months.</p>
+            <p>Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies (Land-Ocean Temperature Index, L-OTI). The following are plain-text files in tabular format of temperature anomalies, i.e. deviations from the corresponding 1951-1980 means.</p>
+            <h3>Reference</h3>
+            <p>GISTEMP Team, 2023: GISS Surface Temperature Analysis (GISTEMP), version 4. NASA Goddard Institute for Space Studies. Dataset accessed 2023-02-06 at data.giss.nasa.gov/gistemp/.
+            Lenssen, N., G. Schmidt, J. Hansen, M. Menne, A. Persin, R. Ruedy, and D. Zyss, 2019: Improvements in the GISTEMP uncertainty model. J. Geophys. Res. Atmos., 124, no. 12, 6307-6326,doi:10.1029/2018JD029522.</p>
+            <p>GISS Analysis</p>
+        </div>
+    </section>
+
+	<section>
+        <div id="content" class="content">
+            <img id="imgHold" src="imgs/month-temp.svg">
+        <!-- end of content -->
+        </div>
+	</section>
+
+    
+	<footer>
+		<div class="footer"><a href="https://www.JFula.com" target="_self" title="JFula.com">JFula.com</a> 			</div>
+	</footer>
+    
+
+	<script>
+        const G1 = document.getElementById('imgToggle');
+        const G2 = document.getElementById('imgHold');                
+        const G3 = document.getElementById('info');                
+        const G4 = document.getElementById('infoDisplay');                
+        const content = document.getElementById('content');                
+        var count = 0;
+
+        setTimeout(function(){  
+                    content.style.opacity = "1"
+                    G2.src = "imgs/month-temp.svg";
+                }, 500); 
+
+        G1.addEventListener('click', (event) => {  
+            count++;
+            if(count % 2){
+                content.style.opacity = "0"; G1.src = "imgs/year.svg";                
+                setTimeout(function(){  content.style.opacity = "1";  G2.src = "imgs/year-temp.svg";  }, 1000); 
+            }else{
+                content.style.opacity = "0"; G1.src = "imgs/month.svg";
+                setTimeout(function(){  content.style.opacity = "1";  G2.src = "imgs/month-temp.svg";  }, 1000); 
+            }      
+        });        
+
+
+        G3.addEventListener('click', (event) => {  G4.style.left = "0px"; });        
+        G4.addEventListener('click', (event) => {  G4.style.left = "-700px"; });        
+
+
+      
+
+    </script>
+	
+
+</body>
+</html>
