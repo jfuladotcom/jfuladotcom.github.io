@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>CLOTH</title>
+    <link rel="icon" href="favicon.png" type="image/png" sizes="16x16"> 
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
+    <script src="js/json.js"> </script>
+</head>
+<body>
+
+    <div class="top-header">
+        <table>
+            <tbody>
+                <tr>
+                    
+                    <td><input id="searchbar" type="search" placeholder="Search for Cloth" onkeyup="search_poster()"></td>
+                    <td></td> 
+                    <td></td>
+                    <td><a href="">Menu</a></td>
+                    <td><a href="">Get Started</a></td>
+                    <td><a href="">Products</a></td>
+                    <td><img src="imgs/logo.svg"></td>
+                    <td><a href="">Reviews</a></td>
+                    <td><a href="">Join</a></td>
+                    <td><a href="">Login</a></td>
+                    <td></td>
+                    <td><a href="">555-555-5555</a></td>	
+                    <td><a href="">My Cart <img src="imgs/cart-icon.svg"></a> </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- end of top header -->
+    </div>
+
+    <div class="top-bkgrd">
+        <div><img src="imgs/header-text.svg"></div>
+        <div><img src="imgs/header-side-text.svg"></div>
+    <!-- end of top bkgrd -->
+    </div>
+
+    <div id="productLoop" class="product-loop">   
+        <div>CLOTH Products</div>
+        <div id="printProducts" class="productWrapper">
+            <script>
+                var text = "";
+                // main controller for amoun of products displayed
+                for(count = 1; count < 8; count++) {
+                    var obj = eval("P" + count);
+                    text += '<div class="productBkgrd"><div class="productText"><div id="productTitle" class="productTitle">'+obj.title+'</div><div class="productCost"><sup>$</sup>'+obj.price+'</div><div>Add to Cart -></div></div><div class="prodcutImg"><img src='+obj.img+'></div></div>';
+                    document.getElementById("printProducts").innerHTML = text;      
+                }                                 
+            </script>         
+
+        <!-- end of prodcut wrapper -->
+        </div>
+    <!-- end of product loop -->
+    </div>
+
+    <div class="half-bkgrd">
+        <div><img src="imgs/half-text.svg"></div>
+        <div>            
+            <form >
+                <input type="email" placeholder="Type Email Here">
+                <input type="submit" value="Submit">
+              </form>
+        </div>
+    <!-- end of half bkgrd -->
+    </div>
+    
+
+    <div class="love-clarity">
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </div>
+    <!-- end of love clarity -->
+    </div>
+
+
+    <div class="be-pink">
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+    <!-- end of be pink -->
+    </div>
+
+    <div class="mellow-yellow">
+        <div><img id="sofaChange" src="imgs/mellow-yellow.png"></div>
+        <div><img id="threeDot" src="imgs/3-dot-01.svg"></div>
+    <!-- mellow yellow -->
+    </div>
+
+    <div class="footer">
+        <div class="footer-top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p>Let's Connect</p>
+                            <p><img src="imgs/sm-icons.svg"></p>
+                        </td>
+                        <td>
+                            <p>ABOUT</p>
+                            <div>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </div>
+                        </td>
+                        <td>
+                            <p>Navigate</p>
+                            <ul>
+                                <li>- Menu</li>
+                                <li>- Get Started</li>
+                                <li>- Products</li>
+                                <li>- Review</li>
+                                <li>- Join</li>
+                                <li>- Login</li>
+                            </ul>
+                        </td>
+                        <td></td>
+                    </tr>                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer-bottom">
+            <table>
+                <tbody>
+                    <tr>
+                        <td><img src="imgs/logo-01.svg"></td>
+                        <td><img src="imgs/logo-02.svg"></td>
+                        <td><img src="imgs/logo-03.svg"></td>
+                        <td><img src="imgs/logo-04.svg"></td>
+                        <td><img src="imgs/logo-05.svg"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <span>CLOTH</span> &bull; 123 Main St, Suite 123, Boston, MA 02123 &bull; <span>MAP</span> &bull; Main (555) 555 - 5555 &bull; Support (555) 555 - 5555
+        </div>
+        
+        <div>
+            <span>Privacy Policy</span> &bull; Sitemap &bull; &copy; CLOTH
+        </div>
+
+     <!-- end of footer -->
+    </div>
+
+<script>
+    function search_poster() { 
+    document.getElementById('productLoop').scrollLeft = 0;
+    let input = document.getElementById('searchbar').value;
+    input=input.toLowerCase(); 
+    
+    let x = document.getElementsByClassName('productTitle');
+    let y = document.getElementsByClassName('productBkgrd'); 
+    
+    for (i = 0; i < x.length; i++) {  
+        if (!x[i].innerHTML.toLowerCase().includes(input)) { 
+            y[i].style.display="none"; 
+        } 
+        else { 
+            y[i].style.display="block";                  
+        } 
+    } 
+} 
+
+
+var sofaCount = 0;
+setInterval(function(){ 
+    sofaCount++;
+    if(sofaCount ==1){
+        document.getElementById('sofaChange').src = "imgs/furniture-imgs-09.png"; 
+        document.getElementById('threeDot').src = "imgs/3-dot-02.svg"; 
+    }else if(sofaCount ==2){
+        document.getElementById('sofaChange').src = "imgs/furniture-imgs-08.png"; 
+        document.getElementById('threeDot').src = "imgs/3-dot-03.svg"; 
+    }else if(sofaCount ==3){
+        document.getElementById('sofaChange').src = "imgs/furniture-imgs-10.png"; 
+        document.getElementById('threeDot').src = "imgs/3-dot-01.svg"; 
+    }else{
+        sofaCount = 0;
+    }
+    
+}, 3000);
+
+</script>
+</body>
+</html>
