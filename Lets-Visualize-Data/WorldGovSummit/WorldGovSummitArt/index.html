@@ -1,0 +1,136 @@
+<!-- This project was for the Work Government Summit The World Data Visualization Prize - Created By JFula.com -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>World Gov Summit - Art</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="ES">
+	<meta name="robots" content="noindex" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" type="text/css" href="css/styles.css"> 	
+	<link rel="icon" href="favicon.png">	
+
+</head>
+<body>
+
+  <div class="wrapper" id="wrapper">
+   
+    <div class="img-holder" id="imgHolder">
+        <img id="loadImg" src="imgs/globalHealth.svg">
+    </div>
+
+    <!-- end of wrapper -->
+  </div>
+
+    <div id="wrapperFooter" class="wrapper-footer">
+        <diV class="footer-I" id="GH"      >    Global Health              </diV>    
+        <diV class="footer-II" id="EN"     >    Energy                     </diV>    
+        <diV class="footer-III" id="QOL"   >    Quality of Life            </diV>    
+        <diV class="footer-IV" id="ED"     >    Education & Development    </diV>    
+        <diV class="footer-V" id="CLI"     >    Sustainability & Climate   </diV>  
+        <diV class="footer-VI" id="ECO"    >    Economics                  </diV>    
+        <diV class="footer-VII" id="reset" >   <img src=""> View Data                      </diV>    
+        <!-- end of footer -->
+    </div>
+
+   
+    
+    <script>        
+        // const array = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII"];
+
+        const QueryString = window.location.search; 
+        const urlParams = new URLSearchParams(QueryString); 
+
+        const urlData =  urlParams.get('id');
+        const wrapper = document.getElementById('wrapper');
+        const imgHolder = document.getElementById('loadImg');
+        const intro =  urlParams.get('intro');
+        
+        
+        setTimeout(function(){  wrapper.style.opacity = "1";           }, 500);     
+        
+        const globalHealthBtn =    document.getElementById('GH');
+        const energyBtn =  document.getElementById('EN');
+        const qualityLifeBtn =  document.getElementById('QOL');
+        const educationBtn =   document.getElementById('ED');
+        const climateBtn =    document.getElementById('CLI');
+        const economicsBtn =   document.getElementById('ECO');
+        
+
+        if(urlData == "GH"){
+            imgHolder.src = "imgs/globalHealth.svg";
+
+        }else if(urlData == "EN"){
+            imgHolder.src = "imgs/energy.svg";
+
+        }else if(urlData == "QOL"){
+            imgHolder.src = "imgs/quality.svg";
+
+        }else if(urlData == "ED"){
+            imgHolder.src = "imgs/education.svg";
+
+        }else if(urlData == "CLI"){
+            imgHolder.src = "imgs/climate.svg";
+
+        }else if(urlData == "ECO"){
+            imgHolder.src = "imgs/economy.svg";
+        }else{
+            imgHolder.src = "imgs/globalHealth.svg";
+        }
+
+
+        const G1 = document.getElementById('GH');
+        G1.addEventListener('click', (event) => {  window.location.href = 'index.html?id=GH';     });
+        const G2 = document.getElementById('EN');
+        G2.addEventListener('click', (event) => {  window.location.href = 'index.html?id=EN';     });
+        const G3 = document.getElementById('QOL');
+        G3.addEventListener('click', (event) => {  window.location.href = 'index.html?id=QOL';     });
+        const G4 = document.getElementById('ED');
+        G4.addEventListener('click', (event) => {  window.location.href = 'index.html?id=ED';     });
+        const G5= document.getElementById('CLI');
+        G5.addEventListener('click', (event) => {  window.location.href = 'index.html?id=CLI';     });
+        const G6 = document.getElementById('ECO');
+        G6.addEventListener('click', (event) => {  window.location.href = 'index.html?id=ECO';     });
+        const G7 = document.getElementById('reset');
+        G7.addEventListener('click', (event) => {  window.location.href = '../WorldGovSummitData/index.html?id='+urlData+'&intro=true';     });
+        
+        if (urlData == "GH"){
+        globalHealthBtn.style.backgroundColor = "rgba(84,164,219, .75)";   
+        globalHealthBtn.style.opacity = 1;        
+        
+        }else if(urlData == "EN"){        
+        energyBtn.style.backgroundColor = "rgba(126,194,71, .75)";     
+        energyBtn.style.opacity = 1; 
+
+        }else if(urlData == "QOL"){
+        qualityLifeBtn.style.backgroundColor = "rgba(247,146,38, .75)";   
+        qualityLifeBtn.style.opacity = 1;             
+        
+        }else if(urlData == "ED"){
+        educationBtn.style.backgroundColor = " rgba(238,43,47, .75)";         
+        educationBtn.style.opacity = 1;         
+        
+        }else if(urlData == "CLI"){
+        climateBtn.style.backgroundColor = " rgba(183,146,52, .75)";            
+        climateBtn.style.opacity = 1; 
+                
+        }else if(urlData == "ECO"){
+        economicsBtn.style.backgroundColor = " rgba(57,83,164,.90)";     
+        economicsBtn.style.opacity = 1; 
+        
+        }else{        
+        globalHealthBtn.style.backgroundColor = " rgba(189,204,212,.90)";       
+        globalHealthBtn.style.opacity = 1; 
+        }
+
+    </script>
+
+
+
+
+
+
+
+</body>
+</html>
