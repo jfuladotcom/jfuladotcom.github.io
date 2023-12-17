@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <style>
+            body{background-color: #ff0000;}
+        </style>
+    </head>
+
+    <body id="body">
+
+    </body>
+<script>
+    var count = 1;
+    setInterval(function() {
+        count++;
+        if(count == 4){
+            count = 1
+        }
+        if (count == 1){
+            document.getElementById("body").style.background = "#ff0000";
+        }else if( count == 2){
+            document.getElementById("body").style.background = "#00ff00";        
+        }else if( count == 3){
+            document.getElementById("body").style.background = "#0000ff";        
+        }else{
+            document.getElementById("body").style.background = "#ff0000";
+        }
+
+    } , 2000);
+
+</script>
+
+</html>
