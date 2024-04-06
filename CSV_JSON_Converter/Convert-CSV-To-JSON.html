@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV to JSON Converter</title>
+  <style>
+    
+    html{ margin: 15px 0; font-family: sans-serif;}
+    body{ background-color: #f1ebe5; }
+    img{ width: 100%; }
+    .wrapper{ position: relative; margin: 0 auto; padding:0 25px; max-width: 900px; text-align: center;}
+
+    button{ background-color: #0071a9; color:#efefef; padding:15px; font-weight: bold; border: 0; border-radius:5px; border-bottom:2px #00224c solid;}
+    button:hover{ background-color: #00224c; cursor: pointer; } 
+    
+    input::file-selector-button { background-color: #00a99d; color:#efefef; padding:15px; font-weight: bold; border: 0; border-radius:5px; border-bottom:2px #00224c solid; }
+    input::file-selector-button:hover{ background-color: #006159; cursor: pointer; } 
+
+    .output{ text-align: left; padding: 25px; max-height: 250px; color: #00ffff; background-color: #333333; overflow: scroll; border-radius: 10px;}
+        
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    
+    <img src="imgs/CSV-JSON-Converter-Logo.svg">
+    <p></p>
+    <input class="input" type="file" id="csvFile" accept=".csv">
+    <button onclick="convertToJSON()">Convert  CSV</button>
+    
+    <p></p>
+    <div class="output" id="jsonOutput">This script provides a straightforward way to convert CSV files into a JSON format. The resulting JSON data can then be easily extracted and saved to a separate file.</div>
+    
+    
+    <!-- end of wrapper -->
+  </div>
+  
+  <script>
+    function convertToJSON() {
+      const csvFile = document.getElementById('csvFile').files[0];
+      if (!csvFile) {
+        alert('Please select a CSV file.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const csv = e.target.result;
+        const rows = csv.split('\n');
+        const headers = rows[0].split(',');
+        const jsonData = [];
+
+        for (let i = 1; i < rows.length; i++) {
+          if (!rows[i]) continue;
+          const row = rows[i].split(',');
+          const obj = {};
+          for (let j = 0; j < headers.length; j++) {
+            obj[headers[j].trim()] = row[j].trim();
+          }
+          jsonData.push(obj);
+        }
+
+        document.getElementById('jsonOutput').textContent = JSON.stringify(jsonData, null, 2);
+      };
+      reader.readAsText(csvFile);
+    }
+
+  </script>
+</body>
+</html>
