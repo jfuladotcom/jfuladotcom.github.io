@@ -6,37 +6,68 @@
     
     html{ margin: 15px 0; font-family: sans-serif;}
     body{ background-color: #f1ebe5; }
-    img{ width: 100%; }
-    .wrapper{ position: relative; margin: 0 auto; padding:0 25px; max-width: 900px; text-align: center;}
+    img{ width: 100%; }    
 
-    button{ background-color: #0071a9; color:#efefef; padding:15px; font-weight: bold; border: 0; border-radius:5px; border-bottom:2px #00224c solid;}
-    button:hover{ background-color: #00224c; cursor: pointer; } 
+    .buttonJSON{ background-color: #0071a9; color:#efefef; padding:15px; font-weight: bold; border: 0; border-radius:5px; border-bottom:2px #00224c solid;}
+    .buttonJSON:hover{ background-color: #00224c; cursor: pointer; } 
+
+    .buttonCOPY{ background-color: #f2872f; color:#efefef; padding:15px; font-weight: bold; border: 0; border-radius:5px; border-bottom:2px #87561e solid;}
+    .buttonCOPY:hover{ background-color: #87561e; cursor: pointer; } 
     
     input::file-selector-button { background-color: #00a99d; color:#efefef; padding:15px; font-weight: bold; border: 0; border-radius:5px; border-bottom:2px #00224c solid; }
     input::file-selector-button:hover{ background-color: #006159; cursor: pointer; } 
 
-    .output{ text-align: left; padding: 25px; max-height: 250px; color: #00ffff; background-color: #333333; overflow: scroll; border-radius: 10px;}
+    .wrapper-container{ position: relative; margin: 0 auto; padding:0 25px; max-width: 900px; text-align: center;}
+    .logo{ position: relative; margin: 0 auto; padding: 0 25px; max-width: 900px; text-align: center; }
+
+    .wrapper {  display: grid;  grid-template-columns: repeat(2, 1fr);  gap: 10px;  margin: 15px 0;}
+    .one { grid-column: 1 / 2; grid-row: 1; border:2px #00a99d solid; border-radius: 15px; padding: 15px; }
+    .two { grid-column: 2 / 2; grid-row: 1; border:2px #0071a9 solid; border-radius: 15px; padding: 15px;  }
+    
+    .wrapper-learning {  display: grid;  grid-template-columns: repeat(3, 1fr);  gap: 10px;  margin: 15px 0;}
+    .wrapper-learning > div{ text-align: left; line-height: 1.5em;}
+    .one-learning { grid-column: 1 / 2; grid-row: 1;   padding: 15px; }
+    .two-learning { grid-column: 2 / 3; grid-row: 1;   padding: 15px; }
+    .three-learning { grid-column: 3 / 3; grid-row: 1; padding: 15px; }
+
+    .output{ text-align: left; margin: 15px 0; padding: 25px; max-height: 250px; color: #00ffff; border: 2px #333333 solid; color:#333333; overflow: scroll; border-radius: 10px; display: none;}
+    .copyBtn{ position: relative; margin: 0 auto; padding: 0 25px;  border:2px #f2872f solid; border-radius: 15px; padding: 15px; display: none; }
         
   </style>
 </head>
 <body>
-  <div class="wrapper">
+  <div class="wrapper-container">
     
-    <img src="CSV-JSON-Converter-Logo.svg">
-    <p></p>
-    <input class="input" type="file" id="csvFile" accept=".csv">
-    <button onclick="convertToJSON()">Convert  CSV</button>
+    <div class="logo">
+      <img src="CSV-JSON-Converter-Logo.svg">
+    </div>
     
-    <p></p>
-    <div class="output" id="jsonOutput">This script provides a straightforward way to convert CSV files into a JSON format. The resulting JSON data can then be easily extracted and saved to a separate file.</div>
-    
-    
+    <div class="wrapper-learning">
+      <div class="one-learning">Click the Browse button. This will open a file explorer window where you can navigate to the location of your CSV file and select it. </div>
+      <div class="two-learning">Click the "Convert CSV" button, and watch as your file is seamlessly transformed into the popular JSON format.</div>
+      <div class="three-learning">After the conversion, select the JSON text in the container or click "Copy JSON" button. You can paste the JSON directly into a new file.</div>
+
+      <!-- end of wrapper learning -->
+    </div>
+    <div class="wrapper">
+      <div class="one"><input class="input" type="file" id="csvFile" accept=".csv">  </div>
+      <div class="two"><button class="buttonJSON" onclick="convertToJSON()">Convert  CSV</button></div>
+      <!-- end of wrapper -->
+    </div>
+
+    <div id="copyBtn" class="copyBtn" onclick="copyToClipboard(document.getElementById('output').textContent)"> <button class="buttonCOPY">Copy JSON</button> </div>
+
+    <div id="output" class="output" id="jsonOutput"></div>
+
     <!-- end of wrapper -->
-  </div>
+    </div>  
+    
   
   <script>
     function convertToJSON() {
       const csvFile = document.getElementById('csvFile').files[0];
+      document.getElementById('copyBtn').style.display = "block";
+      document.getElementById('output').style.display = "block";
       if (!csvFile) {
         alert('Please select a CSV file.');
         return;
@@ -59,9 +90,26 @@
           jsonData.push(obj);
         }
 
-        document.getElementById('jsonOutput').textContent = JSON.stringify(jsonData, null, 2);
+        document.getElementById('output').textContent = JSON.stringify(jsonData, null, 2);
       };
       reader.readAsText(csvFile);
+    }
+
+    ////////////////////////////////////////////////////////////
+
+    function copyToClipboard(text) {      
+      
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      
+      textArea.select();
+      textArea.setSelectionRange(0, 99999); 
+
+      navigator.clipboard.writeText(textArea.value);
+      document.body.removeChild(textArea);
+
+      alert("JSON copied to clipboard:", text);
     }
 
   </script>
