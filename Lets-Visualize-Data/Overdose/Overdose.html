@@ -3,23 +3,26 @@
   <head>
     <title>Opioid Overdose Death Rates</title>
     <style>
-      html{ background-color: #202a30; font-family: sans-serif; color:#efefef; font-size: 12px; line-height: 1.5em; padding: 25px;}
+      html{ background-color: #202a30; font-family: sans-serif; color:#efefef; font-size: 12px; line-height: 1.5em; margin: 0; padding: 0;}
       canvas{ cursor: pointer; }
-      .container{ position: relative; margin: 0 auto; max-width: 900px;}
-      .top-container{ text-align: center;}
-      .colorO{ color:#ec767b;}
+      a{color:#ec1e27;}
+      a:hover{color:#ec767b;}
+      .container{ position: relative; margin: 0 auto; max-width: 900px; padding: 25px;}
+      .top-container{ text-align: center; background-color: #0d161f;}
+      .colorO{ color:#ec767b;}      
       .colorB{ color:#546e80;}
       .spacer{ text-align: center; font-size: 50px;}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <div class="container">
-
-      <div class="top-container">
-        <img src="opioid-img.png">
-        <!-- end of top container -->        
-      </div>
+    
+    <div class="top-container">
+      <img src="opioid-img.png">
+      <!-- end of top container -->        
+    </div>
+    
+    <div class="container">      
 
       <p class="colorO">*This interactive graphic allows you to:
       Toggle the visibility of each category by clicking on the category labels
@@ -29,7 +32,6 @@
       <canvas id="myChart"></canvas>   
       
       <div>
-
         <p>The opioid crisis began in the 1990s with increased marketing of prescription opioid medications and a push for greater pain management. 
         This led to a quadrupling of opioid sales from 1999 to 2010, accompanied by a rise in opioid misuse and overdose deaths1. Between 1999 and 2020, 565,000 Americans died of opioid-involved overdoses.</p>
         
@@ -44,6 +46,13 @@
         <p>The opioid crisis has particularly hit the USA and Canada, affecting mostly young and middle-aged adults. 
         In 2019, opioids were responsible for 15.8 and 6.4 deaths per 100,000 people in the USA and Canada, respectively. 
         Measures proposed to tackle the crisis include better drug regulation, education, restrictions on opioid prescription, and promotion of prevention campaigns.</p>
+
+        <div class="colorO">
+        <p>If you or someone you know is struggling with addiction, help is available. 
+          SAMHSA's National Helpline is a free, confidential, 24/7, 365-day-a-year treatment referral and information service 
+          (in English and Spanish) for individuals and families facing mental and/or substance use disorders.</p>
+          <a href="https://www.samhsa.gov/find-help/national-helpline" target="_blank">SAMHSA’s National Helpline</a>
+        </div>
 
       </div>
 
