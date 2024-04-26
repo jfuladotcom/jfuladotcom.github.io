@@ -27,3 +27,9 @@ https://jfuladotcom.github.io/Lets-Visualize-Data/WorldGovSummit/index.html
 Cyber Security Dashboard
 This prototype was a solo project that kick started my interests into the world of data visualization. My focus was cyber security and how a monitor dashboard could be conceptualized for users to maintain safety operations. 
 https://jfuladotcom.github.io/Lets-Visualize-Data/zone/index.html
+
+------------------------------------------------------------------------------------------------------------------
+
+Opiod Overdose Death Rates in the United States
+The dataset "Drug overdose death" on Kaggle is a collection of data related to drug overdose deaths. It provides information on the number of drug overdose deaths, including details on the specific drugs involved and the demographics of the affected population.
+https://jfuladotcom.github.io/Lets-Visualize-Data/Overdose/Overdose.html
