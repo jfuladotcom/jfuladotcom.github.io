@@ -3,15 +3,20 @@
   <head>
     <title>Opioid Overdose Death Rates</title>
     <style>
-      html{ background-color: #202a30; font-family: sans-serif; color:#efefef; font-size: 12px; line-height: 1.5em; margin: 0; padding: 0;}
+      html, body{ background-color: #202a30; font-family: sans-serif; color:#efefef; font-size: 12px; line-height: 1.5em; margin: 0; padding: 0;}
       canvas{ cursor: pointer; }
-      a{color:#ec1e27;}
-      a:hover{color:#ec767b;}
+      a{color:#ec767b; font-weight: bold;}
+      a:hover{color:#efefef;}
       .container{ position: relative; margin: 0 auto; max-width: 900px; padding: 25px;}
-      .top-container{ text-align: center; background-color: #0d161f;}
-      .colorO{ color:#ec767b;}      
-      .colorB{ color:#546e80;}
-      .spacer{ text-align: center; font-size: 50px;}
+      .top-container{ text-align: center; background-color: #0d161f;  background-image: url('bkgrd.jpg');   background-size: cover;  background-position: center;  background-repeat: no-repeat;  background-attachment: fixed;  margin: 0;  padding: 0;  height: 100%;}
+      .colorO{ color:#ec767b; text-align: center;}     
+      .colorR{ color:#f49e78;}          
+      .colorB{ color:#546e80;  text-align: center;}
+      .spacer{ text-align: center; font-size: 50px; margin: 15px 0; padding: 15px 0 ; color:#546e80;}
+
+      .wrapper {  display: grid;  grid-template-columns: repeat(2, 1fr); gap: 10px;  grid-auto-rows: minmax(100px, auto); }
+      .one {  grid-column: 1 / 2; grid-row: 1; }
+      .two {  grid-column: 2 / 2;  grid-row: 1; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
@@ -24,28 +29,33 @@
     
     <div class="container">      
 
-      <p class="colorO">*This interactive graphic allows you to:
+      <p class="colorR">*This interactive graphic allows you to:
       Toggle the visibility of each category by clicking on the category labels
       Display detailed information about each data point by clicking on the individual points
       </p>
 
       <canvas id="myChart"></canvas>   
       
-      <div>
-        <p>The opioid crisis began in the 1990s with increased marketing of prescription opioid medications and a push for greater pain management. 
-        This led to a quadrupling of opioid sales from 1999 to 2010, accompanied by a rise in opioid misuse and overdose deaths1. Between 1999 and 2020, 565,000 Americans died of opioid-involved overdoses.</p>
-        
-        <p>Around 2010, heroin from Mexico became the predominant source, with increased production ensuring a reliable supply of low-cost heroin. 
-        More recently, synthetic opioids like fentanyl have become the most prevalent substances involved in overdose deaths. 
-        In 2021, fentanyl accounted for roughly 71,000 overdose deaths, nearly double the rate from 2019. </p>
-        
-        <p>The crisis has contributed to a historic decline in U.S. 
-        life expectancy and generated vast economic and social costs, estimated at $700 billion in 2018. 
-        In response, the U.S. government has enacted several laws to address the crisis, such as expanding substance use disorder prevention and treatment, bolstering drug diversion capabilities, and enhancing international drug interdiction efforts. </p>
-        
-        <p>The opioid crisis has particularly hit the USA and Canada, affecting mostly young and middle-aged adults. 
-        In 2019, opioids were responsible for 15.8 and 6.4 deaths per 100,000 people in the USA and Canada, respectively. 
-        Measures proposed to tackle the crisis include better drug regulation, education, restrictions on opioid prescription, and promotion of prevention campaigns.</p>
+      <div class="wrapper">
+        <div class="one">
+          <p>The opioid crisis began in the 1990s with increased marketing of prescription opioid medications and a push for greater pain management. 
+            This led to a quadrupling of opioid sales from 1999 to 2010, accompanied by a rise in opioid misuse and overdose deaths1. Between 1999 and 2020, 565,000 Americans died of opioid-involved overdoses.</p>
+            
+            <p>Around 2010, heroin from Mexico became the predominant source, with increased production ensuring a reliable supply of low-cost heroin. 
+            More recently, synthetic opioids like fentanyl have become the most prevalent substances involved in overdose deaths. 
+            In 2021, fentanyl accounted for roughly 71,000 overdose deaths, nearly double the rate from 2019. </p>
+        </div>
+
+        <div class="two">
+          <p>The crisis has contributed to a historic decline in U.S. 
+            life expectancy and generated vast economic and social costs, estimated at $700 billion in 2018. 
+            In response, the U.S. government has enacted several laws to address the crisis, such as expanding substance use disorder prevention and treatment, bolstering drug diversion capabilities, and enhancing international drug interdiction efforts. </p>
+            
+            <p>The opioid crisis has particularly hit the USA and Canada, affecting mostly young and middle-aged adults. 
+            In 2019, opioids were responsible for 15.8 and 6.4 deaths per 100,000 people in the USA and Canada, respectively. 
+            Measures proposed to tackle the crisis include better drug regulation, education, restrictions on opioid prescription, and promotion of prevention campaigns.</p>
+        </div>
+        </div>
 
         <div class="colorO">
         <p>If you or someone you know is struggling with addiction, help is available. 
@@ -53,8 +63,6 @@
           (in English and Spanish) for individuals and families facing mental and/or substance use disorders.</p>
           <a href="https://www.samhsa.gov/find-help/national-helpline" target="_blank">SAMHSA’s National Helpline</a>
         </div>
-
-      </div>
 
         <div class="spacer">...</div>
         
@@ -77,6 +85,13 @@
           https://www.thelancet.com/journals/lanam/article/PIIS2667-193X%2823%2900131-X/fulltext<br>
           https://www.brookings.edu/articles/overview-the-opioid-crisis-in-america/
         </p>
+
+        <p>
+          <b>Image Source:</b><br>
+          https://unsplash.com/@whoishaleylawrence
+        </p>
+
+        
       </div>
 
       <!-- end of container -->
@@ -96,6 +111,7 @@
       // Create the chart
       const ctx = document.getElementById('myChart').getContext('2d');
       const myChart = new Chart(ctx, {
+        
         type: 'line',
         data: {
           labels: years,
