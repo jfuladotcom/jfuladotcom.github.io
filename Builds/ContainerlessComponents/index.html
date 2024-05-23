@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Containerless Components</title>
+  <style>
+    
+    .main-img{ position: relative; max-width:1100px; margin: 0 auto;}
+    .main-img > img{ width: 100%;}
+    .action{ position: absolute; width: 50px; height: 50px; left: 1010px; top: 250px; }
+    .action:hover{ cursor: pointer; border-radius: 25px; opacity: .15; background-color: #3457bf;}
+
+  </style>
+</head>
+<body>
+  
+  <div class="main-img">
+    <div class="action" onclick="openAndResizeWindow('https://raw.githubusercontent.com/jfuladotcom/jfuladotcom.github.io/main/Builds/ContainerlessComponents/Container-Less-Dashboards.png', 400, 540)"></div>    
+    <img src="Container-Less-Dashboards.jpg"/>
+    <!-- end of div -->
+  </div>
+
+  <script>
+    // Function to open a new window and resize it
+    function openAndResizeWindow(url, width, height) {
+      // Open a new window
+      const newWindow = window.open(url, '_blank', 'width=' + width + ',height=' + height);
+
+      // Check if the new window was successfully opened
+      if (newWindow) {
+        // Function to resize the window
+        function resizeWindow() {
+          // Get the current window dimensions
+          const windowWidth = window.innerWidth;
+          const windowHeight = window.innerHeight;
+
+          // Calculate the new dimensions based on the desired aspect ratio
+          const aspectRatio = width / height;
+          let newWidth, newHeight;
+
+          if (windowWidth / windowHeight > aspectRatio) {
+            newWidth = Math.min(windowWidth, width);
+            newHeight = newWidth / aspectRatio;
+          } else {
+            newHeight = Math.min(windowHeight, height);
+            newWidth = newHeight * aspectRatio;
+          }
+
+          // Resize the new window
+          newWindow.resizeBy(newWidth - newWindow.outerWidth, newHeight - newWindow.outerHeight);
+        }
+
+        // Resize the window initially
+        resizeWindow();
+
+        // Resize the window whenever the browser window is resized
+        window.addEventListener('resize', resizeWindow);
+      } else {
+        console.log('Failed to open a new window.');
+      }
+    }
+  </script>
+</body>
+</html>
