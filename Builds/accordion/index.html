@@ -1,0 +1,29 @@
+<html>
+    <head>
+
+        <style>
+            html, body{ padding: 0; margin: 0; font-family: sans-serif; }
+            .wrapper { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; grid-auto-rows: minmax(100px, auto); }
+            .one { grid-column: 1 / 10; grid-row: 1;  }
+            .two { grid-column: 10 / 13; grid-row: 1; background-color: #f2f2f2; height: 100vh; text-align: center;}
+            .two > img { width: 80%; cursor: pointer;}
+            .main-header{ width: 100%; height:150px; background-color: #ccc; text-align: center; }
+            .main-header > img{ width: 35%; margin: 50px 0 0 0;}
+
+            .main-cards{ width: 300px; margin: 25px 0 0 25px; transition: 1s all; border-radius: 25px;  border: 5px #ffffff solid;}
+            .main-cards:hover{ border: 5px #2077bd solid; }
+
+        </style>
+
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div class="one">
+                <div class="main-header"><img src="Asset-2.svg"></div>
+                <div class="main-cards"><a href="event.html" target="_self"><img src="Asset-3.svg"></a></div>
+            </div>
+            <div class="two"><img src="Asset-4.svg"></div>
+        </div>
+    </body>
+</html>
