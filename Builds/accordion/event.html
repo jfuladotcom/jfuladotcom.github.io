@@ -2,24 +2,30 @@
     <head>
 
         <style>
-            html, body{ padding: 0; margin: 0; font-family: sans-serif; overflow-x: hidden;}
-            .wrapper { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; grid-auto-rows: minmax(100px, auto); }
+            html, body{ padding: 0; margin: 0; font-family: sans-serif; overflow: hidden;}
+            /* .wrapper { display: grid; grid-template-columns: repeat(12, 1fr); gap: 10px; grid-auto-rows: minmax(100px, auto); }
             .one { grid-column: 1 / 10; grid-row: 1;  }
-            .two { grid-column: 10 / 13; grid-row: 1; background-color: #f2f2f2; height: 100vh;}
+            .two { grid-column: 10 / 13; grid-row: 1; background-color: #f2f2f2; height: 100vh;} */
+            
+            .one { position: relative; width: 80%;}
+            .two { position: absolute; right: 0; top: 0; width: 360px; height: 100vh; border-left: 1px #333 solid; background-color: #ffffff; overflow: hidden;}  
+
             .main-header{ width: 100%; height:150px; background-color: #ccc;}
             .main-cards{ text-align: center;}
-            .main-cards > img{ width: 80%; padding: 25px 0 0 0;}
+            .main-cards > img{ width: 80%; }
 
-            .title{ padding: 10px; margin: 5px 0; background-color: #aaa; cursor: pointer;}
+            .title{ padding: 10px; margin: 5px 0; background-color: #b1d8f2; cursor: pointer; transition: .25s all;}
+            .title:hover{ background-color: #4aa6e5; }
             .expand{ height: 0; transition:1s all; overflow: hidden; }
-            .expand > img{ width: 75%; padding: 30px 0 0 30px;}
+            .expand > img{ width: 75%; padding: 30px 0 0 10px;}
 
             .accordion{ height: 80%;}
-            .buttons{ position: absolute; bottom: 15px; right: 10px;}
-            button{ padding: 10px 30px; margin:0 70px 0 0; cursor: pointer;  border: 1px #2077bd solid; border-radius: 5px;}
-            button:hover{ background-color: #2077bd; border-radius: 5px;}
+            .buttons{ position: absolute; bottom: 2px; right: -9px;height: 44px;background: #ffffff;padding: 10px;text-align: right;width: 370px;}
+            
+            button{ padding: 10px 30px; margin:0 70px 0 0; cursor: pointer; background-color: #2077bd; color: #fff;  border: 1px #2077bd solid; border-radius: 5px; font-weight: bold;}
+            button:hover{ background-color: #4aa6e5; border: 1px #4aa6e5 solid; border-radius: 5px;}
 
-             .discovery{ position: absolute; left:0; width: 50px; height: 100vh; background-color: #333333; text-align: center; cursor: pointer;}
+             .discovery{ position: absolute; left:0; width: 50px; height: 100vh; background-color: #333333; text-align: center; cursor: pointer; z-index: 999; }
              .discovery > img {width: 15px; padding: 15px;} 
              .validation{  position: absolute; left: 2000px; top: 1px; width: 100%; height: 100vh; background: #fff;  z-index: 2; transition: 1s all;}                 
              .validation-hold{   position: absolute; right:0; width: 50px; height: 100vh; background-color: #333333; z-index: 1;}    
@@ -39,17 +45,17 @@
             </div>
             <div class="two">
                 <div class="accordion">
-                    <div class="title" id="A01"> Name & Description</div>
+                    <div class="title" id="A01"> Step 1 - Name & Description</div>
                     <div class="expand" id="A01O"> <img src="Asset-10.svg"> </div>
-                    <div class="title" id="A02"> Data Source</div>
+                    <div class="title" id="A02"> Step 2 - Data Source</div>
                     <div class="expand" id="A02O"> <img src="Asset-10.svg"> </div>
-                    <div class="title" id="A03"> Known Event Occurrences</div>
+                    <div class="title" id="A03"> Step 3 - Known Event Occurrences</div>
                     <div class="expand" id="A03O"> <img src="Asset-10.svg"> </div>
-                    <div class="title" id="A04"> Candidate Event Characteristics</div>              
+                    <div class="title" id="A04"> Step 4 - Candidate Event Characteristics</div>              
                     <div class="expand" id="A04O"> <img src="Asset-10.svg"> </div>
               </div>              
               <div class="buttons"> 
-                <button onclick="functionED()">Submit</button>
+                <button onclick="functionED()">Validation</button>
             </div>
             <!-- end of div two -->
         </div>
@@ -64,15 +70,15 @@
         </div>
         <div class="two">
             <div class="accordion">
-                <div class="title" id="A05"> Validation</div>
+                <div class="title" id="A05"> Step 1 - Validation</div>
                 <div class="expand" id="A05O"> <img src="Asset-7.svg"></div>
-                <div class="title" id="A06"> Characteristics</div>
+                <div class="title" id="A06"> Step 2 - Characteristics</div>
                 <div class="expand" id="A06O"> <img src="Asset-7.svg"></div>
-                <div class="title" id="A07"> Event Occurrence</div>
+                <div class="title" id="A07"> Step 3 - Event Occurrence</div>
                 <div class="expand" id="A07O"><img src="Asset-7.svg"> </div>                
           </div>              
           <div class="buttons"> 
-            <button onclick="functionV()">Submit</button>
+            <button onclick="functionV()">Complete</button>
         </div>
         <!-- end of div two -->
     </div>
