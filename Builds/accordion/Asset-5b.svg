@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1022.2 705.7">
+  <defs>
+    <style>
+      .cls-1 {
+        mix-blend-mode: overlay;
+        opacity: .2;
+      }
+
+      .cls-2 {
+        isolation: isolate;
+      }
+
+      .cls-3 {
+        stroke-width: 1.6px;
+      }
+
+      .cls-3, .cls-4 {
+        fill: none;
+        stroke: #333;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-4 {
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g class="cls-2">
+    <g id="Layer_2" data-name="Layer 2">
+      <g id="Layer_1-2" data-name="Layer 1-2">
+        <g class="cls-1">
+          <path class="cls-4" d="M1,638h974.9M1,568.3h974.9M1,495.4h974.9M1,426.9h974.9M1,354h974.9M1,285.4h974.9M1,212.5h974.9M1,143.6h974.9M1,70.6h974.9"/>
+          <path class="cls-3" d="M47.9,9.4v689.7M125.7,9.4v689.7M207.2,9.4v689.7M288.1,9.4v689.7M365.9,9.4v689.7M447.4,9.4v689.7M523.9,9.4v689.7M605.4,9.4v689.7M681.9,9.4v689.7M763.3,9.4v689.7M840.4,9.4v689.7M921.8,9.4v689.7"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

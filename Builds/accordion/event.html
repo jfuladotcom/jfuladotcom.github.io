@@ -41,7 +41,7 @@
             <div class="validation-hold"><img src="Asset-9.svg"></div>
             
             <div class="one">
-                <div class="main-cards"><img src="Asset-5.svg"></div>
+                <div class="main-cards"><img id="mainImg" src="Asset-5b.svg"></div>
             </div>
             <div class="two">
                 <div class="accordion">
@@ -66,7 +66,7 @@
         <div class="wrapper">       
         <div class="discovery"><img src="Asset-9.svg"></div> 
         <div class="one">
-            <div class="main-cards"><img src="Asset-6.svg"></div>
+            <div class="main-cards"><img id="mainImgb" src="Asset-6.svg"></div>
         </div>
         <div class="two">
             <div class="accordion">
@@ -104,7 +104,10 @@
         
         const A05O = document.getElementById('A05O');
         const A06O = document.getElementById('A06O');
-        const A07O = document.getElementById('A07O');        
+        const A07O = document.getElementById('A07O');  
+        
+        const mainImg = document.getElementById('mainImg');   
+        const mainImgb = document.getElementById('mainImgb');           
 
         const validation = document.getElementById('validation');
         const discovery = document.getElementById('discovery');
@@ -124,16 +127,18 @@
         A02.addEventListener("click", (event) => { 
             A01O.style.height = '0%'; A02O.style.height = '90%'; A03O.style.height = '0%'; A04O.style.height = '0%'; });
         A03.addEventListener("click", (event) => { 
-            A01O.style.height = '0%'; A02O.style.height = '0%'; A03O.style.height = '90%'; A04O.style.height = '0%'; });
+            mainImg.src ="Asset-5a.svg"; A01O.style.height = '0%'; A02O.style.height = '0%'; A03O.style.height = '90%'; A04O.style.height = '0%'; });
         A04.addEventListener("click", (event) => { 
-            A01O.style.height = '0%'; A02O.style.height = '0%'; A03O.style.height = '0%'; A04O.style.height = '90%'; });
+            mainImg.src ="Asset-5.svg"; A01O.style.height = '0%'; A02O.style.height = '0%'; A03O.style.height = '0%'; A04O.style.height = '90%'; });
 
         A05.addEventListener("click", (event) => { 
             A05O.style.height = '90%'; A06O.style.height = '0%'; A07O.style.height = '0%'; });
         A06.addEventListener("click", (event) => { 
-            A05O.style.height = '0%'; A06O.style.height = '90%'; A07O.style.height = '0%';  });
+            mainImgb.src ="Asset-6a.svg"; A05O.style.height = '0%'; A06O.style.height = '90%'; A07O.style.height = '0%';  });
         A07.addEventListener("click", (event) => { 
             A05O.style.height = '0%'; A06O.style.height = '0%'; A07O.style.height = '90%';  });
+
+
         
 
     </script>
