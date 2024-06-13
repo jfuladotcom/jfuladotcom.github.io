@@ -18,10 +18,14 @@
             .main-cards{ width: 300px; margin: 25px 0 0 25px; transition: .2s all; border-radius: 21px;  border: 5px #ffffff solid; border: 3px #b1d8f2 solid; }
             .main-cards:hover{border: 3px #2077bd solid;  }  
 
+            .survey{ position: absolute; width: 300px; top: -300px; left: 45%; transform: translate(-50%, -50%); z-index: 9999; transition: 1s all; cursor: pointer;}
+
         </style>
 
     </head>
     <body>
+
+        <div id="survey" class="survey"><img src="Asset-4a.svg"></div>
 
         <div class="wrapper">
             <div class="one">
@@ -52,6 +56,20 @@
                     }
                 });
                 });
+
+                const QueryString = window.location.search; 
+                const urlParams = new URLSearchParams(QueryString); 
+                const urlData =  urlParams.get('id');
+                const survey = document.getElementById('survey');                
+                const surveyClose = document.getElementById('survey');
+
+                surveyClose.addEventListener("click", (event) => { survey.style.top = "-300px";  });
+                
+                function displaySurvey() { survey.style.top = "250px"; }                
+                
+                if(urlData == "survey"){
+                    setTimeout(displaySurvey, 1000);
+                }
 
         </script>
     </body>
