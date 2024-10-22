@@ -3,22 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced CSV File Analyzer</title>
+    <title>Conversation Analysis Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 1000px;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        #dashboard {
-            display: none;
-            margin-top: 20px;
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
         th, td {
             border: 1px solid #ddd;
@@ -28,49 +43,79 @@
         th {
             background-color: #f2f2f2;
         }
-        .metric-box {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
+        #fileInput {
+            margin-bottom: 20px;
+        }
+        #analyzeBtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #analyzeBtn:hover {
+            background-color: #45a049;
+        }
+        .highlight {
+            background-color: #ffffd0;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
-    <h1>Advanced CSV File Analyzer</h1>
-    <input type="file" id="csvFile" accept=".csv">
-    <button onclick="analyzeFile()">Analyze</button>
-    
-    <div id="dashboard">
-        <h2>File Summary</h2>
-        <div class="metric-box">
-            <p>Total lines: <span id="totalLines"></span></p>
-            <p>Total speakers: <span id="totalSpeakers"></span></p>
-            <p>Total words: <span id="totalWords"></span></p>
-            <p>Average words per line: <span id="avgWordsPerLine"></span></p>
-            <p>Most active speaker: <span id="mostActiveSpeaker"></span></p>
+    <div class="container">
+        <h1>Conversation Analysis Dashboard</h1>
+        <input type="file" id="fileInput" accept=".csv">
+        <button id="analyzeBtn" onclick="analyzeFile()">Analyze Conversation</button>
+        
+        <div id="dashboard" class="dashboard" style="display:none;">
+            <div class="card">
+                <h2>Conversation Overview</h2>
+                <p>Total Speakers: <span id="totalSpeakers"></span></p>
+                <p>Total Exchanges: <span id="totalExchanges"></span></p>
+                <p>Duration: <span id="duration"></span></p>
+            </div>
+            
+            <div class="card">
+                <h2>Key Topics</h2>
+                <ul id="keyTopics"></ul>
+            </div>
+            
+            <div class="card">
+                <h2>Speaker Participation</h2>
+                <table id="speakerTable">
+                    <tr>
+                        <th>Speaker</th>
+                        <th>Contributions</th>
+                        <th>Words</th>
+                        <th>Avg Words/Contribution</th>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h2>Conversation Flow</h2>
+                <div id="conversationFlow"></div>
+            </div>
+            
+            <div class="card">
+                <h2>Action Items</h2>
+                <ul id="actionItems"></ul>
+            </div>
+            
+            <div class="card">
+                <h2>Sentiment Analysis</h2>
+                <p>Overall Tone: <span id="overallTone"></span></p>
+                <div id="sentimentBreakdown"></div>
+            </div>
         </div>
-
-        <h2>Speaker Details</h2>
-        <table id="speakerTable">
-            <tr>
-                <th>Speaker</th>
-                <th>Line Count</th>
-                <th>Word Count</th>
-                <th>Avg Words/Line</th>
-            </tr>
-        </table>
-
-        <h2>Content Summary</h2>
-        <div id="summary" class="metric-box"></div>
-
-        <h2>Highlights</h2>
-        <ul id="highlights"></ul>
     </div>
 
     <script>
         function analyzeFile() {
-            const fileInput = document.getElementById('csvFile');
+            const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
             
             if (file) {
@@ -88,95 +133,126 @@
         function analyzeContent(content) {
             const lines = content.split('\n');
             const speakers = {};
-            let totalLines = 0;
-            let totalWords = 0;
+            let totalExchanges = 0;
             let currentSpeaker = '';
             let allText = '';
+            let conversationFlow = [];
 
             lines.forEach(line => {
                 if (line.trim().startsWith('<v ')) {
                     currentSpeaker = line.trim().match(/<v (.+?)>/)[1];
                     if (!speakers[currentSpeaker]) {
-                        speakers[currentSpeaker] = { lineCount: 0, wordCount: 0 };
+                        speakers[currentSpeaker] = { contributions: 0, words: 0 };
                     }
                 } else if (currentSpeaker && line.trim()) {
-                    speakers[currentSpeaker].lineCount++;
+                    speakers[currentSpeaker].contributions++;
                     const words = line.trim().split(/\s+/);
-                    speakers[currentSpeaker].wordCount += words.length;
-                    totalLines++;
-                    totalWords += words.length;
+                    speakers[currentSpeaker].words += words.length;
+                    totalExchanges++;
                     allText += line.trim() + ' ';
+                    conversationFlow.push({ speaker: currentSpeaker, text: line.trim() });
                 }
             });
 
-            updateDashboard(totalLines, totalWords, speakers, allText);
+            updateDashboard(speakers, totalExchanges, allText, conversationFlow);
         }
 
-        function updateDashboard(totalLines, totalWords, speakers, allText) {
-            document.getElementById('totalLines').textContent = totalLines;
+        function updateDashboard(speakers, totalExchanges, allText, conversationFlow) {
             document.getElementById('totalSpeakers').textContent = Object.keys(speakers).length;
-            document.getElementById('totalWords').textContent = totalWords;
-            document.getElementById('avgWordsPerLine').textContent = (totalWords / totalLines).toFixed(2);
+            document.getElementById('totalExchanges').textContent = totalExchanges;
+            document.getElementById('duration').textContent = estimateDuration(totalExchanges) + " minutes";
 
-            let mostActiveSpeaker = '';
-            let maxWords = 0;
-            const speakerTable = document.getElementById('speakerTable');
-            speakerTable.innerHTML = '<tr><th>Speaker</th><th>Line Count</th><th>Word Count</th><th>Avg Words/Line</th></tr>';
+            updateSpeakerTable(speakers);
+            updateKeyTopics(allText);
+            updateConversationFlow(conversationFlow);
+            updateActionItems(allText);
+            updateSentimentAnalysis(allText);
+
+            document.getElementById('dashboard').style.display = 'grid';
+        }
+
+        function updateSpeakerTable(speakers) {
+            const table = document.getElementById('speakerTable');
+            table.innerHTML = '<tr><th>Speaker</th><th>Contributions</th><th>Words</th><th>Avg Words/Contribution</th></tr>';
 
             for (const [speaker, data] of Object.entries(speakers)) {
-                const row = speakerTable.insertRow();
+                const row = table.insertRow();
                 row.insertCell(0).textContent = speaker;
-                row.insertCell(1).textContent = data.lineCount;
-                row.insertCell(2).textContent = data.wordCount;
-                row.insertCell(3).textContent = (data.wordCount / data.lineCount).toFixed(2);
-
-                if (data.wordCount > maxWords) {
-                    maxWords = data.wordCount;
-                    mostActiveSpeaker = speaker;
-                }
+                row.insertCell(1).textContent = data.contributions;
+                row.insertCell(2).textContent = data.words;
+                row.insertCell(3).textContent = (data.words / data.contributions).toFixed(2);
             }
-
-            document.getElementById('mostActiveSpeaker').textContent = mostActiveSpeaker;
-
-            // Generate summary
-            const summary = generateSummary(allText);
-            document.getElementById('summary').textContent = summary;
-
-            // Generate highlights
-            const highlights = generateHighlights(allText);
-            const highlightsList = document.getElementById('highlights');
-            highlightsList.innerHTML = '';
-            highlights.forEach(highlight => {
-                const li = document.createElement('li');
-                li.textContent = highlight;
-                highlightsList.appendChild(li);
-            });
-
-            document.getElementById('dashboard').style.display = 'block';
         }
 
-        function generateSummary(text) {
-            // This is a simple summarization. For more advanced summarization,
-            // you might want to use a natural language processing library.
-            const sentences = text.match(/[^\.!\?]+[\.!\?]+/g);
-            const summaryLength = Math.min(3, sentences.length);
-            return sentences.slice(0, summaryLength).join(' ');
-        }
-
-        function generateHighlights(text) {
-            // This is a simple highlight generation. You might want to use more
-            // sophisticated methods for better results.
-            const words = text.split(/\s+/);
+        function updateKeyTopics(text) {
+            const words = text.toLowerCase().split(/\W+/);
             const wordFreq = {};
             words.forEach(word => {
-                word = word.toLowerCase().replace(/[^\w]/g, '');
                 if (word.length > 3) {
                     wordFreq[word] = (wordFreq[word] || 0) + 1;
                 }
             });
 
             const sortedWords = Object.entries(wordFreq).sort((a, b) => b[1] - a[1]);
-            return sortedWords.slice(0, 5).map(([word, freq]) => `"${word}" (mentioned ${freq} times)`);
+            const keyTopics = sortedWords.slice(0, 5).map(([word, freq]) => `${word} (${freq})`);
+
+            const topicsList = document.getElementById('keyTopics');
+            topicsList.innerHTML = keyTopics.map(topic => `<li>${topic}</li>`).join('');
+        }
+
+        function updateConversationFlow(flow) {
+            const flowDiv = document.getElementById('conversationFlow');
+            flowDiv.innerHTML = flow.slice(0, 10).map(exchange => 
+                `<p><strong>${exchange.speaker}:</strong> ${highlightKeywords(exchange.text)}</p>`
+            ).join('');
+        }
+
+        function updateActionItems(text) {
+            const actionKeywords = ['need to', 'should', 'must', 'will', 'going to'];
+            const sentences = text.match(/[^\.!\?]+[\.!\?]+/g) || [];
+            const actionItems = sentences.filter(sentence => 
+                actionKeywords.some(keyword => sentence.toLowerCase().includes(keyword))
+            );
+
+            const actionList = document.getElementById('actionItems');
+            actionList.innerHTML = actionItems.slice(0, 5).map(item => `<li>${item}</li>`).join('');
+        }
+
+        function updateSentimentAnalysis(text) {
+            // This is a very basic sentiment analysis. For accurate results, use a proper NLP library or API.
+            const positiveWords = ['good', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic'];
+            const negativeWords = ['bad', 'poor', 'terrible', 'awful', 'horrible', 'disappointing'];
+
+            const words = text.toLowerCase().split(/\W+/);
+            let positiveCount = 0;
+            let negativeCount = 0;
+
+            words.forEach(word => {
+                if (positiveWords.includes(word)) positiveCount++;
+                if (negativeWords.includes(word)) negativeCount++;
+            });
+
+            const totalSentimentWords = positiveCount + negativeCount;
+            const sentimentScore = totalSentimentWords > 0 
+                ? (positiveCount - negativeCount) / totalSentimentWords 
+                : 0;
+
+            document.getElementById('overallTone').textContent = 
+                sentimentScore > 0.1 ? 'Positive' : sentimentScore < -0.1 ? 'Negative' : 'Neutral';
+
+            document.getElementById('sentimentBreakdown').innerHTML = 
+                `Positive words: ${positiveCount}, Negative words: ${negativeCount}`;
+        }
+
+        function estimateDuration(exchanges) {
+            // Rough estimate: 30 seconds per exchange
+            return Math.round(exchanges * 0.5);
+        }
+
+        function highlightKeywords(text) {
+            const keywords = ['important', 'critical', 'urgent', 'key', 'essential'];
+            return keywords.reduce((acc, keyword) => 
+                acc.replace(new RegExp(keyword, 'gi'), match => `<span class="highlight">${match}</span>`), text);
         }
     </script>
 </body>
