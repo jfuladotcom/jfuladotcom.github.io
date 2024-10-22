@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV File Analyzer</title>
+    <title>Advanced CSV File Analyzer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -18,6 +18,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
         th, td {
             border: 1px solid #ddd;
@@ -27,26 +28,44 @@
         th {
             background-color: #f2f2f2;
         }
+        .metric-box {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>CSV File Analyzer</h1>
+    <h1>Advanced CSV File Analyzer</h1>
     <input type="file" id="csvFile" accept=".csv">
     <button onclick="analyzeFile()">Analyze</button>
     
     <div id="dashboard">
         <h2>File Summary</h2>
-        <p>Total lines: <span id="totalLines"></span></p>
-        <p>Total speakers: <span id="totalSpeakers"></span></p>
-        
+        <div class="metric-box">
+            <p>Total lines: <span id="totalLines"></span></p>
+            <p>Total speakers: <span id="totalSpeakers"></span></p>
+            <p>Total words: <span id="totalWords"></span></p>
+            <p>Average words per line: <span id="avgWordsPerLine"></span></p>
+            <p>Most active speaker: <span id="mostActiveSpeaker"></span></p>
+        </div>
+
         <h2>Speaker Details</h2>
         <table id="speakerTable">
             <tr>
                 <th>Speaker</th>
                 <th>Line Count</th>
                 <th>Word Count</th>
+                <th>Avg Words/Line</th>
             </tr>
         </table>
+
+        <h2>Content Summary</h2>
+        <div id="summary" class="metric-box"></div>
+
+        <h2>Highlights</h2>
+        <ul id="highlights"></ul>
     </div>
 
     <script>
@@ -70,7 +89,9 @@
             const lines = content.split('\n');
             const speakers = {};
             let totalLines = 0;
+            let totalWords = 0;
             let currentSpeaker = '';
+            let allText = '';
 
             lines.forEach(line => {
                 if (line.trim().startsWith('<v ')) {
@@ -80,29 +101,82 @@
                     }
                 } else if (currentSpeaker && line.trim()) {
                     speakers[currentSpeaker].lineCount++;
-                    speakers[currentSpeaker].wordCount += line.trim().split(/\s+/).length;
+                    const words = line.trim().split(/\s+/);
+                    speakers[currentSpeaker].wordCount += words.length;
                     totalLines++;
+                    totalWords += words.length;
+                    allText += line.trim() + ' ';
                 }
             });
 
-            updateDashboard(totalLines, speakers);
+            updateDashboard(totalLines, totalWords, speakers, allText);
         }
 
-        function updateDashboard(totalLines, speakers) {
+        function updateDashboard(totalLines, totalWords, speakers, allText) {
             document.getElementById('totalLines').textContent = totalLines;
             document.getElementById('totalSpeakers').textContent = Object.keys(speakers).length;
+            document.getElementById('totalWords').textContent = totalWords;
+            document.getElementById('avgWordsPerLine').textContent = (totalWords / totalLines).toFixed(2);
 
+            let mostActiveSpeaker = '';
+            let maxWords = 0;
             const speakerTable = document.getElementById('speakerTable');
-            speakerTable.innerHTML = '<tr><th>Speaker</th><th>Line Count</th><th>Word Count</th></tr>';
+            speakerTable.innerHTML = '<tr><th>Speaker</th><th>Line Count</th><th>Word Count</th><th>Avg Words/Line</th></tr>';
 
             for (const [speaker, data] of Object.entries(speakers)) {
                 const row = speakerTable.insertRow();
                 row.insertCell(0).textContent = speaker;
                 row.insertCell(1).textContent = data.lineCount;
                 row.insertCell(2).textContent = data.wordCount;
+                row.insertCell(3).textContent = (data.wordCount / data.lineCount).toFixed(2);
+
+                if (data.wordCount > maxWords) {
+                    maxWords = data.wordCount;
+                    mostActiveSpeaker = speaker;
+                }
             }
 
+            document.getElementById('mostActiveSpeaker').textContent = mostActiveSpeaker;
+
+            // Generate summary
+            const summary = generateSummary(allText);
+            document.getElementById('summary').textContent = summary;
+
+            // Generate highlights
+            const highlights = generateHighlights(allText);
+            const highlightsList = document.getElementById('highlights');
+            highlightsList.innerHTML = '';
+            highlights.forEach(highlight => {
+                const li = document.createElement('li');
+                li.textContent = highlight;
+                highlightsList.appendChild(li);
+            });
+
             document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function generateSummary(text) {
+            // This is a simple summarization. For more advanced summarization,
+            // you might want to use a natural language processing library.
+            const sentences = text.match(/[^\.!\?]+[\.!\?]+/g);
+            const summaryLength = Math.min(3, sentences.length);
+            return sentences.slice(0, summaryLength).join(' ');
+        }
+
+        function generateHighlights(text) {
+            // This is a simple highlight generation. You might want to use more
+            // sophisticated methods for better results.
+            const words = text.split(/\s+/);
+            const wordFreq = {};
+            words.forEach(word => {
+                word = word.toLowerCase().replace(/[^\w]/g, '');
+                if (word.length > 3) {
+                    wordFreq[word] = (wordFreq[word] || 0) + 1;
+                }
+            });
+
+            const sortedWords = Object.entries(wordFreq).sort((a, b) => b[1] - a[1]);
+            return sortedWords.slice(0, 5).map(([word, freq]) => `"${word}" (mentioned ${freq} times)`);
         }
     </script>
 </body>
