@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV File Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #dashboard {
+            display: none;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV File Analyzer</h1>
+    <input type="file" id="csvFile" accept=".csv">
+    <button onclick="analyzeFile()">Analyze</button>
+    
+    <div id="dashboard">
+        <h2>File Summary</h2>
+        <p>Total lines: <span id="totalLines"></span></p>
+        <p>Total speakers: <span id="totalSpeakers"></span></p>
+        
+        <h2>Speaker Details</h2>
+        <table id="speakerTable">
+            <tr>
+                <th>Speaker</th>
+                <th>Line Count</th>
+                <th>Word Count</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function analyzeFile() {
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    analyzeContent(content);
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Please select a CSV file');
+            }
+        }
+
+        function analyzeContent(content) {
+            const lines = content.split('\n');
+            const speakers = {};
+            let totalLines = 0;
+            let currentSpeaker = '';
+
+            lines.forEach(line => {
+                if (line.trim().startsWith('<v ')) {
+                    currentSpeaker = line.trim().match(/<v (.+?)>/)[1];
+                    if (!speakers[currentSpeaker]) {
+                        speakers[currentSpeaker] = { lineCount: 0, wordCount: 0 };
+                    }
+                } else if (currentSpeaker && line.trim()) {
+                    speakers[currentSpeaker].lineCount++;
+                    speakers[currentSpeaker].wordCount += line.trim().split(/\s+/).length;
+                    totalLines++;
+                }
+            });
+
+            updateDashboard(totalLines, speakers);
+        }
+
+        function updateDashboard(totalLines, speakers) {
+            document.getElementById('totalLines').textContent = totalLines;
+            document.getElementById('totalSpeakers').textContent = Object.keys(speakers).length;
+
+            const speakerTable = document.getElementById('speakerTable');
+            speakerTable.innerHTML = '<tr><th>Speaker</th><th>Line Count</th><th>Word Count</th></tr>';
+
+            for (const [speaker, data] of Object.entries(speakers)) {
+                const row = speakerTable.insertRow();
+                row.insertCell(0).textContent = speaker;
+                row.insertCell(1).textContent = data.lineCount;
+                row.insertCell(2).textContent = data.wordCount;
+            }
+
+            document.getElementById('dashboard').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
