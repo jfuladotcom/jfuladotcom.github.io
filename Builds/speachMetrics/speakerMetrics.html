@@ -3,269 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Transcription Analysis</title>
+    <title>Text Analysis Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.upload-section {
-    margin-bottom: 20px;
-}
-
-.results-section {
-    display: none;
-}
-
-canvas {
-    max-width: 100%;
-    height: auto;
-}
-
-button {
-    padding: 10px 20px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-#summary, #researchQuestions {
-    margin-top: 20px;
-}
-
-.export-section {
-    margin-top: 20px;
-}
-
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        #results, #charts {
+            margin-top: 20px;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Audio Transcription Analysis</h1>
-        <div class="upload-section">
-            <input type="file" id="csvFile" accept=".csv">
-            <button id="analyzeBtn">Analyze</button>
+    <h1>Text Analysis Dashboard</h1>
+    <textarea id="textInput" placeholder="Enter your text here..."></textarea>
+    <button onclick="analyzeText()">Analyze</button>
+    <div id="results"></div>
+    <div id="charts">
+        <div class="chart-container">
+            <canvas id="sentimentChart"></canvas>
         </div>
-        <div id="results" class="results-section">
-            <div id="speakerAnalysis">
-                <h2>Speaker Analysis</h2>
-                <canvas id="speakerChart"></canvas>
-            </div>
-            <div id="wordFrequency">
-                <h2>Word Frequency</h2>
-                <canvas id="wordFrequencyChart"></canvas>
-            </div>
-            <div id="sentimentAnalysis">
-                <h2>Sentiment Analysis</h2>
-                <canvas id="sentimentChart"></canvas>
-            </div>
-            <div id="summary">
-                <h2>Summary</h2>
-                <p id="summaryText"></p>
-            </div>
-            <div id="researchQuestions">
-                <h2>Potential Research Questions</h2>
-                <ul id="questionsList"></ul>
-            </div>
-            <div class="export-section">
-                <button id="exportJSON">Export JSON</button>
-                <button id="exportCSV">Export CSV</button>
-                <button id="exportPDF">Export PDF</button>
-            </div>
+        <div class="chart-container">
+            <canvas id="wordFrequencyChart"></canvas>
         </div>
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-    const csvFile = document.getElementById('csvFile');
-    const analyzeBtn = document.getElementById('analyzeBtn');
-    const results = document.getElementById('results');
+        function analyzeText() {
+            const text = document.getElementById('textInput').value;
+            const words = text.trim().split(/\s+/);
+            const wordCount = words.length;
+            const charCount = text.length;
 
-    analyzeBtn.addEventListener('click', analyzeCSV);
+            // Simple sentiment analysis
+            const positiveWords = ['good', 'great', 'excellent', 'happy', 'love'];
+            const negativeWords = ['bad', 'awful', 'terrible', 'sad', 'hate'];
+            let posCount = 0, negCount = 0, neuCount = 0;
+            words.forEach(word => {
+                if (positiveWords.includes(word.toLowerCase())) posCount++;
+                else if (negativeWords.includes(word.toLowerCase())) negCount++;
+                else neuCount++;
+            });
 
-    function analyzeCSV() {
-        const file = csvFile.files[0];
-        if (!file) {
-            alert('Please select a CSV file');
-            return;
+            // Word frequency
+            const wordFreq = {};
+            words.forEach(word => {
+                word = word.toLowerCase().replace(/[.,!?]/g, '');
+                if (word.length > 3) {
+                    wordFreq[word] = (wordFreq[word] || 0) + 1;
+                }
+            });
+            const topWords = Object.entries(wordFreq)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+
+            // Display results
+            document.getElementById('results').innerHTML = `
+                <h2>Analysis Results:</h2>
+                <p>Word Count: ${wordCount}</p>
+                <p>Character Count: ${charCount}</p>
+                <h3>Top 10 Keywords:</h3>
+                <ul>
+                    ${topWords.map(([word, count]) => `<li>${word}: ${count}</li>`).join('')}
+                </ul>
+            `;
+
+            // Update charts
+            updateSentimentChart(posCount, negCount, neuCount);
+            updateWordFrequencyChart(topWords);
         }
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const csvData = e.target.result;
-            const parsedData = parseCSV(csvData);
-            analyzeData(parsedData);
-        };
-        reader.readAsText(file);
-    }
-
-    function parseCSV(csvData) {
-        const lines = csvData.split('\n');
-        const headers = lines[0].split(',');
-        const data = [];
-
-        for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split(',');
-            if (values.length === headers.length) {
-                const row = {};
-                for (let j = 0; j < headers.length; j++) {
-                    row[headers[j].trim()] = values[j].trim();
-                }
-                data.push(row);
-            }
-        }
-
-        return data;
-    }
-
-    function analyzeData(data) {
-        const speakers = analyzeSpeakers(data);
-        const wordFreq = analyzeWordFrequency(data);
-        const sentiment = analyzeSentiment(data);
-        const summary = generateSummary(data);
-        const questions = generateResearchQuestions(data);
-
-        displayResults(speakers, wordFreq, sentiment, summary, questions);
-        results.style.display = 'block';
-    }
-
-    function analyzeSpeakers(data) {
-        // Implement speaker analysis logic here
-        return { 'Speaker 1': 30, 'Speaker 2': 45, 'Speaker 3': 25 };
-    }
-
-    function analyzeWordFrequency(data) {
-        // Implement word frequency analysis logic here
-        return { 'word1': 10, 'word2': 8, 'word3': 6, 'word4': 4, 'word5': 2 };
-    }
-
-    function analyzeSentiment(data) {
-        // Implement sentiment analysis logic here
-        return { 'Positive': 60, 'Neutral': 30, 'Negative': 10 };
-    }
-
-    function generateSummary(data) {
-        // Implement summary generation logic here
-        return "This is a sample summary of the audio transcription...";
-    }
-
-    function generateResearchQuestions(data) {
-        // Implement research question generation logic here
-        return [
-            "How does Speaker 1's language differ from Speaker 2's?",
-            "What are the most common topics discussed in the conversation?",
-            "How does the sentiment change throughout the conversation?"
-        ];
-    }
-
-    function displayResults(speakers, wordFreq, sentiment, summary, questions) {
-        createPieChart('speakerChart', 'Speaker Participation', speakers);
-        createBarChart('wordFrequencyChart', 'Word Frequency', wordFreq);
-        createPieChart('sentimentChart', 'Sentiment Analysis', sentiment);
-
-        document.getElementById('summaryText').textContent = summary;
-
-        const questionsList = document.getElementById('questionsList');
-        questionsList.innerHTML = '';
-        questions.forEach(question => {
-            const li = document.createElement('li');
-            li.textContent = question;
-            questionsList.appendChild(li);
-        });
-
-        setupExportButtons(speakers, wordFreq, sentiment, summary, questions);
-    }
-
-    function createPieChart(canvasId, title, data) {
-        const ctx = document.getElementById(canvasId).getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: Object.keys(data),
-                datasets: [{
-                    data: Object.values(data),
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-                }]
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: title
-                }
-            }
-        });
-    }
-
-    function createBarChart(canvasId, title, data) {
-        const ctx = document.getElementById(canvasId).getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(data),
-                datasets: [{
-                    label: 'Frequency',
-                    data: Object.values(data),
-                    backgroundColor: '#36A2EB'
-                }]
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: title
+        function updateSentimentChart(positive, negative, neutral) {
+            const ctx = document.getElementById('sentimentChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                    datasets: [{
+                        data: [positive, negative, neutral],
+                        backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
+                    }]
                 },
-                scales: {
-                    yAxes: [{
-                        ticks: {
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Sentiment Distribution'
+                    }
+                }
+            });
+        }
+
+        function updateWordFrequencyChart(wordFrequency) {
+            const ctx = document.getElementById('wordFrequencyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: wordFrequency.map(item => item[0]),
+                    datasets: [{
+                        label: 'Word Frequency',
+                        data: wordFrequency.map(item => item[1]),
+                        backgroundColor: '#36A2EB'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Top 10 Word Frequencies'
+                    },
+                    scales: {
+                        y: {
                             beginAtZero: true
                         }
-                    }]
+                    }
                 }
-            }
-        });
-    }
-
-    function setupExportButtons(speakers, wordFreq, sentiment, summary, questions) {
-        document.getElementById('exportJSON').addEventListener('click', () => exportJSON(speakers, wordFreq, sentiment, summary, questions));
-        document.getElementById('exportCSV').addEventListener('click', () => exportCSV(speakers, wordFreq, sentiment, summary, questions));
-        document.getElementById('exportPDF').addEventListener('click', () => exportPDF(speakers, wordFreq, sentiment, summary, questions));
-    }
-
-    function exportJSON(speakers, wordFreq, sentiment, summary, questions) {
-        const data = { speakers, wordFreq, sentiment, summary, questions };
-        const jsonString = JSON.stringify(data, null, 2);
-        downloadFile(jsonString, 'analysis_results.json', 'application/json');
-    }
-
-    function exportCSV(speakers, wordFreq, sentiment, summary, questions) {
-        // Implement CSV export logic here
-        alert('CSV export not implemented in this example');
-    }
-
-    function exportPDF(speakers, wordFreq, sentiment, summary, questions) {
-        // Implement PDF export logic here using jsPDF
-        alert('PDF export not implemented in this example');
-    }
-
-    function downloadFile(content, fileName, contentType) {
-        const a = document.createElement('a');
-        const file = new Blob([content], { type: contentType });
-        a.href = URL.createObjectURL(file);
-        a.download = fileName;
-        a.click();
-    }
-});
-
+            });
+        }
     </script>
 </body>
 </html>
