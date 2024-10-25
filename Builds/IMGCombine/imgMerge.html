@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Combiner</title>
+    <style>
+        
+        body {font-family:Arial,sans-serif;height:100vh;margin:25px 0;background-color:#f0f0f0;}
+        .container {background-color:white;padding:20px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.1);text-align:left; position: relative; max-width: 500px; margin: 0 auto;}
+        .input-container {margin-bottom:10px;}
+        h1 {margin-bottom:20px;}        
+        input[type="file"] {display:none;}
+        label {display:inline-block;padding:10px 15px;background-color:#808080;color:white;cursor:pointer;border-radius:4px;transition:background-color 0.3s;}
+        label.selected {background-color:#4CAF50;}
+        button {padding:10px 15px;background-color:#008CBA;color:white;border:none;border-radius:4px;cursor:pointer;margin-bottom:10px;}
+        canvas {max-width:100%;margin-bottom:10px;}
+        #downloadLink {display:none;padding:10px 15px;background-color:#f44336;color:white;text-decoration:none;border-radius:4px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-container">
+            <input type="file" id="topImage" accept="image/*">
+            <label for="topImage" id="topImageLabel">Choose gallery image</label>
+        </div>
+        <div class="input-container">
+            <input type="file" id="bottomImage" accept="image/*">
+            <label for="bottomImage" id="bottomImageLabel">Choose your image</label>
+        </div>
+        <button id="combineButton">Combine Images</button>
+        <canvas id="canvas"></canvas>
+        <a id="downloadLink" download="TAG-1080.jpg">Download Image</a>
+    </div>
+
+    <script>
+        const topImageInput = document.getElementById('topImage');
+        const bottomImageInput = document.getElementById('bottomImage');
+        const topImageLabel = document.getElementById('topImageLabel');
+        const bottomImageLabel = document.getElementById('bottomImageLabel');
+        const combineButton = document.getElementById('combineButton');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const downloadLink = document.getElementById('downloadLink');
+
+        let topImage, bottomImage;
+
+        function updateLabel(input, label) {
+            if (input.files && input.files[0]) {
+                label.textContent = 'Image Selected';
+                label.classList.add('selected');
+            } else {
+                label.textContent = `Choose ${input.id === 'topImage' ? 'top' : 'bottom'} image`;
+                label.classList.remove('selected');
+            }
+        }
+
+        topImageInput.addEventListener('change', (e) => {
+            loadImage(e.target.files[0], (img) => topImage = img);
+            updateLabel(topImageInput, topImageLabel);
+        });
+
+        bottomImageInput.addEventListener('change', (e) => {
+            loadImage(e.target.files[0], (img) => bottomImage = img);
+            updateLabel(bottomImageInput, bottomImageLabel);
+        });
+
+        combineButton.addEventListener('click', combineImages);
+
+        function loadImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => callback(img);
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function combineImages() {
+            if (!topImage || !bottomImage) {
+                alert('Please select both images');
+                return;
+            }
+
+            canvas.width = 1080;
+            canvas.height = 1080;
+
+            // Draw bottom image (maintaining aspect ratio)
+            const scale = Math.max(canvas.width / bottomImage.width, canvas.height / bottomImage.height);
+            const x = (canvas.width / 2) - (bottomImage.width / 2) * scale;
+            const y = (canvas.height / 2) - (bottomImage.height / 2) * scale;
+            ctx.drawImage(bottomImage, x, y, bottomImage.width * scale, bottomImage.height * scale);
+
+            // Draw top image (stretched to fit)
+            ctx.drawImage(topImage, 0, 0, 1080, 1080);
+
+            downloadLink.href = canvas.toDataURL('image/png');
+            downloadLink.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
+
