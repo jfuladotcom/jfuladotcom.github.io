@@ -1,3 +1,8 @@
+Iamge Combiner - 1080
+
+https://jfuladotcom.github.io/Builds/IMGCombine/imgMerge.html
+
+------------------------------------------
 
 Containerless Components
 A prototype of a concept in which allows users of a platform the capability to detach widgets constructed within a dashboard environment.
