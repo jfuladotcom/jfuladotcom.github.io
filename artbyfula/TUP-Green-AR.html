@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #qr-code {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js"></script>
+</head>
+<body>
+    <div id="qr-code">
+        <h2>Scan this QR code to access the AR experience:</h2>
+        <img src="your-qr-code.png" alt="QR Code">
+    </div>
+
+    <a-scene embedded arjs>
+        <a-marker preset="hiro">
+            <a-image src="your-image.png" position='0 0 0' scale='1 1 1'></a-image>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        // Optional JavaScript for additional functionality can be added here
+    </script>
+</body>
+</html>
