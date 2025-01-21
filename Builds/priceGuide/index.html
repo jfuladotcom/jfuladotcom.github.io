@@ -11,6 +11,7 @@
         .art-item { border: 1px solid #ddd; padding: 15px; border-radius: 5px; } 
         .art-item img { max-width: 100%; height: auto; } 
         .price{ padding:8px 15px; background-color: #333; color: #fff; border-radius: 10px; border: 0; margin:8px 0; font-weight: bold; font-size: 15px;}
+        .sold{ padding:8px 15px; background-color: #ff1a1a; color: #fff; border-radius: 10px; border: 0; margin:8px 0; font-weight: bold; font-size: 15px;}
         a{  color: #333;}
         @media (max-width: 600px) { #art-list { grid-template-columns: 1fr; } }
     </style>
@@ -46,14 +47,7 @@
                 "price": 1525,
                 "image": "https://cdn.myportfolio.com/ab3971b3-2bba-49f1-a67d-191246dce296/23cb69d7-7c8d-42a9-b4ec-afa5d0b197d7_rw_1200.jpg?h=da8f350fe868761801c20cd5c2f4bf99"
             },
-            {
-                "id": 4,
-                "title": "The Uncomfortable Portraitist - Green",
-                "medium": "Acrylic on Canvas",
-                "size": "40x50 inches",
-                "price": SOLD,
-                "image": "https://cdn.myportfolio.com/ab3971b3-2bba-49f1-a67d-191246dce296/1f4e9c73-ecb0-4766-aec8-38efe39708c4_rw_1200.jpg?h=f893d6558d8d26df2ff6d17c21acd121"
-            },
+ 
             {
                 "id": 5,
                 "title": "The Uncomfortable Portraitist - Yellow",
@@ -250,19 +244,31 @@
         ];
 
         function displayArt() {
-            const artList = document.getElementById('art-list');
-            artData.forEach(item => {
-                const artItem = document.createElement('div');
-                artItem.className = 'art-item';
-                artItem.innerHTML = `
-                    <a href="${item.image}" target="_blank"><img src="${item.image}" alt="${item.title}"></a>
-                    <h3>${item.title}</h3>
-                    Medium: ${item.medium}<br/>
-                    Size: ${item.size}<br/>
-                    <button class="price">Price: $${item.price}</button>
-                `;
-                artList.appendChild(artItem);
-            });
+        const artList = document.getElementById('art-list');
+        artData.forEach(item => {
+            const artItem = document.createElement('div');
+            artItem.className = 'art-item';
+            
+            let priceDisplay;
+            let priceClass;
+            
+            if (item.price === 0) {
+                priceDisplay = 'SOLD';
+                priceClass = 'sold';
+            } else {
+                priceDisplay = `Price: $${item.price}`;
+                priceClass = 'price';
+            }
+            
+            artItem.innerHTML = `
+                <a href="${item.image}" target="_blank"><img src="${item.image}" alt="${item.title}"></a>
+                <h3>${item.title}</h3>
+                Medium: ${item.medium}<br/>
+                Size: ${item.size}<br/>
+                <button class="${priceClass}"> ${priceDisplay}</button>
+            `;
+            artList.appendChild(artItem);
+        });
         }
 
         displayArt();
