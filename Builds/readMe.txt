@@ -1,3 +1,26 @@
+Custom Object Detection and Labeling Tool
+
+https://jfuladotcom.github.io/Builds/object-detection.html
+
+------------------------------------------
+
+Image Overlay Processor
+
+https://jfuladotcom.github.io/Builds/overlay-combine.html
+
+------------------------------------------
+
+Image Mosaic Creator
+
+https://jfuladotcom.github.io/Builds/mosaic.html
+
+------------------------------------------
+
+Example of a knowledge graph and potential supportive UI
+
+https://jfuladotcom.github.io/Builds/KnowledgeGraph/APK-KG.html
+
+------------------------------------------
 
 HighContrast Converter
 
