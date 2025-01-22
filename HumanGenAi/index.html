@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human GenAi</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 13px; margin: 0; padding: 20px; line-height: 1.5em; color: #333;} 
+        .container{ position: relative; margin: 0 auto; max-width: 900px;}
+        h2{ text-align: center;}
+        hr{ color:#efefef;}
+        #search { width: 97%; padding: 10px; margin-bottom: 20px; border: 1px #ccc solid; border-radius: 10px; filter: drop-shadow(5px 5px 4px #ddd); } 
+        #mission { margin-bottom: 20px; } 
+        #grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; } 
+        .app { border: 1px solid #ddd; padding: 10px;  border-radius: 10px; } 
+        .app img { width: 100%; height: auto; }
+        .banner{text-align: center;}
+        .wrapper{ position: relative; margin: 0 auto; max-width: 80%; }
+        .banner > img{ width: 100%;}
+        .footer{ text-align: center;}
+        a{text-decoration: none; color:#333; }
+        
+        /* Media Queries for Responsiveness */
+        @media screen and (max-width: 768px) {
+            body { font-size: 14px; }
+            .container { max-width: 100%; }
+            #grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        }
+        @media screen and (max-width: 480px) {
+            body { font-size: 12px; padding: 10px; }
+            #grid { grid-template-columns: 1fr; }
+            h2 {font-size: 1.2em; }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="banner"><img src="human-GenAi.png"></div>
+        <div class="wrapper">
+            <div id="mission">                        
+                <p>My mission is to empower people through the transformative potential of Generative AI. I believe that this groundbreaking technology is breaking down barriers to understanding and accessibility, making knowledge, tools, and opportunities available to everyone—regardless of their background. By harnessing the power of GenAI, I aim to uplift individuals and communities, driving unprecedented economic growth and creating a future where innovation is truly inclusive.</p>
+            </div>
+            <input type="text" id="search" placeholder="Search for apps here...">            
+            <!-- end of wrapper -->
+        </div>
+        
+        <div id="grid"></div>
+        <!-- end of container -->
+
+
+    <script>
+        const apps = [
+            {
+                title: "CSV to JSON Converter",
+                description: "Convert CSV files to JSON in 3 easy steps.",
+                thumbnail: "imgs/thmb-001.png",
+                keywords: ["csv", "json", "converter", "data"],
+                link: "https://jfuladotcom.github.io/CSV_JSON_Converter/Convert-CSV-To-JSON.html"
+            },
+            {
+                title: "Contrast B&W Converter",
+                description: "This app will convert images to contrast B&W images.",
+                thumbnail: "imgs/thmb-002.png",
+                keywords: ["Contrast", "B&W", "Converter", "image"],
+                link: "https://jfuladotcom.github.io/Builds/highContrast/highContrast.html"
+            },
+            {
+                title: "Image Merge",
+                description: "This app will merge two images into one fixed at 1080x. Choose transparent images for correct render effect.",
+                thumbnail: "imgs/thmb-003.png",
+                keywords: ["image", "merge", "combine", "1080"],
+                link: "https://jfuladotcom.github.io/Builds/IMGCombine/imgMerge.html"
+            }, 
+            {
+                title: "Skeuomorphic Clock",
+                description: "A Skeuomorphic design of a clock I created then had converted to a working digital clock.",
+                thumbnail: "imgs/thmb-004.png",
+                keywords: ["skeuomorphic", "clock"],
+                link: "https://jfuladotcom.github.io/SkeuomorphicClock/skeuomorphic-clock.html"
+            },
+            {
+                title: "Knowledge Graph",
+                description: "Example of a D3 knowledge graph and potential supportive UI",
+                thumbnail: "imgs/thmb-005.png",
+                keywords: ["knowledge", "graph", "Visualization", "Data" ],
+                link: "https://jfuladotcom.github.io/Builds/KnowledgeGraph/APK-KG.html"
+            },
+            {
+                title: "Image Mosaic Creator",
+                description: "Upload a batch of images to create a Mosaic effect within your browser.",
+                thumbnail: "imgs/thmb-006.png",
+                keywords: ["image", "Mosaic" ],
+                link: "https://jfuladotcom.github.io/Builds/mosaic.html"
+            },            
+            {
+                title: "Image Overlay Processor",
+                description: "Run a batch image combine operation. Selecting your source folder > Overlay image > Process Images. Selected file should be transparent.",
+                thumbnail: "imgs/thmb-007.png",
+                keywords: ["image", "overlay", "batch"  ],
+                link: "https://jfuladotcom.github.io/Builds/overlay-combine.html"
+            },            
+            {
+                title: "Object Detection and Labeling Tool",
+                description: "This app allows you to upload images, make box selections and label them for XML generation that can be used in training models.",
+                thumbnail: "imgs/thmb-008.png",
+                keywords: ["detection", "object", "labeling"  ],
+                link: "https://jfuladotcom.github.io/Builds/object-detection.html"
+            }
+            
+            // Add more apps here
+        ];
+    
+        function renderApps(appsToRender) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            appsToRender.forEach(app => {
+                const appElement = document.createElement('div');
+                appElement.className = 'app';
+                appElement.innerHTML = `
+                    <a href="${app.link}" target="_blank">
+                        <img src="${app.thumbnail}" alt="${app.title}">
+                        <h3>${app.title}</h3>
+                        <p>${app.description}</p>
+                    </a>
+                `;
+                grid.appendChild(appElement);
+            });
+        }
+    
+        function filterApps(searchTerm) {
+            return apps.filter(app => 
+                app.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+        }
+    
+        document.getElementById('search').addEventListener('input', (e) => {
+            const filteredApps = filterApps(e.target.value);
+            renderApps(filteredApps);
+        });
+    
+        renderApps(apps);
+    </script>
+    <p></p>
+    <hr>
+    <div class="footer">
+        <p>This project is for educational purposes only and can be used for your personal projects.</br>
+            <i>95% of this website and apps were created using GenAi</i>
+        </p>
+    </div>
+</div>
+</body>
+</html>
