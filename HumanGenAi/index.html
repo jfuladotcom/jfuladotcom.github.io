@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Human GenAi</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 13px; margin: 0; padding: 20px; line-height: 1.5em; color: #333;} 
+        body { font-family: Arial, sans-serif; font-size: 13px; margin: 0; padding: 20px; line-height: 1.5em; color: #333;  }  
         .container{ position: relative; margin: 0 auto; max-width: 900px;}
         h2{ text-align: center;}
         hr{ color:#efefef;}
+        i{ font-weight: bold;}
         #search { width: 97%; padding: 10px; margin-bottom: 20px; border: 1px #ccc solid; border-radius: 10px; filter: drop-shadow(5px 5px 4px #ddd); } 
         #mission { margin-bottom: 20px; } 
         #grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; } 
-        .app { border: 1px solid #ddd; padding: 10px;  border-radius: 10px; } 
+        .app { border: 1px solid #ddd; padding: 10px;  border-radius: 10px;  filter: drop-shadow(5px 5px 3px #efefef); background-color: #fff;} 
         .app img { width: 100%; height: auto; }
         .banner{text-align: center;}
         .wrapper{ position: relative; margin: 0 auto; max-width: 80%; }
         .banner > img{ width: 100%;}
+        .styleLink{ color:#b37010; font-weight: bold; }
         .footer{ text-align: center;}
         a{text-decoration: none; color:#333; }
         
@@ -142,11 +144,13 @@
     
         renderApps(apps);
     </script>
-    <p></p>
+    <p>&nbsp;</p>
     <hr>
     <div class="footer">
-        <p>This project is for educational purposes only and can be used for your personal projects.</br>
-            <i>95% of this website and apps were created using GenAi</i>
+        <p>This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: 
+            Educational use only, No warranty or liability assumed, User responsible for legal compliance</p>            
+            <i>95% of this website and apps were created using GenAi</i></br>
+            <a class="styleLink" href="https://github.com/jfuladotcom" target="_blank">My Github jfuladotcom</a>
         </p>
     </div>
 </div>
