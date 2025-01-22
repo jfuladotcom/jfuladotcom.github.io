@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Precision Knowledge</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #111; color: #fff; } 
+        #graph { width: 100vw; height: 100vh; } 
+        #info-panel { position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; }
+        .node { cursor: pointer; } 
+        .link { stroke-opacity: 0.6; } 
+        .tooltip { position: absolute; background-color: rgba(0, 0, 0, 0.8); color: #fff; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(255,255,255,0.1); pointer-events: none; opacity: 0; transition: opacity 0.3s; max-width: 200px; } 
+        .container {position: relative;  width: 100%; display: flex;  padding: 15px 10px;  }
+        .column { flex: 1; display: flex; justify-content: center; align-items: center; font-family: Arial, sans-serif; font-size: 18px; color:#fff;} 
+        .column:nth-child(1) {  } 
+        .column:nth-child(2) {  } 
+        .column:nth-child(3) {  }
+
+        .side-panel-two { position: fixed; right: 0; top: 0; height: 100vh; width: 300px; background-color: #222; transition: transform 0.3s ease; transform: translateX(250px); overflow-y: auto; } 
+        .open-two { transform: translateX(0); } 
+        .toggle-box-two { width: 50px; height: 50px; background-color: #EE4B2B; position: absolute; left: 0; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; } 
+        .panel-content-two { padding: 20px; margin-left: 50px; } 
+        .panel-item-two { margin-bottom: 20px; } 
+        .custom-button-two { padding: 10px 15px; background-color: #EE4B2B; color: white; border: none; cursor: pointer; } 
+        .custom-slider-two { width: 100%; } 
+        .custom-checkbox-two, .custom-radio-two { margin-right: 10px; } 
+        .custom-select-two { width: 100%; padding: 5px; } 
+        .custom-textarea-two { width: 100%; height: 60px; resize: vertical; } 
+        .color-picker-two { width: 100%; } 
+        .custom-range-two { width: 100%; } 
+        .toggle-switch-two { position: relative; display: inline-block; width: 60px; height: 34px; } 
+        .toggle-switch-two input { opacity: 0; width: 0; height: 0; } 
+        .slider-two { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; } 
+        .slider-two::before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition:.4s; border-radius :50%; } 
+        input :checked + .slider-two { background-color:#2196F3; } 
+        input :checked + .slider-two::before { transform :translateX(26px); }
+        .side-panel-two > div { color:#fff !important; }
+        
+        .header{ position: relative; top:0;  width: 100%; background-color: #333333; padding: 5px; text-align: center; }       
+        .icon-space{ width: 25px; height: 25px; border-radius: 25px; margin: 0 5px;  background-color: #EE4B2B;}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container ">
+            <div class="column ">
+                <div class="icon-space"></div>
+                <div class="icon-space"></div>
+                <div class="icon-space"></div>
+            </div>
+            <div class="column">Advanced Precision Knowledge </div>
+            <div class="column">
+                <div class="icon-space"></div>
+                <div class="icon-space"></div>
+                <div class="icon-space"></div>
+            </div>        
+        </div>
+    </div>
+    <div class="container">
+        <div class="column">Nodes: <span id="node-count"></span></div>
+        <div class="column">Connections: <span id="link-count"></span></div>
+        <div class="column"></div>        
+    </div>
+
+       <div id="sidePanelTwo" class="side-panel-two">
+        <div class="toggle-box-two" id="toggleButtonTwo">☰</div>
+        <div class="panel-content-two">
+           <h2>Interactive Panel Two</h2>
+
+           <div class="panel-item-two">
+               <button class="custom-button-two">Click Me!</button>
+           </div>
+
+           <div class="panel-item-two">
+               <input type="checkbox" id="checkbox1Two" class="custom-checkbox-two">
+               <label for="checkbox1Two">Check this box</label>
+           </div>
+
+           <div class="panel-item-two">
+               <input type="range" min="0" max="100" value="50" class="custom-slider-two" id="myRangeTwo">
+               <p>Value: <span id="rangeValueTwo"></span></p>
+           </div>
+
+           <div class="panel-item-two">
+               <input type="radio" id="radio1Two" name="radioGroupTwo" class="custom-radio-two">
+               <label for="radio1Two">Option 1</label>
+               <input type="radio" id="radio2Two" name="radioGroupTwo" class="custom-radio-two">
+               <label for="radio2Two">Option 2</label>
+           </div>
+
+           <div class="panel-item-two">
+               <select class="custom-select-two">
+                   <option>Select an option</option>
+                   <option>Option 1</option>
+                   <option>Option 2</option>
+                   <option>Option 3</option>
+               </select>
+           </div>
+
+           <div class="panel-item-two">
+               <textarea class="custom-textarea-two" placeholder="Enter text here..."></textarea>
+           </div>
+
+           <div class="panel-item-two">
+               <input type="color" class="color-picker-two" value="#ff0000">
+           </div>
+
+           <div class="panel-item-two">
+               <input type="date" class="custom-date">
+           </div>
+
+           <div class="panel-item-two">
+               <input type="number" min="0" max="100" value="50" class="custom-range-two">
+           </div>
+
+           <div class="panel-item-two">
+               <label class="toggle-switch-two">
+                   <input type="checkbox">
+                   <span class="slider-two"></span>
+               </label>
+               <span>Toggle Switch</span>
+           </div>
+       </div>
+   </div>
+
+    <svg id="graph"></svg>
+    <div class="tooltip"></div>
+    
+    <script>
+
+       const sidePanelTwo = document.getElementById('sidePanelTwo');
+       const toggleButtonTwo = document.getElementById('toggleButtonTwo');
+       const sliderTwo = document.getElementById('myRangeTwo');
+       const rangeValueTwo = document.getElementById('rangeValueTwo');
+
+       toggleButtonTwo.addEventListener('click', function() {
+           sidePanelTwo.classList.toggle('open-two');
+       });
+
+       sliderTwo.oninput = function() {
+           rangeValueTwo.innerHTML = this.value; 
+       }
+
+        //end of the right side panel
+
+
+        
+          const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const svg = d3.select("#graph")
+            .attr("width", width)
+            .attr("height", height);
+
+        const g = svg.append("g");
+
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+
+        svg.call(zoom);
+
+        const tooltip = d3.select(".tooltip");
+
+        // Define color scales
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        const linkColorScale = d3.scaleOrdinal(d3.schemeSet2);
+
+        // Create arrow marker for links
+        svg.append("defs").selectAll("marker")
+            .data(["end"])
+            .enter().append("marker")
+            .attr("id", String)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", -0.5)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("fill", "#999");
+
+        const data = {
+            nodes: [
+                {id: "Precision Medicine", group: 0, desc: "Tailored healthcare based on individual variability"},
+                {id: "Diseases", group: 1, desc: "Various health conditions and disorders"},
+                {id: "Drugs", group: 1, desc: "Pharmaceutical compounds for treatment"},
+                {id: "Genes", group: 1, desc: "Hereditary units of DNA"},
+                {id: "Proteins", group: 1, desc: "Biological molecules performing various functions"},
+                {id: "Molecular Interactions", group: 2, desc: "Complex interplay between biological molecules"},
+                {id: "Clinical Data", group: 2, desc: "Patient information from medical records and trials"},
+                {id: "Environmental Factors", group: 2, desc: "External influences on health"},
+                {id: "Omics Data", group: 2, desc: "Comprehensive molecular profiles"},
+                {id: "Drug Development", group: 2, desc: "Process of bringing new medications to market"},
+                {id: "Literature", group: 2, desc: "Scientific publications and research findings"},
+                {id: "AI Integration", group: 3, desc: "Application of artificial intelligence in healthcare"},
+                {id: "Patient Digital Twins", group: 3, desc: "Virtual representations of individual patients"},
+                {id: "Social Determinants", group: 3, desc: "Socioeconomic factors influencing health"},
+                {id: "Regulatory Landscape", group: 3, desc: "Legal and policy framework for healthcare"},
+                {id: "Biomarkers", group: 4, desc: "Measurable indicators of biological states or conditions"},
+                {id: "Imaging", group: 4, desc: "Medical imaging techniques and data"},
+                {id: "Wearable Devices", group: 4, desc: "Personal health monitoring technologies"},
+                {id: "Microbiome", group: 4, desc: "Collective genomes of microorganisms in the human body"},
+                {id: "Epigenetics", group: 4, desc: "Study of heritable changes in gene expression"},
+            ],
+            links: [
+                {source: "Precision Medicine", target: "Diseases", value: 5},
+                {source: "Precision Medicine", target: "Drugs", value: 5},
+                {source: "Precision Medicine", target: "Genes", value: 5},
+                {source: "Precision Medicine", target: "Proteins", value: 5},
+                {source: "Diseases", target: "Molecular Interactions", value: 3},
+                {source: "Drugs", target: "Clinical Data", value: 3},
+                {source: "Genes", target: "Omics Data", value: 3},
+                {source: "Proteins", target: "Drug Development", value: 3},
+                {source: "Molecular Interactions", target: "Literature", value: 2},
+                {source: "Clinical Data", target: "AI Integration", value: 2},
+                {source: "Environmental Factors", target: "Patient Digital Twins", value: 2},
+                {source: "Omics Data", target: "Social Determinants", value: 2},
+                {source: "Drug Development", target: "Regulatory Landscape", value: 2},
+                {source: "Diseases", target: "Biomarkers", value: 2},
+                {source: "Clinical Data", target: "Imaging", value: 2},
+                {source: "Environmental Factors", target: "Wearable Devices", value: 2},
+                {source: "Genes", target: "Microbiome", value: 2},
+                {source: "Proteins", target: "Epigenetics", value: 2},
+            ]
+        };
+
+        const simulation = d3.forceSimulation(data.nodes)
+            .force("link", d3.forceLink(data.links).id(d => d.id).distance(100))
+            .force("charge", d3.forceManyBody().strength(-1000))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(30))
+            .force("x", d3.forceX(width / 2).strength(0.1))
+            .force("y", d3.forceY(height / 2).strength(0.1));
+
+        const link = g.append("g")
+            .selectAll("line")
+            .data(data.links)
+            .join("line")
+            .attr("class", "link")
+            .attr("stroke", d => linkColorScale(d.value))
+            .attr("stroke-width", d => Math.sqrt(d.value))
+            .attr("marker-end", "url(#end)");
+
+        const node = g.append("g")
+            .selectAll("circle")
+            .data(data.nodes)
+            .join("circle")
+            .attr("class", "node")
+            .attr("r", d => 10 + d.group * 2)
+            .attr("fill", d => colorScale(d.group))
+            .call(drag(simulation));
+
+        node.on("mouseover", (event, d) => {
+            tooltip.style("opacity", 1)
+                .html(`<strong>${d.id}</strong><br>${d.desc}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 10) + "px");
+        })
+        .on("mouseout", () => {
+            tooltip.style("opacity", 0);
+        })
+        .on("click", (event, d) => {
+            const connectedNodeIds = data.links
+                .filter(l => l.source.id === d.id || l.target.id === d.id)
+                .flatMap(l => [l.source.id, l.target.id]);
+            
+            node.attr("opacity", n => connectedNodeIds.includes(n.id) ? 1 : 0.1);
+            link.attr("opacity", l => l.source.id === d.id || l.target.id === d.id ? 1 : 0.1);
+        });
+
+        svg.on("click", (event) => {
+            if (event.target.tagName === "svg") {
+                node.attr("opacity", 1);
+                link.attr("opacity", 1);
+            }
+        });
+
+        const label = g.append("g")
+            .selectAll("text")
+            .data(data.nodes)
+            .join("text")
+            .text(d => d.id)
+            .attr("font-size", 15)
+            .attr("dx", 12)
+            .attr("dy", 4)
+            .attr("fill", "#fff");
+
+        simulation.on("tick", () => {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            node
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y);
+
+            label
+                .attr("x", d => d.x)
+                .attr("y", d => d.y);
+        });
+
+        function drag(simulation) {
+            function dragstarted(event) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                event.subject.fx = event.subject.x;
+                event.subject.fy = event.subject.y;
+            }
+
+            function dragged(event) {
+                event.subject.fx = event.x;
+                event.subject.fy = event.y;
+            }
+
+            function dragended(event) {
+                if (!event.active) simulation.alphaTarget(0);
+                event.subject.fx = null;
+                event.subject.fy = null;
+            }
+
+            return d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended);
+        }
+
+        // Update info panel
+        d3.select("#node-count").text(data.nodes.length);
+        d3.select("#link-count").text(data.links.length);
+
+    </script>
+</body>
+</html>
