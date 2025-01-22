@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Detection and Labeling</title>
+    <title>Custom Object Detection and Labeling</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,19 +42,23 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
-        #labelButtons {
-            display: none; /* Hidden until a box is drawn */
+        #labelInput {
+            display: none;
+            margin-top: 10px;
+        }
+        #labelInput input {
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Vehicle Detection and Labeling Tool</h1>
+    <h1>Custom Object Detection and Labeling Tool</h1>
     <input type="file" id="imageUpload" accept="image/*" style="display:block; margin: 0 auto;">
     <canvas id="canvas"></canvas>
     <div id="controls">
-        <div id="labelButtons">
-            <button id="car">Car</button>
-            <button id="pickup">Pickup Truck</button>
+        <div id="labelInput">
+            <input type="text" id="objectLabel" placeholder="Enter object label">
+            <button id="addLabel">Add Label</button>
         </div>
         <button id="generate">Generate XML</button>
     </div>
@@ -62,10 +66,10 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const imageUpload = document.getElementById('imageUpload');
-        const carButton = document.getElementById('car');
-        const pickupButton = document.getElementById('pickup');
+        const labelInput = document.getElementById('labelInput');
+        const objectLabelInput = document.getElementById('objectLabel');
+        const addLabelButton = document.getElementById('addLabel');
         const generateButton = document.getElementById('generate');
-        const labelButtons = document.getElementById('labelButtons');
 
         let image;
         let boxes = [];
@@ -109,18 +113,23 @@
                 width: Math.abs(endX - startX),
                 height: Math.abs(endY - startY)
             };
-            labelButtons.style.display = 'block';
+            labelInput.style.display = 'block';
         });
 
-        carButton.addEventListener('click', () => addBox('car'));
-        pickupButton.addEventListener('click', () => addBox('pickup'));
+        addLabelButton.addEventListener('click', () => {
+            const label = objectLabelInput.value.trim();
+            if (label && currentBox) {
+                addBox(label);
+                objectLabelInput.value = '';
+            }
+        });
 
-        function addBox(type) {
+        function addBox(label) {
             if (currentBox) {
-                currentBox.type = type;
+                currentBox.type = label;
                 boxes.push(currentBox);
                 currentBox = null;
-                labelButtons.style.display = 'none';
+                labelInput.style.display = 'none';
                 redrawCanvas();
             }
         }
@@ -133,13 +142,17 @@
 
         function drawBoxes() {
             boxes.forEach(box => {
-                ctx.strokeStyle = box.type === 'car' ? 'blue' : 'green';
+                ctx.strokeStyle = getRandomColor();
                 ctx.strokeRect(box.x, box.y, box.width, box.height);
                 ctx.fillStyle = 'white';
                 ctx.fillRect(box.x, box.y - 20, 60, 20);
                 ctx.fillStyle = 'black';
-                ctx.fillText(box.type.charAt(0).toUpperCase() + box.type.slice(1), box.x + 5, box.y - 5);
+                ctx.fillText(box.type, box.x + 5, box.y - 5);
             });
+        }
+
+        function getRandomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
         }
 
         generateButton.addEventListener('click', generateXML);
