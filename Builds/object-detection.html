@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Detection and Labeling</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #canvas {
+            border: 2px solid #333;
+            background-color: #fff;
+            display: block;
+            margin: 0 auto;
+        }
+        #controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #labelButtons {
+            display: none; /* Hidden until a box is drawn */
+        }
+    </style>
+</head>
+<body>
+    <h1>Vehicle Detection and Labeling Tool</h1>
+    <input type="file" id="imageUpload" accept="image/*" style="display:block; margin: 0 auto;">
+    <canvas id="canvas"></canvas>
+    <div id="controls">
+        <div id="labelButtons">
+            <button id="car">Car</button>
+            <button id="pickup">Pickup Truck</button>
+        </div>
+        <button id="generate">Generate XML</button>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const imageUpload = document.getElementById('imageUpload');
+        const carButton = document.getElementById('car');
+        const pickupButton = document.getElementById('pickup');
+        const generateButton = document.getElementById('generate');
+        const labelButtons = document.getElementById('labelButtons');
+
+        let image;
+        let boxes = [];
+        let isDrawing = false;
+        let startX, startY, endX, endY;
+        let currentBox = null;
+
+        imageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                image = new Image();
+                image.onload = () => {
+                    canvas.width = image.width;
+                    canvas.height = image.height;
+                    ctx.drawImage(image, 0, 0);
+                };
+                image.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [startX, startY] = [e.offsetX, e.offsetY];
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+            [endX, endY] = [e.offsetX, e.offsetY];
+            redrawCanvas();
+            ctx.strokeStyle = 'red';
+            ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            currentBox = {
+                x: Math.min(startX, endX),
+                y: Math.min(startY, endY),
+                width: Math.abs(endX - startX),
+                height: Math.abs(endY - startY)
+            };
+            labelButtons.style.display = 'block';
+        });
+
+        carButton.addEventListener('click', () => addBox('car'));
+        pickupButton.addEventListener('click', () => addBox('pickup'));
+
+        function addBox(type) {
+            if (currentBox) {
+                currentBox.type = type;
+                boxes.push(currentBox);
+                currentBox = null;
+                labelButtons.style.display = 'none';
+                redrawCanvas();
+            }
+        }
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(image, 0, 0);
+            drawBoxes();
+        }
+
+        function drawBoxes() {
+            boxes.forEach(box => {
+                ctx.strokeStyle = box.type === 'car' ? 'blue' : 'green';
+                ctx.strokeRect(box.x, box.y, box.width, box.height);
+                ctx.fillStyle = 'white';
+                ctx.fillRect(box.x, box.y - 20, 60, 20);
+                ctx.fillStyle = 'black';
+                ctx.fillText(box.type.charAt(0).toUpperCase() + box.type.slice(1), box.x + 5, box.y - 5);
+            });
+        }
+
+        generateButton.addEventListener('click', generateXML);
+
+        function generateXML() {
+            let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<annotation>\n';
+            xml += `  <filename>${imageUpload.files[0].name}</filename>\n`;
+            xml += `  <size>\n    <width>${image.width}</width>\n    <height>${image.height}</height>\n    <depth>3</depth>\n  </size>\n`;
+
+            boxes.forEach(box => {
+                xml += '  <object>\n';
+                xml += `    <name>${box.type}</name>\n`;
+                xml += '    <bndbox>\n';
+                xml += `      <xmin>${box.x}</xmin>\n`;
+                xml += `      <ymin>${box.y}</ymin>\n`;
+                xml += `      <xmax>${box.x + box.width}</xmax>\n`;
+                xml += `      <ymax>${box.y + box.height}</ymax>\n`;
+                xml += '    </bndbox>\n';
+                xml += '  </object>\n';
+            });
+
+            xml += '</annotation>';
+
+            const blob = new Blob([xml], {type: 'text/xml'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'annotation.xml';
+            a.click();
+        }
+    </script>
+</body>
+</html>

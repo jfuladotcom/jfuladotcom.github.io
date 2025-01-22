@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Overlay Processor</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #canvas { display: none; }
+        button, input { margin: 10px 0; }
+        #status { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Image Overlay Processor</h1>
+    <input type="file" id="folderInput" webkitdirectory directory multiple>
+    <input type="file" id="overlayInput" accept="image/*">
+    <button id="processButton">Process Images</button>
+    <div id="status"></div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const folderInput = document.getElementById('folderInput');
+        const overlayInput = document.getElementById('overlayInput');
+        const processButton = document.getElementById('processButton');
+        const statusDiv = document.getElementById('status');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let images = [];
+        let overlayImage = null;
+
+        folderInput.addEventListener('change', (e) => {
+            images = Array.from(e.target.files).filter(file => file.type.startsWith('image/'));
+            statusDiv.textContent = `${images.length} images selected`;
+        });
+
+        overlayInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                img.onload = () => {
+                    overlayImage = img;
+                    statusDiv.textContent += ', Overlay image loaded';
+                };
+            }
+        });
+
+        processButton.addEventListener('click', async () => {
+            if (images.length === 0 || !overlayImage) {
+                statusDiv.textContent = 'Please select both input folder and overlay image';
+                return;
+            }
+
+            statusDiv.textContent = 'Processing images...';
+
+            const BATCH_SIZE = 10;
+            for (let i = 0; i < images.length; i += BATCH_SIZE) {
+                const batch = images.slice(i, i + BATCH_SIZE);
+                await processBatch(batch, i);
+            }
+
+            statusDiv.textContent = 'All images processed! Check your downloads folder.';
+        });
+
+        async function processBatch(batch, startIndex) {
+            for (let i = 0; i < batch.length; i++) {
+                try {
+                    const img = await loadImage(batch[i]);
+                    canvas.width = 1080;
+                    canvas.height = 1350;
+
+                    const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+                    const x = (canvas.width / 2) - (img.width / 2) * scale;
+                    const y = (canvas.height / 2) - (img.height / 2) * scale;
+
+                    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+                    ctx.drawImage(overlayImage, 0, 0, canvas.width, canvas.height);
+
+                    const dataUrl = canvas.toDataURL('image/png');
+                    downloadImage(dataUrl, `Img-${startIndex + i}.png`);
+
+                    statusDiv.textContent = `Processed ${startIndex + i + 1} of ${images.length} images`;
+                } catch (error) {
+                    console.error(`Error processing image ${startIndex + i}:`, error);
+                    statusDiv.textContent = `Error processing image ${startIndex + i}: ${error.message}`;
+                }
+            }
+        }
+
+        function loadImage(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+            });
+        }
+
+        function downloadImage(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
