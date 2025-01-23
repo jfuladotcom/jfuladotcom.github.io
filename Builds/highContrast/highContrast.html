@@ -5,61 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contrast B&W Converter</title>
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #ecf0f1;
+            --panel-background: #ffffff;
+            --text-color: #333333;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            background-color: #f0f0f0;
-            color: #333;
+            padding: 40px 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
+
         h1 {
-            color: #2c3e50;
+            color: var(--secondary-color);
             margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
+
         .control-panel {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            width: 300px;
+            background-color: var(--panel-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            width: 350px;
+            transition: all 0.3s ease;
         }
+
+        .control-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
         #imageInput {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             width: 100%;
+            padding: 10px;
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            font-size: 1em;
         }
+
         .slider-container {
             display: flex;
             flex-direction: column;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
+
         label {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             font-weight: bold;
+            color: var(--secondary-color);
         }
+
         #contrastLevels {
             width: 100%;
+            -webkit-appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
         }
+
+        #contrastLevels:hover {
+            opacity: 1;
+        }
+
+        #contrastLevels::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        #contrastLevels::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
         #canvas {
-            max-width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            border: 3px solid var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
         }
+
+        #canvas:hover {
+            transform: scale(1.02);
+        }
+
         #saveButton {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #3498db;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            width: 100%;
         }
-        #saveButton:hover {
+
+        #saveButton:hover:not(:disabled) {
             background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        #saveButton:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        #canvas{ 
+            display: none;
         }
     </style>
 </head>
@@ -76,7 +154,7 @@
     <canvas id="canvas"></canvas>
 
     <script>
-        const imageInput = document.getElementById('imageInput');
+    const imageInput = document.getElementById('imageInput');
         const contrastLevelsInput = document.getElementById('contrastLevels');
         const levelDisplay = document.getElementById('levelDisplay');
         const canvas = document.getElementById('canvas');
@@ -131,7 +209,7 @@
                 const value = Math.round((levels - 1) * brightness / 255) * (255 / (levels - 1));
                 data[i] = data[i + 1] = data[i + 2] = value;
             }
-
+            canvas.style.display = "block";
             ctx.putImageData(imageData, 0, 0);
         }
 
