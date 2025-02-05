@@ -7,22 +7,23 @@
     <style>
         body { margin: 0; overflow: hidden; }
         #arView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
-        #gifOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; display: none; }
+        #gifOverlay { position: absolute; width: 100%; height: auto; max-width: 100%; object-fit: contain; display: none; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
 </head>
 <body>
     <video id="arView" autoplay playsinline></video>
-    <img id="gifOverlay" src="imgs/green-Gif.gif" alt="AR Animation">
+    <img id="gifOverlay" src="imgs/Blue-Gif.gif" alt="AR Animation">
 
     <script>
         const video = document.getElementById('arView');
         const gifOverlay = document.getElementById('gifOverlay');
-        let model;
+        let model, objectDetectionModel;
         let isDetecting = false;
         const triggerImage = new Image();
-        triggerImage.src = 'imgs/FULA-TUP-Green.png';
+        triggerImage.src = 'imgs/FULA-TUP-Blue.jpg';
         let triggerImageFeatures;
 
         async function init() {
@@ -31,8 +32,8 @@
                 video.srcObject = stream;
 
                 model = await mobilenet.load();
+                objectDetectionModel = await cocoSsd.load();
                 
-                // Extract features from the trigger image
                 triggerImageFeatures = await model.infer(triggerImage, true);
 
                 detectImage();
@@ -47,8 +48,12 @@
                 const videoFeatures = await model.infer(video, true);
                 const similarity = cosineSimilarity(triggerImageFeatures, videoFeatures);
 
-                if (similarity > 0.8) { // Adjust this threshold as needed
-                    showGif();
+                if (similarity > 0.8) {
+                    const detectedObjects = await objectDetectionModel.detect(video);
+                    const detectedRegion = getDetectedRegion(detectedObjects);
+                    if (detectedRegion) {
+                        showGif(detectedRegion);
+                    }
                 } else {
                     hideGif();
                 }
@@ -56,6 +61,23 @@
             }
 
             requestAnimationFrame(detectImage);
+        }
+
+        function getDetectedRegion(detectedObjects) {
+            // Find the object with the highest score
+            const detectedObject = detectedObjects.reduce((prev, current) => 
+                (prev.score > current.score) ? prev : current
+            );
+
+            if (detectedObject) {
+                return {
+                    x: detectedObject.bbox[0],
+                    y: detectedObject.bbox[1],
+                    width: detectedObject.bbox[2],
+                    height: detectedObject.bbox[3]
+                };
+            }
+            return null;
         }
 
         function cosineSimilarity(tensorA, tensorB) {
@@ -72,31 +94,19 @@
             return sum / (Math.sqrt(normA) * Math.sqrt(normB));
         }
 
-        function showGif() {
+        function showGif(region) {
             gifOverlay.style.display = 'block';
+            gifOverlay.style.left = `${region.x}px`;
+            gifOverlay.style.top = `${region.y}px`;
+            gifOverlay.style.width = `${region.width}px`;
+            gifOverlay.style.height = 'auto';
         }
 
         function hideGif() {
             gifOverlay.style.display = 'none';
         }
 
-        function resizeOverlay() {
-            const overlay = document.getElementById('gifOverlay');
-            const aspectRatio = overlay.naturalWidth / overlay.naturalHeight;
-            const screenAspectRatio = window.innerWidth / window.innerHeight;
-
-            if (aspectRatio > screenAspectRatio) {
-                overlay.style.width = '100%';
-                overlay.style.height = 'auto';
-            } else {
-                overlay.style.width = 'auto';
-                overlay.style.height = '100%';
-            }
-        }
-
         window.addEventListener('load', init);
-        window.addEventListener('load', resizeOverlay);
-        window.addEventListener('resize', resizeOverlay);
     </script>
 </body>
 </html>
