@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>AR Image Detection</title>
     <style>
         body { margin: 0; overflow: hidden; }
         #arView { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
         #gifOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; display: none; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 </head>
 <body>
     <video id="arView" autoplay playsinline></video>
@@ -17,17 +19,21 @@
     <script>
         const video = document.getElementById('arView');
         const gifOverlay = document.getElementById('gifOverlay');
-        let imageDetector;
-
-        // TODO: Place your trigger image reference here
-        const triggerImage = 'imgs/FULA-TUP-Green.png';
+        let model;
+        let isDetecting = false;
+        const triggerImage = new Image();
+        triggerImage.src = 'imgs/FULA-TUP-Green.png';
+        let triggerImageFeatures;
 
         async function init() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                 video.srcObject = stream;
 
-                imageDetector = await loadImageDetectionModel();
+                model = await mobilenet.load();
+                
+                // Extract features from the trigger image
+                triggerImageFeatures = await model.infer(triggerImage, true);
 
                 detectImage();
             } catch (error) {
@@ -35,31 +41,35 @@
             }
         }
 
-        async function loadImageDetectionModel() {
-            // TODO: Implement image detection model loading here
-            // This is where you would load your specific image detection model
-            // and potentially use the triggerImage for training or reference
-            console.log('Image detection model loaded');
-            return {}; // Placeholder return
-        }
-
         async function detectImage() {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            if (!isDetecting) {
+                isDetecting = true;
+                const videoFeatures = await model.infer(video, true);
+                const similarity = cosineSimilarity(triggerImageFeatures, videoFeatures);
 
-            // TODO: Implement actual image detection logic here
-            // Use the canvas image data and compare it with the triggerImage
-            const imageDetected = await checkForTriggerImage(canvas);
-
-            if (imageDetected) {
-                showGif();
-            } else {
-                hideGif();
+                if (similarity > 0.8) { // Adjust this threshold as needed
+                    showGif();
+                } else {
+                    hideGif();
+                }
+                isDetecting = false;
             }
 
             requestAnimationFrame(detectImage);
+        }
+
+        function cosineSimilarity(tensorA, tensorB) {
+            const a = tensorA.dataSync();
+            const b = tensorB.dataSync();
+            let sum = 0;
+            let normA = 0;
+            let normB = 0;
+            for (let i = 0; i < a.length; i++) {
+                sum += a[i] * b[i];
+                normA += a[i] * a[i];
+                normB += b[i] * b[i];
+            }
+            return sum / (Math.sqrt(normA) * Math.sqrt(normB));
         }
 
         function showGif() {
@@ -69,15 +79,6 @@
         function hideGif() {
             gifOverlay.style.display = 'none';
         }
-
-        async function checkForTriggerImage(canvas) {
-            // TODO: Implement your image detection logic here
-            // This should return true if the trigger image is detected, false otherwise
-            // For now, we'll return false to prevent the GIF from showing
-            return false;
-        }
-
-        window.addEventListener('load', init);
 
         function resizeOverlay() {
             const overlay = document.getElementById('gifOverlay');
@@ -93,6 +94,7 @@
             }
         }
 
+        window.addEventListener('load', init);
         window.addEventListener('load', resizeOverlay);
         window.addEventListener('resize', resizeOverlay);
     </script>
