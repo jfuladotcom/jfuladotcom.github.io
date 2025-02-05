@@ -1,0 +1,108 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image and GIF Sequence</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #displayImage, #gifAnimation, #finalImage {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        #gifAnimation, #finalImage {
+            display: none;
+        }
+        #controls {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #0369e3;
+            border-radius: 25px;
+            border: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="startBtn">Start Animation</button>
+        <button id="restartBtn">Restart</button>
+    </div>
+    <div id="container">
+        <img id="displayImage" src="imgs/Blue-Main.png" alt="Display Image">
+        <img id="gifAnimation" src="imgs/Blue-Gif.gif" alt="GIF Animation">
+        <img id="finalImage" src="imgs/Blue-Fin.png" alt="Final Image">
+    </div>
+
+    <script>
+        const displayImage = document.getElementById('displayImage');
+        const gifAnimation = document.getElementById('gifAnimation');
+        const finalImage = document.getElementById('finalImage');
+        const startBtn = document.getElementById('startBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        let gifTimeout;
+
+        // Set your custom duration here (in milliseconds)
+        const GIF_DURATION = 1000; // 5 seconds
+
+        startBtn.addEventListener('click', startSequence);
+        restartBtn.addEventListener('click', restartSequence);
+
+        function startSequence() {
+            displayImage.style.display = 'none';
+            gifAnimation.style.display = 'block';
+            finalImage.style.display = 'none';
+            startBtn.disabled = true;
+            restartBtn.disabled = false;
+
+            // Force GIF reload
+            gifAnimation.src = gifAnimation.src + '?t=' + new Date().getTime();
+
+            clearTimeout(gifTimeout);
+            gifTimeout = setTimeout(() => {
+                gifAnimation.style.display = 'none';
+                finalImage.style.display = 'block';
+            }, GIF_DURATION);
+        }
+
+        function restartSequence() {
+            clearTimeout(gifTimeout);
+            startBtn.disabled = false;
+            displayImage.style.display = 'block';
+            gifAnimation.style.display = 'none';
+            finalImage.style.display = 'none';
+            
+            // Force GIF reload
+            gifAnimation.src = gifAnimation.src + '?t=' + new Date().getTime();
+        }
+    </script>
+</body>
+</html>
