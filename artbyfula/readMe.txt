@@ -1,3 +1,4 @@
 
-TUP Green:
-https://jfuladotcom.github.io/artbyfula/AR/EHH-Blue.html
+Animations
+Blue:
+https://jfuladotcom.github.io/artbyfula/animations/EHH-Blue-Animation.html
