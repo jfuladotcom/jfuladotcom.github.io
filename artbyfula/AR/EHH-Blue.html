@@ -26,6 +26,10 @@
         triggerImage.src = 'imgs/FULA-TUP-Blue.jpg';
         let triggerImageFeatures;
         let isTargetImageDetected = false;
+        let similarityBuffer = [];
+        const bufferSize = 5;
+        let frameCount = 0;
+        const fullDetectionInterval = 30;
 
         async function init() {
             try {
@@ -43,31 +47,68 @@
             }
         }
 
-        async function detectImage() {
-            if (!isDetecting) {
-                isDetecting = true;
-                const videoFeatures = await model.infer(video, true);
-                const similarity = cosineSimilarity(triggerImageFeatures, videoFeatures);
+        async function preprocessFrame(videoElement) {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(videoElement, 0, 0);
+            return tf.browser.fromPixels(canvas).div(255);
+        }
 
-                if (similarity > 0.6) {
-                    if (!isTargetImageDetected) {
+        function updateSimilarityBuffer(similarity) {
+            similarityBuffer.push(similarity);
+            if (similarityBuffer.length > bufferSize) {
+                similarityBuffer.shift();
+            }
+            return similarityBuffer.reduce((a, b) => a + b, 0) / similarityBuffer.length;
+        }
+
+        async function detectImage() {
+            try {
+                if (!isDetecting) {
+                    isDetecting = true;
+                    frameCount++;
+
+                    if (frameCount % fullDetectionInterval === 0) {
                         const detectedObjects = await objectDetectionModel.detect(video);
                         const detectedRegion = getDetectedRegion(detectedObjects);
                         if (detectedRegion) {
                             showGif(detectedRegion);
                             isTargetImageDetected = true;
+                        } else {
+                            hideGif();
+                            isTargetImageDetected = false;
+                        }
+                    } else {
+                        const processedFrame = await preprocessFrame(video);
+                        const videoFeatures = await model.infer(processedFrame, true);
+                        const instantSimilarity = cosineSimilarity(triggerImageFeatures, videoFeatures);
+                        const averageSimilarity = updateSimilarityBuffer(instantSimilarity);
+
+                        if (averageSimilarity > 0.6) {
+                            if (!isTargetImageDetected) {
+                                const detectedObjects = await objectDetectionModel.detect(video);
+                                const detectedRegion = getDetectedRegion(detectedObjects);
+                                if (detectedRegion) {
+                                    showGif(detectedRegion);
+                                    isTargetImageDetected = true;
+                                }
+                            }
+                        } else {
+                            if (isTargetImageDetected) {
+                                hideGif();
+                                isTargetImageDetected = false;
+                            }
                         }
                     }
-                } else {
-                    if (isTargetImageDetected) {
-                        hideGif();
-                        isTargetImageDetected = false;
-                    }
                 }
+            } catch (error) {
+                console.error('Error in detection:', error);
+            } finally {
                 isDetecting = false;
+                requestAnimationFrame(detectImage);
             }
-
-            requestAnimationFrame(detectImage);
         }
 
         function getDetectedRegion(detectedObjects) {
