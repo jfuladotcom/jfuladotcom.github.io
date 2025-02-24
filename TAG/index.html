@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram for Artists Workshop</title>
+    <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; background-color: #232832; color:#efefef; } 
+            body{ background-image: linear-gradient(rgba(34, 41, 51, 1), rgba(17, 13, 14, 1)); background-size: cover;  background-position: center;   background-repeat: no-repeat; } 
+            #copyButton{  border:1px #efefef solid; background-color: transparent; color:#efefef; }
+            #textToCopy{ line-height: 1.6em;}
+            .container { position: relative; margin: 0 auto; max-width: 900px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px 100px 20px; } 
+            .section { display: none;  } 
+            .section.active { display: block;  } 
+            .navigation { display: flex; justify-content: space-between; padding: 10px 10px 20px 10px; background-color: #110d0e; position: fixed; bottom: 0; left: 0; right: 0;} 
+            .navigation button { padding: 10px 20px; font-size: 16px; cursor: pointer; font-weight: bold; border: none; border-radius: 5px; border:1px #efefef solid; background-color: #1c1618; color:#efefef; } 
+            .navigation button:hover{ background-color: #45373b;}
+            .navigation button:first-child { margin-right: auto; border:0;  } 
+            .navigation button:last-child { margin-left: auto; border:0;  } 
+            .home-button { position: absolute; top: 10px; right: 10px; width: 80px; z-index: 999; background-color: #3d4353; color:#efefef;} 
+            .home-button:hover{ background-color: #50576c; }
+            .start-btn{ background-color: #f49600; width: 100%; font-weight: bold; margin-top:25px;}
+            .start-btn:hover{ background-color: #f7aa2f; }
+            .logo{ position: absolute; left: 5px; top: 5px; width: 150px; border-radius: 0 0 10px 10px; background-color: #efefef; }
+            .logo > a > img{ width: 100%;}
+            button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; /* Rounded corners for buttons */ } 
+            h1, h2{color: #ea5f12;}
+            p{ text-align: left !important;}
+            ul{ text-align: left !important;}
+            li{ margin-bottom: 10px;}
+            a{  color: #f49600; font-weight: bold;}
+            b{ color: #f49600; }
+            i{ font-weight: bold;}
+            @media (max-width: 600px) { 
+            .navigation {} 
+            .navigation button { padding: 10px; font-size: 14px; } }   
+            .camera-container {  position: fixed; bottom: 50px; right: 0; padding: 20px;  display: none; }
+            .camera-svg {  display: block; }
+    </style>
+</head>
+<body>
+    <div class="logo"><a href="https://newenglandartcenter.com/neac-events/" target="_blank">
+        <img src="https://newenglandartcenter.com/wp-content/uploads/2024/05/Logo-NEAC.png"></a>
+    </div>
+    <button class="home-button" onclick="goHome()">Home</button>
+      
+      <div class="camera-container">
+        <svg class="camera-svg" width="200" height="150" viewBox="0 0 200 150">
+          
+            <svg width="200" height="150" viewBox="0 0 200 150">
+                <style>
+                  .camera-line {
+                    fill: none;
+                    stroke: #000000;
+                    stroke-width: 1;
+                  }
+                </style>
+                <rect class="camera-line" x="10" y="30" width="180" height="110" rx="10" ry="10" />
+                <circle class="camera-line" cx="100" cy="85" r="35" />
+                <circle class="camera-line" cx="100" cy="85" r="25" />
+                <rect class="camera-line" x="70" y="10" width="60" height="20" rx="5" ry="5" />
+                <circle class="camera-line" cx="160" cy="50" r="10" />
+              </svg>
+            </svg>
+      </div>
+      
+      
+    <div id="container" class="container">
+        <div id="section1" class="section active">
+            <h1>Instagram for Artists in the AI Era: Mastering Social Media for Creative Success</h1>
+            <p>This workshop explores Instagram's impact on visual artists' careers and creative practices in 2025. We'll examine how the platform shapes perceptions, influences work, and affects audience connections, while also discussing the latest AI-driven features and their implications for artists.</p>
+
+                <nav>
+                    <ol>
+                        <li><a href="#section3" onclick="goToSection(3); return false;">Instagram's Evolving Role in the Art World     </a></li>
+                        <li><a href="#section4" onclick="goToSection(4); return false;">Intentional and Authentic Platform Usage       </a></li>
+                        <li><a href="#section5" onclick="goToSection(5); return false;">Algorithm Insights and Engagement Strategies   </a></li>
+                        <li><a href="#section6" onclick="goToSection(6); return false;">Effective Art Presentation Techniques          </a></li>
+                        <li><a href="#section7" onclick="goToSection(7); return false;">AI and Art: Opportunities and Challenges       </a></li>
+                        <li><a href="#section8" onclick="goToSection(8); return false;">Psychological Impact and Well-being            </a></li>
+                       
+                    </ol>
+                    <!-- Add links for all sections up to totalSections -->
+                </nav>
+
+            <button class="start-btn" onclick="nextSection()">Start</button>
+        </div>
+        <div id="section2" class="section">
+            <h2>Your data is the currency used to play the game.</h2>
+            <p>On Instagram, data is currency because engagement metrics drive visibility, user data targets ads, and insights shape content strategies. This cycle fuels monetization and growth for creators and businesses.</p>
+            <p><b>Engagement Drives Value</b> &nbsp;  &bull; &nbsp; <b>Data Targeting</b> &nbsp; &bull; &nbsp; <b>Content Strategy</b></p>
+            <p>Instagram isn't just a social media app—it's a data-driven economy where user interactions are the primary currency, enabling creators, businesses, and artists to transform engagement into opportunity.</p>                
+        </div>
+        <div id="section3" class="section">
+            <h2>Instagram's Evolving Role in the Art World</h2>
+            <ul>                
+                <i>Instagram has over 2 billion monthly active users as of 2024</i>
+                <p><b>Democratization and Career Opportunities</b></p>
+                Instagram has democratized the art world by allowing artists to showcase their work globally without traditional barriers. It has launched careers, facilitated sales, and connected artists with influential figures.
+                <p><b>New Art Forms and Inspiration</b></p>
+                The platform inspires new art forms tailored for mobile viewing. Artists create visually striking work specifically for Instagram, shifting how art is conceived and presented.
+                <p><b>Challenges</b></p>
+                Despite benefits, challenges include loss of image control and pressure to constantly produce content. These issues raise concerns about artistic integrity and mental health.
+                <p><b>Marketing and Sales</b></p>
+                Instagram is crucial for marketing, with features like shopping tags enabling direct sales to consumers. Artists use storytelling to build their brand and engage potential buyers.
+                <p>In 2025, as AI integrates further into platforms like Instagram, the digital landscape continues to evolve how art is created, shared, and experienced.</p>
+            </ul>
+        </div>
+        <div id="section4" class="section">
+            <h2>Intentional and Authentic Platform Usage</h2>
+            <ul>
+                <li><b>Personal Journal:</b> Use Instagram to document your life, share your thoughts, and connect with close friends and family. This approach emphasizes authenticity and personal expression.</li>
+                <li><b>A Business Card/Portfolio:</b> Showcase your work, skills, and professional achievements.</li>
+                <li><b>A Creative Outlet:</b> Experiment with different content formats, express your artistic vision, and connect with like-minded creatives.</li>
+            </ul>
+            <p>Stay true to yourself and keep it social, but on your own terms.
+            </p>
+        </div>
+        <div id="section5" class="section">
+            <h2>Algorithm Insights and Engagement Strategies</h2>
+            <ul>
+                <li><b>Interact with Sponsored Content:</b> Boost visibility by engaging thoughtfully on sponsored posts.</li>
+                <li><b>Strategic Tagging:</b> Mention relevant users to increase chances of reshares, expanding your reach through their profiles and stories.</li>
+                <li><b>Early Bird Engagement:</b> Set notifications for high-performing accounts in your niche. Be among the first to leave meaningful comments on their new posts, increasing your visibility to their engaged audience.</li>
+            </ul>
+            <p>These tactics work with Instagram's algorithm to organically grow your presence and connect with potential collectors.</p>
+        </div>
+        <div id="section6" class="section">
+            <h2>Effective Art Presentation Techniques</h2>
+            <ol> 
+                <li><b>High-Quality Photography</b>: Use good lighting and capture multiple angles of your artwork.</li> 
+                <li><b>Consistent Visual Style</b>: Maintain a cohesive style to create a strong visual identity.</li> 
+                <li><b>Share Your Process</b>: Post behind-the-scenes content to build connections with followers.</li> 
+                <li><b>Utilize Instagram Stories</b>: Share personal moments and use interactive features for engagement.</li> 
+                <li><b>Incorporate Yourself</b>: Include yourself in posts to add a personal touch.</li> 
+                <li><b>Engaging Captions</b>: Write compelling captions that tell stories or ask questions to encourage interaction.</li> 
+                <li><b>Use Hashtags Strategically</b>: Research relevant hashtags to increase visibility and reach new audiences.</li> 
+                <li><b>Collaborate with Other Artists</b>: Partner with fellow artists for cross-promotion and fresh perspectives.</li>
+            </ol>   
+        </div>
+        <div id="section7" class="section">
+            <h2>AI and Art: Opportunities and Challenges</h2>
+            <button id="copyButton">Copy Text</button>
+            <p><a href="https://www.perplexity.ai/" target="_blank">www.perplexity.ai</a></p>
+            <p id="textToCopy">Act as a social media marketing expert specializing in art promotion. I am <i>[Insert Artist Name Here]</i>, and I want you to write an engaging short social media post about my <i>[Specific Artwork, Theme, or Event]</i>. Include 5-7 relevant hashtags, and also include general art hashtags to increase visibility.</p>
+        </div>
+        <div id="section8" class="section">
+            <h2>Psychological Impact and Well-being</h2>
+            <p>Technology impacts our mental health in both good and bad ways. It can help us with mental health support and resources, but too much can lead to anxiety, depression, and sleep problems. It's important to balance tech use, set boundaries, and prioritize real-life connections to protect our well-being.</p>
+            <p>Social media platforms are defining the boundaries of acceptable online behavior. Every moment spent online helps them refine their approach. Unfortunately, your best interest is not their top priority. </p>
+        </div>
+        
+        <div id="section9" class="section">
+            <h2>Community = Strength</h2>
+            <p>Instagram Group Chat: <a href="https://ig.me/j/AbY9Yr1QXq1QyaEz/" target="_blank">Join the Conversation</a></p>
+            <button class="start-btn" onclick="restartApp()">Back to the start</button>
+        </div>
+    </div>
+    <div class="navigation">
+        <button class="button-orange" onclick="prevSection()">Previous</button>
+        <button class="button-orange" onclick="nextSection()">Next</button>
+    </div>
+
+    <script>
+        let currentSection = 1;
+const totalSections = 9;
+
+function updateSections() {
+    for (let i = 1; i <= totalSections; i++) {
+        const section = document.getElementById(`section${i}`);
+        if (i === currentSection) {
+            section.classList.add('active');
+        } else {
+            section.classList.remove('active');
+        }
+    }
+    // Scroll to top immediately after updating sections
+    window.scrollTo(0, 0);
+}
+
+function nextSection() {
+    if (currentSection < totalSections) {
+        currentSection++;
+        updateSections();
+        updateURL();
+    }
+}
+
+function prevSection() {
+    if (currentSection > 1) {
+        currentSection--;
+        updateSections();
+        updateURL();
+    }
+}
+
+function goHome() {
+    currentSection = 1;
+    updateSections();
+    updateURL();
+}
+
+function restartApp() {
+    goHome();
+}
+
+function goToSection(sectionNumber) {
+    if (sectionNumber >= 1 && sectionNumber <= totalSections) {
+        currentSection = sectionNumber;
+        updateSections();
+        updateURL();
+    }
+}
+
+function updateURL() {
+    history.pushState(null, '', `#section${currentSection}`);
+}
+
+// Rest of your code remains the same...
+
+window.addEventListener('hashchange', function() {
+    const sectionNumber = parseInt(window.location.hash.slice(8));
+    if (!isNaN(sectionNumber)) {
+        goToSection(sectionNumber);
+    }
+});
+
+// Initial load
+if (window.location.hash) {
+    const sectionNumber = parseInt(window.location.hash.slice(8));
+    if (!isNaN(sectionNumber)) {
+        goToSection(sectionNumber);
+    } else {
+        updateURL();
+    }
+} else {
+    updateURL();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const copyButton = document.getElementById('copyButton');
+  const textToCopy = document.getElementById('textToCopy');
+  
+  copyButton.addEventListener('click', () => {
+    const text = textToCopy.innerText || textToCopy.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+      copyButton.textContent = 'Copied!';      
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+      copyButton.textContent = 'Copy failed';
+    });
+  });
+});
+
+
+
+    </script>
+</body>
+</html>
