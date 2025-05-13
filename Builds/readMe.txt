@@ -1,3 +1,10 @@
+
+D3 & Google CSV Quad Visuals
+
+https://github.com/jfuladotcom/jfuladotcom.github.io/edit/main/Builds/readMe.txt
+
+------------------------------------------
+
 Custom Object Detection and Labeling Tool
 
 https://jfuladotcom.github.io/Builds/object-detection.html
