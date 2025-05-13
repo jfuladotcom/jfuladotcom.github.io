@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D3 Responsive CSV Dashboard with Collapsed Filters</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body { font-family: sans-serif; height: 100vh; }
+    #container { display: flex; height: 100vh; }
+    #sidebar {
+      width: 270px; background: #222; color: #fff; padding: 20px 10px;
+      transition: width 0.3s;  position: relative;
+      min-width: 40px; overflow-x: hidden;
+
+    }
+    #sidebar.closed { width: 40px; overflow: hidden; }
+    #toggleSidebar {
+      background: #444; border: none; color: #fff; font-size: 20px; position: absolute;
+      top: 10px; right: -40px; width: 40px; height: 40px; cursor: pointer;
+    }
+    .sidebar-top-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .sidebar-btn {
+      background: #444; color: #fff; border: none; padding: 7px 10px; border-radius: 4px;
+      font-size: 15px; cursor: pointer; margin-bottom: 0;
+      transition: background 0.2s;
+    }
+    .sidebar-btn:hover { background: #666; }
+    input[type="file"] { color: #fff; margin-bottom: 0; }
+    main { flex: 1; background: #f5f5f5; padding: 20px; min-width: 0; min-height: 0; }
+    #meta {
+      background: #fff;
+      margin-bottom: 18px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      font-size: 15px;
+      display: none;
+    }
+    .col-names {
+      margin: 7px 0 0 0;
+      font-size: 14px;
+      color: #444;
+    }
+    .col-type {
+      font-size: 12px;
+      color: #888;
+      margin-left: 6px;
+    }
+    .chart-mapping {
+      color: #1a7;
+      font-size: 13px;
+      margin: 6px 0 0 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 20px;
+      height: calc(100vh - 80px);
+      min-height: 0;
+      min-width: 0;
+    }
+    .chart-container {
+      background: #fff; border-radius: 8px; padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex; flex-direction: column; align-items: stretch; justify-content: stretch;
+      min-width: 0; min-height: 0;
+      width: 100%; height: 100%;
+    }
+    .chart-title {
+      text-align: center; font-size: 15px; margin-bottom: 4px; color: #333;
+      flex-shrink: 0;
+    }
+    .responsive-svg {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      display: block;
+    }
+    .legend { font-size: 12px; }
+    .legend rect { stroke: #888; stroke-width: 0.5; }
+    .filter-group {
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #333;
+      background: none;
+    }
+    .filter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+    .filter-header label {
+      font-weight: bold;
+      color: #bfe;
+      margin-top: 7px;
+      margin-bottom: 3px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .filter-controls {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 4px;
+      margin-top: 0;
+    }
+    .filter-controls button {
+      background: #333; color: #fff; border: none; border-radius: 3px; padding: 2px 7px;
+      font-size: 12px; cursor: pointer; margin-bottom: 0;
+    }
+    .filter-controls button:hover { background: #666; }
+    .filter-values label {
+      font-weight: normal;
+      color: #fff;
+      margin-right: 8px;
+      display: inline-block;
+      margin-bottom: 2px;
+      margin-top: 0;
+      font-size: 13px;
+    }
+    .filter-values { margin-bottom: 2px; }
+    input[type="checkbox"] { margin-right: 4px; }
+    .collapse-btn {
+      background: none; color: #bfe; border: none; font-size: 18px; cursor: pointer;
+      margin-left: 6px; margin-right: 0;
+      padding: 0 4px;
+    }
+    .collapse-btn:focus { outline: none; }
+    #tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(30,30,40,0.97);
+      color: #fff;
+      border-radius: 5px;
+      padding: 8px 12px;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      z-index: 10;
+      display: none;
+      min-width: 80px;
+      max-width: 320px;
+      word-break: break-word;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; grid-template-rows: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <aside id="sidebar" class="open">
+      <button id="toggleSidebar">☰</button>
+      <div class="sidebar-top-controls">
+        <label class="sidebar-btn" for="csvFile" style="text-align:center;cursor:pointer;">Upload CSV
+          <input type="file" id="csvFile" accept=".csv" style="display:none" />
+        </label>
+        <button class="sidebar-btn" id="resetFiltersBtn" type="button">Reset Filters</button>
+      </div>
+      <h2>Filters</h2>
+      <form id="filterForm"></form>
+    </aside>
+    <main>
+      <div id="meta" style="display:none"></div>
+      <div class="grid">
+        <div class="chart-container">
+          <div style="width:100%;height:100%;display:flex;flex-direction:column;">
+            <div class="chart-title" id="barTitle">Bar Chart</div>
+            <svg id="barChart" class="responsive-svg"></svg>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div style="width:100%;height:100%;display:flex;flex-direction:column;">
+            <div class="chart-title" id="timeTitle">Time Series</div>
+            <svg id="timeSeries" class="responsive-svg"></svg>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div style="width:100%;height:100%;display:flex;flex-direction:column;">
+            <div class="chart-title" id="heatmapTitle">Heatmap</div>
+            <svg id="heatmap" class="responsive-svg"></svg>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div style="width:100%;height:100%;display:flex;flex-direction:column;">
+            <div class="chart-title" id="scatterTitle">Scatter Plot</div>
+            <svg id="scatterPlot" class="responsive-svg"></svg>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div id="tooltip"></div>
+  </div>
+  <script>
+    // Responsive SVG helper
+    function setSVGResponsive(svg, aspect = 4/3) {
+      // svg: d3 selection
+      const container = svg.node().parentNode;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      svg
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+      return {width, height};
+    }
+
+    document.getElementById('toggleSidebar').onclick = function() {
+      document.getElementById('sidebar').classList.toggle('closed');
+    };
+
+    let rawData = [];
+    let headers = [];
+    let filteredData = [];
+    let filterValues = {};
+    let colTypes = {};
+    let chartMapping = {};
+    let filterCollapsed = {};
+
+    // Tooltip helpers
+    const tooltip = d3.select("#tooltip");
+    function showTooltip(html, event) {
+      tooltip.html(html)
+        .style("display", "block")
+        .style("left", (event.pageX + 15) + "px")
+        .style("top", (event.pageY - 20) + "px");
+    }
+    function hideTooltip() {
+      tooltip.style("display", "none");
+    }
+
+    // Collapsed by default on page load
+    function collapseAllFilters() {
+      headers.forEach(h => filterCollapsed[h] = true);
+    }
+
+    document.getElementById('csvFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        rawData = d3.csvParse(evt.target.result, d3.autoType);
+        headers = rawData.columns;
+        colTypes = detectTypes(rawData, headers);
+        filterValues = {};
+        filterCollapsed = {};
+        headers.forEach(h => {
+          filterValues[h] = new Set([...new Set(rawData.map(d => d[h]))]);
+          filterCollapsed[h] = true; // collapsed by default
+        });
+        chartMapping = chooseCharts(headers, colTypes, rawData);
+        renderFilters();
+        showMeta(rawData, headers, colTypes, chartMapping);
+        applyFilters();
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('resetFiltersBtn').onclick = function() {
+      headers.forEach(h => {
+        filterValues[h] = new Set([...new Set(rawData.map(d => d[h]))]);
+      });
+      collapseAllFilters();
+      renderFilters();
+      applyFilters();
+    };
+
+    // On page load, collapse all filter sections
+    window.addEventListener('DOMContentLoaded', () => {
+      collapseAllFilters();
+    });
+
+    function detectTypes(data, headers) {
+      let types = {};
+      headers.forEach(h => {
+        for (let row of data) {
+          if (row[h] === null || row[h] === undefined || row[h] === "") continue;
+          if (typeof row[h] === "number") { types[h] = "number"; break; }
+          if (row[h] instanceof Date) { types[h] = "date"; break; }
+          types[h] = "string";
+          break;
+        }
+      });
+      return types;
+    }
+
+    function chooseCharts(headers, colTypes, data) {
+      let cats = headers.filter(h => colTypes[h] === "string" && new Set(data.map(d => d[h])).size <= Math.max(15, data.length/10));
+      let nums = headers.filter(h => colTypes[h] === "number");
+      let dates = headers.filter(h => colTypes[h] === "date");
+      let bar = cats.length && nums.length ? [cats[0], nums[0]] : [headers[0], headers[1]];
+      let time = dates.length && nums.length ? [dates[0], nums[0]] : (nums.length >= 2 ? [nums[1], nums[0]] : [headers[0], headers[1]]);
+      let scatter = nums.length >= 2 ? [nums[0], nums[1]] : (nums.length && cats.length ? [nums[0], cats[0]] : [headers[0], headers[1]]);
+      let cat2s = cats.length >= 2 ? [cats[0], cats[1]] : (cats.length && dates.length ? [cats[0], dates[0]] : [headers[0], headers[1]]);
+      return {bar, time, scatter, heatmap: cat2s};
+    }
+
+    function showMeta(data, headers, colTypes, chartMapping) {
+      const meta = document.getElementById('meta');
+      meta.style.display = '';
+      meta.innerHTML = `
+        <b>Rows:</b> ${data.length} &nbsp;&nbsp; <b>Columns:</b> ${headers.length}
+        <div class="col-names"><b>Columns:</b> ${headers.map(h => `<span style="background:#e3e3e3;border-radius:3px;padding:1px 7px;margin-right:3px">${h}<span class="col-type">(${colTypes[h]})</span></span>`).join(' ')}</div>
+        <div class="chart-mapping"><b>Bar:</b> ${chartMapping.bar.join(' vs ')} &nbsp; 
+          <b>Time series:</b> ${chartMapping.time.join(' vs ')} &nbsp; 
+          <b>Scatter:</b> ${chartMapping.scatter.join(' vs ')} &nbsp; 
+          <b>Heatmap:</b> ${chartMapping.heatmap.join(' vs ')}
+        </div>
+      `;
+      document.getElementById('barTitle').textContent = `Bar Chart (${chartMapping.bar[0]} vs ${chartMapping.bar[1]})`;
+      document.getElementById('timeTitle').textContent = `Time Series (${chartMapping.time[0]} vs ${chartMapping.time[1]})`;
+      document.getElementById('scatterTitle').textContent = `Scatter Plot (${chartMapping.scatter[0]} vs ${chartMapping.scatter[1]})`;
+      document.getElementById('heatmapTitle').textContent = `Heatmap (${chartMapping.heatmap[0]} vs ${chartMapping.heatmap[1]})`;
+    }
+
+    function renderFilters() {
+      const form = document.getElementById('filterForm');
+      form.innerHTML = '';
+      headers.forEach(header => {
+        const group = document.createElement('div');
+        group.className = 'filter-group';
+        // Collapsible header
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'filter-header';
+        const label = document.createElement('label');
+        label.textContent = header;
+        // Collapse button
+        const collapseBtn = document.createElement('button');
+        collapseBtn.type = 'button';
+        collapseBtn.className = 'collapse-btn';
+        collapseBtn.innerHTML = filterCollapsed[header] ? '+' : '−';
+        collapseBtn.onclick = function(e) {
+          e.stopPropagation();
+          filterCollapsed[header] = !filterCollapsed[header];
+          renderFilters();
+        };
+        headerDiv.appendChild(label);
+        headerDiv.appendChild(collapseBtn);
+        group.appendChild(headerDiv);
+
+        // Controls: Check all / Uncheck all
+        const controlsDiv = document.createElement('div');
+        controlsDiv.className = 'filter-controls';
+        const checkAllBtn = document.createElement('button');
+        checkAllBtn.type = 'button';
+        checkAllBtn.textContent = 'Check all';
+        checkAllBtn.onclick = function(e) {
+          e.preventDefault();
+          filterValues[header] = new Set([...new Set(rawData.map(d => d[header]))]);
+          renderFilters();
+          applyFilters();
+        };
+        const uncheckAllBtn = document.createElement('button');
+        uncheckAllBtn.type = 'button';
+        uncheckAllBtn.textContent = 'Uncheck all';
+        uncheckAllBtn.onclick = function(e) {
+          e.preventDefault();
+          filterValues[header] = new Set();
+          renderFilters();
+          applyFilters();
+        };
+        controlsDiv.appendChild(checkAllBtn);
+        controlsDiv.appendChild(uncheckAllBtn);
+        group.appendChild(controlsDiv);
+
+        // Values
+        const uniqueVals = [...new Set(rawData.map(d => d[header]))];
+        const valuesDiv = document.createElement('div');
+        valuesDiv.className = 'filter-values';
+        if (!filterCollapsed[header]) {
+          uniqueVals.forEach(val => {
+            const valLabel = document.createElement('label');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = header;
+            checkbox.value = val;
+            checkbox.checked = filterValues[header] && filterValues[header].has(val);
+            checkbox.onchange = function() {
+              if (!filterValues[header]) filterValues[header] = new Set();
+              if (checkbox.checked) filterValues[header].add(val);
+              else filterValues[header].delete(val);
+              applyFilters();
+            };
+            valLabel.appendChild(checkbox);
+            valLabel.appendChild(document.createTextNode(String(val)));
+            valuesDiv.appendChild(valLabel);
+          });
+        }
+        group.appendChild(valuesDiv);
+        form.appendChild(group);
+      });
+    }
+
+    function applyFilters() {
+      filteredData = rawData.filter(row => {
+        return headers.every(header => {
+          if (!filterValues[header] || filterValues[header].size === 0) return false;
+          return filterValues[header].has(row[header]);
+        });
+      });
+      drawAllCharts(filteredData);
+    }
+
+    // Responsive redraw on resize
+    window.addEventListener('resize', () => {
+      drawAllCharts(filteredData);
+    });
+
+    function drawAllCharts(data) {
+      drawBarChart(data);
+      drawTimeSeries(data);
+      drawHeatmap(data);
+      drawScatterPlot(data);
+    }
+
+    // ---- D3 Chart Drawing ----
+
+    function drawBarChart(data) {
+      const svg = d3.select("#barChart");
+      svg.selectAll("*").remove();
+      // Responsive sizing
+      const {width, height} = setSVGResponsive(svg);
+
+      if (!data.length || width < 50 || height < 50) return;
+      const [catCol, valCol] = chartMapping.bar;
+      let grouped = d3.rollup(data, v => d3.sum(v, d => +d[valCol]), d => d[catCol]);
+      let categories = Array.from(grouped.keys());
+      let values = Array.from(grouped.values());
+
+      const margin = {top: 30, right: 20, bottom: 50, left: 50};
+      const w = width - margin.left - margin.right;
+      const h = height - margin.top - margin.bottom;
+
+      const x = d3.scaleBand()
+        .domain(categories)
+        .range([0, w])
+        .padding(0.2);
+
+      const y = d3.scaleLinear()
+        .domain([0, d3.max(values) || 1])
+        .range([h, 0]);
+
+      const color = d3.scaleOrdinal()
+        .domain(categories)
+        .range(d3.schemeSet2);
+
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      g.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0,${h})`)
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "rotate(-25)")
+        .style("text-anchor", "end");
+
+      g.append("g")
+        .attr("class", "y-axis")
+        .call(d3.axisLeft(y));
+
+      g.selectAll(".bar")
+        .data(categories)
+        .join("rect")
+        .attr("class", "bar")
+        .attr("x", d => x(d))
+        .attr("y", d => y(grouped.get(d)))
+        .attr("width", x.bandwidth())
+        .attr("height", d => h - y(grouped.get(d)))
+        .attr("fill", d => color(d))
+        .on("mousemove", function(event, d) {
+          showTooltip(
+            `<b>${catCol}:</b> ${d}<br><b>${valCol}:</b> ${grouped.get(d)}`,
+            event
+          );
+        })
+        .on("mouseleave", hideTooltip);
+
+      // Legend
+      const legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${margin.left + w - 100},${margin.top})`);
+      categories.slice(0, 6).forEach((cat, i) => {
+        legend.append("rect")
+          .attr("x", 0)
+          .attr("y", i * 18)
+          .attr("width", 14)
+          .attr("height", 14)
+          .attr("fill", color(cat));
+        legend.append("text")
+          .attr("x", 20)
+          .attr("y", i * 18 + 12)
+          .text(cat);
+      });
+    }
+
+    function drawTimeSeries(data) {
+      const svg = d3.select("#timeSeries");
+      svg.selectAll("*").remove();
+      const {width, height} = setSVGResponsive(svg);
+
+      if (!data.length || width < 50 || height < 50) return;
+      const [timeCol, valCol] = chartMapping.time;
+      let points = data
+        .map(row => ({x: +row[timeCol], y: +row[valCol]}))
+        .filter(pt => !isNaN(pt.x) && !isNaN(pt.y))
+        .sort((a, b) => a.x - b.x);
+
+      const margin = {top: 30, right: 20, bottom: 50, left: 50};
+      const w = width - margin.left - margin.right;
+      const h = height - margin.top - margin.bottom;
+
+      const x = d3.scaleLinear()
+        .domain(d3.extent(points, d => d.x))
+        .range([0, w]);
+
+      const y = d3.scaleLinear()
+        .domain(d3.extent(points, d => d.y))
+        .nice()
+        .range([h, 0]);
+
+      const color = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, points.length]);
+
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      g.append("g")
+        .attr("transform", `translate(0,${h})`)
+        .call(d3.axisBottom(x));
+
+      g.append("g")
+        .call(d3.axisLeft(y));
+
+      g.append("path")
+        .datum(points)
+        .attr("fill", "none")
+        .attr("stroke", "#1a7")
+        .attr("stroke-width", 2)
+        .attr("d", d3.line()
+          .x(d => x(d.x))
+          .y(d => y(d.y))
+        );
+
+      g.selectAll("circle")
+        .data(points)
+        .join("circle")
+        .attr("cx", d => x(d.x))
+        .attr("cy", d => y(d.y))
+        .attr("r", 4)
+        .attr("fill", (d, i) => color(i))
+        .on("mousemove", function(event, d) {
+          showTooltip(
+            `<b>${timeCol}:</b> ${d.x}<br><b>${valCol}:</b> ${d.y}`,
+            event
+          );
+        })
+        .on("mouseleave", hideTooltip);
+    }
+
+    function drawHeatmap(data) {
+      const svg = d3.select("#heatmap");
+      svg.selectAll("*").remove();
+      const {width, height} = setSVGResponsive(svg);
+
+      if (!data.length || width < 50 || height < 50) return;
+      const [catCol, timeCol] = chartMapping.heatmap;
+      let cats = Array.from(new Set(data.map(d => d[catCol])));
+      let times = Array.from(new Set(data.map(d => d[timeCol]))).sort((a, b) => {
+        if (typeof a === "number" && typeof b === "number") return a - b;
+        if (a instanceof Date && b instanceof Date) return a - b;
+        return String(a).localeCompare(String(b));
+      });
+
+      let matrix = times.map(t =>
+        cats.map(c =>
+          data.filter(row => row[catCol] === c && row[timeCol] === t).length
+        )
+      );
+      const maxCount = d3.max(matrix.flat()) || 1;
+
+      const margin = {top: 50, right: 20, bottom: 30, left: 70};
+      const w = width - margin.left - margin.right;
+      const h = height - margin.top - margin.bottom;
+
+      const x = d3.scaleBand().domain(cats).range([0, w]).padding(0.05);
+      const y = d3.scaleBand().domain(times).range([0, h]).padding(0.05);
+
+      const color = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, maxCount]);
+
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      g.selectAll()
+        .data(times.flatMap((t, i) => cats.map((c, j) => ({t, c, count: matrix[i][j]}))))
+        .join("rect")
+        .attr("x", d => x(d.c))
+        .attr("y", d => y(d.t))
+        .attr("width", x.bandwidth())
+        .attr("height", y.bandwidth())
+        .attr("fill", d => color(d.count))
+        .on("mousemove", function(event, d) {
+          showTooltip(
+            `<b>${catCol}:</b> ${d.c}<br><b>${timeCol}:</b> ${d.t}<br><b>Count:</b> ${d.count}`,
+            event
+          );
+        })
+        .on("mouseleave", hideTooltip);
+
+      g.selectAll()
+        .data(times.flatMap((t, i) => cats.map((c, j) => ({t, c, count: matrix[i][j]}))))
+        .join("text")
+        .attr("x", d => x(d.c) + x.bandwidth() / 2)
+        .attr("y", d => y(d.t) + y.bandwidth() / 2 + 4)
+        .attr("text-anchor", "middle")
+        .attr("fill", d => d.count > maxCount / 2 ? "#fff" : "#222")
+        .attr("font-size", 12)
+        .text(d => d.count);
+
+      g.append("g")
+        .attr("transform", `translate(0,0)`)
+        .call(d3.axisLeft(y));
+      g.append("g")
+        .attr("transform", `translate(0,${h})`)
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "rotate(-25)")
+        .style("text-anchor", "end");
+
+      // Color legend
+      const legendWidth = 100, legendHeight = 10;
+      const legendSvg = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${margin.left},${margin.top - 30})`);
+      const legendScale = d3.scaleLinear().domain([0, maxCount]).range([0, legendWidth]);
+      const legendAxis = d3.axisBottom(legendScale).ticks(5).tickFormat(d3.format("d"));
+      const defs = svg.append("defs");
+      const linearGradient = defs.append("linearGradient")
+        .attr("id", "heatmap-gradient");
+      linearGradient.selectAll("stop")
+        .data(d3.range(0, 1.01, 0.01))
+        .enter().append("stop")
+        .attr("offset", d => `${d * 100}%`)
+        .attr("stop-color", d => color(d * maxCount));
+      legendSvg.append("rect")
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", "url(#heatmap-gradient)");
+      legendSvg.append("g")
+        .attr("transform", `translate(0,${legendHeight})`)
+        .call(legendAxis);
+    }
+
+    function drawScatterPlot(data) {
+      const svg = d3.select("#scatterPlot");
+      svg.selectAll("*").remove();
+      const {width, height} = setSVGResponsive(svg);
+
+      if (!data.length || width < 50 || height < 50) return;
+      const [xCol, yCol] = chartMapping.scatter;
+      let points = data
+        .map(row => ({x: +row[xCol], y: +row[yCol], group: row[headers[0]], raw: row}))
+        .filter(pt => !isNaN(pt.x) && !isNaN(pt.y));
+
+      const margin = {top: 30, right: 20, bottom: 50, left: 50};
+      const w = width - margin.left - margin.right;
+      const h = height - margin.top - margin.bottom;
+
+      const x = d3.scaleLinear()
+        .domain(d3.extent(points, d => d.x))
+        .nice()
+        .range([0, w]);
+
+      const y = d3.scaleLinear()
+        .domain(d3.extent(points, d => d.y))
+        .nice()
+        .range([h, 0]);
+
+      const groups = Array.from(new Set(points.map(d => d.group)));
+      const color = d3.scaleOrdinal().domain(groups).range(d3.schemeSet2);
+
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      g.append("g")
+        .attr("transform", `translate(0,${h})`)
+        .call(d3.axisBottom(x));
+
+      g.append("g")
+        .call(d3.axisLeft(y));
+
+      g.selectAll("circle")
+        .data(points)
+        .join("circle")
+        .attr("cx", d => x(d.x))
+        .attr("cy", d => y(d.y))
+        .attr("r", 5)
+        .attr("fill", d => color(d.group))
+        .attr("opacity", 0.8)
+        .on("mousemove", function(event, d) {
+          showTooltip(
+            `<b>${xCol}:</b> ${d.x}<br><b>${yCol}:</b> ${d.y}<br><b>${headers[0]}:</b> ${d.group}`,
+            event
+          );
+        })
+        .on("mouseleave", hideTooltip);
+
+      // Legend
+      const legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${margin.left + w - 100},${margin.top})`);
+      groups.slice(0, 6).forEach((group, i) => {
+        legend.append("rect")
+          .attr("x", 0)
+          .attr("y", i * 18)
+          .attr("width", 14)
+          .attr("height", 14)
+          .attr("fill", color(group));
+        legend.append("text")
+          .attr("x", 20)
+          .attr("y", i * 18 + 12)
+          .text(group);
+      });
+    }
+  </script>
+</body>
+</html>
