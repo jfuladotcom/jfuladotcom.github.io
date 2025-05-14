@@ -12,7 +12,6 @@
       width: 270px; background: #222; color: #fff; padding: 20px 10px;
       transition: width 0.3s;  position: relative;
       min-width: 40px; overflow-x: hidden;
-
     }
     #sidebar.closed { width: 40px; overflow: hidden; }
     #toggleSidebar {
@@ -101,7 +100,7 @@
     }
     .filter-header label {
       font-weight: bold;
-      color: #ff6384;
+      color: #bfe;
       margin-top: 7px;
       margin-bottom: 3px;
       cursor: pointer;
@@ -130,7 +129,7 @@
     .filter-values { margin-bottom: 2px; }
     input[type="checkbox"] { margin-right: 4px; }
     .collapse-btn {
-      background: none; color: #ff6384; border: none; font-size: 18px; cursor: pointer;
+      background: none; color: #bfe; border: none; font-size: 18px; cursor: pointer;
       margin-left: 6px; margin-right: 0;
       padding: 0 4px;
     }
@@ -156,7 +155,7 @@
   </style>
 </head>
 <body>
-  <div id="container">
+<div id="container">
     <aside id="sidebar" class="open">
       <button id="toggleSidebar">☰</button>
       <div class="sidebar-top-controls">
@@ -191,8 +190,8 @@
         </div>
         <div class="chart-container">
           <div style="width:100%;height:100%;display:flex;flex-direction:column;">
-            <div class="chart-title" id="scatterTitle">Scatter Plot</div>
-            <svg id="scatterPlot" class="responsive-svg"></svg>
+            <div class="chart-title" id="pieTitle">Donut Chart</div>
+            <svg id="pieChart" class="responsive-svg"></svg>
           </div>
         </div>
       </div>
@@ -202,7 +201,6 @@
   <script>
     // Responsive SVG helper
     function setSVGResponsive(svg, aspect = 4/3) {
-      // svg: d3 selection
       const container = svg.node().parentNode;
       const width = container.clientWidth;
       const height = container.clientHeight;
@@ -301,7 +299,8 @@
       let time = dates.length && nums.length ? [dates[0], nums[0]] : (nums.length >= 2 ? [nums[1], nums[0]] : [headers[0], headers[1]]);
       let scatter = nums.length >= 2 ? [nums[0], nums[1]] : (nums.length && cats.length ? [nums[0], cats[0]] : [headers[0], headers[1]]);
       let cat2s = cats.length >= 2 ? [cats[0], cats[1]] : (cats.length && dates.length ? [cats[0], dates[0]] : [headers[0], headers[1]]);
-      return {bar, time, scatter, heatmap: cat2s};
+      let pie = cats.length && nums.length ? [cats[0], nums[0]] : [headers[0], headers[1]];
+      return {bar, time, scatter, heatmap: cat2s, pie};
     }
 
     function showMeta(data, headers, colTypes, chartMapping) {
@@ -312,13 +311,13 @@
         <div class="col-names"><b>Columns:</b> ${headers.map(h => `<span style="background:#e3e3e3;border-radius:3px;padding:1px 7px;margin-right:3px">${h}<span class="col-type">(${colTypes[h]})</span></span>`).join(' ')}</div>
         <div class="chart-mapping"><b>Bar:</b> ${chartMapping.bar.join(' vs ')} &nbsp; 
           <b>Time series:</b> ${chartMapping.time.join(' vs ')} &nbsp; 
-          <b>Scatter:</b> ${chartMapping.scatter.join(' vs ')} &nbsp; 
+          <b>Donut:</b> ${chartMapping.pie.join(' vs ')} &nbsp; 
           <b>Heatmap:</b> ${chartMapping.heatmap.join(' vs ')}
         </div>
       `;
       document.getElementById('barTitle').textContent = `Bar Chart (${chartMapping.bar[0]} vs ${chartMapping.bar[1]})`;
       document.getElementById('timeTitle').textContent = `Time Series (${chartMapping.time[0]} vs ${chartMapping.time[1]})`;
-      document.getElementById('scatterTitle').textContent = `Scatter Plot (${chartMapping.scatter[0]} vs ${chartMapping.scatter[1]})`;
+      document.getElementById('pieTitle').textContent = `Donut Chart (${chartMapping.pie[0]} vs ${chartMapping.pie[1]})`;
       document.getElementById('heatmapTitle').textContent = `Heatmap (${chartMapping.heatmap[0]} vs ${chartMapping.heatmap[1]})`;
     }
 
@@ -419,7 +418,7 @@
       drawBarChart(data);
       drawTimeSeries(data);
       drawHeatmap(data);
-      drawScatterPlot(data);
+      drawPieChart(data);
     }
 
     // ---- D3 Chart Drawing ----
@@ -427,14 +426,17 @@
     function drawBarChart(data) {
       const svg = d3.select("#barChart");
       svg.selectAll("*").remove();
-      // Responsive sizing
       const {width, height} = setSVGResponsive(svg);
 
       if (!data.length || width < 50 || height < 50) return;
       const [catCol, valCol] = chartMapping.bar;
+      // Group and sort data descending by value
       let grouped = d3.rollup(data, v => d3.sum(v, d => +d[valCol]), d => d[catCol]);
-      let categories = Array.from(grouped.keys());
-      let values = Array.from(grouped.values());
+      let sorted = Array.from(grouped, ([key, value]) => ({key, value}))
+        .sort((a, b) => d3.descending(a.value, b.value));
+
+      let categories = sorted.map(d => d.key);
+      let values = sorted.map(d => d.value);
 
       const margin = {top: 30, right: 20, bottom: 50, left: 50};
       const w = width - margin.left - margin.right;
@@ -468,17 +470,17 @@
         .call(d3.axisLeft(y));
 
       g.selectAll(".bar")
-        .data(categories)
+        .data(sorted)
         .join("rect")
         .attr("class", "bar")
-        .attr("x", d => x(d))
-        .attr("y", d => y(grouped.get(d)))
+        .attr("x", d => x(d.key))
+        .attr("y", d => y(d.value))
         .attr("width", x.bandwidth())
-        .attr("height", d => h - y(grouped.get(d)))
-        .attr("fill", d => color(d))
+        .attr("height", d => h - y(d.value))
+        .attr("fill", d => color(d.key))
         .on("mousemove", function(event, d) {
           showTooltip(
-            `<b>${catCol}:</b> ${d}<br><b>${valCol}:</b> ${grouped.get(d)}`,
+            `<b>${catCol}:</b> ${d.key}<br><b>${valCol}:</b> ${d.value}`,
             event
           );
         })
@@ -657,74 +659,80 @@
         .call(legendAxis);
     }
 
-    function drawScatterPlot(data) {
-      const svg = d3.select("#scatterPlot");
+    // Donut Chart (was Pie Chart)
+    function drawPieChart(data) {
+      const svg = d3.select("#pieChart");
       svg.selectAll("*").remove();
       const {width, height} = setSVGResponsive(svg);
 
       if (!data.length || width < 50 || height < 50) return;
-      const [xCol, yCol] = chartMapping.scatter;
-      let points = data
-        .map(row => ({x: +row[xCol], y: +row[yCol], group: row[headers[0]], raw: row}))
-        .filter(pt => !isNaN(pt.x) && !isNaN(pt.y));
+      const [catCol, valCol] = chartMapping.pie;
+      let grouped = d3.rollup(data, v => d3.sum(v, d => +d[valCol]), d => d[catCol]);
+      let categories = Array.from(grouped.keys());
+      let values = Array.from(grouped.values());
 
-      const margin = {top: 30, right: 20, bottom: 50, left: 50};
-      const w = width - margin.left - margin.right;
-      const h = height - margin.top - margin.bottom;
+      const radius = Math.min(width, height) / 2 - 40;
+      const innerRadius = radius * 0.5; // donut effect
 
-      const x = d3.scaleLinear()
-        .domain(d3.extent(points, d => d.x))
-        .nice()
-        .range([0, w]);
+      const color = d3.scaleOrdinal()
+        .domain(categories)
+        .range(d3.schemeSet2);
 
-      const y = d3.scaleLinear()
-        .domain(d3.extent(points, d => d.y))
-        .nice()
-        .range([h, 0]);
+      const g = svg.append("g")
+        .attr("transform", `translate(${width / 2},${height / 2})`);
 
-      const groups = Array.from(new Set(points.map(d => d.group)));
-      const color = d3.scaleOrdinal().domain(groups).range(d3.schemeSet2);
+      const pie = d3.pie()
+        .value((d) => d.value);
 
-      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+      const data_ready = pie(categories.map((cat, i) => ({
+        category: cat,
+        value: values[i]
+      })));
 
-      g.append("g")
-        .attr("transform", `translate(0,${h})`)
-        .call(d3.axisBottom(x));
+      const arc = d3.arc()
+        .innerRadius(innerRadius) // donut!
+        .outerRadius(radius);
 
-      g.append("g")
-        .call(d3.axisLeft(y));
-
-      g.selectAll("circle")
-        .data(points)
-        .join("circle")
-        .attr("cx", d => x(d.x))
-        .attr("cy", d => y(d.y))
-        .attr("r", 5)
-        .attr("fill", d => color(d.group))
-        .attr("opacity", 0.8)
+      g.selectAll('path')
+        .data(data_ready)
+        .join('path')
+        .attr('d', arc)
+        .attr('fill', d => color(d.data.category))
+        .attr('stroke', '#fff')
+        .attr('stroke-width', '2px')
         .on("mousemove", function(event, d) {
           showTooltip(
-            `<b>${xCol}:</b> ${d.x}<br><b>${yCol}:</b> ${d.y}<br><b>${headers[0]}:</b> ${d.group}`,
+            `<b>${catCol}:</b> ${d.data.category}<br><b>${valCol}:</b> ${d.data.value}`,
             event
           );
         })
         .on("mouseleave", hideTooltip);
 
+      // Add labels
+      g.selectAll('text')
+        .data(data_ready)
+        .join('text')
+        .text(d => d.data.category)
+        .attr("transform", d => `translate(${arc.centroid(d)})`)
+        .attr("text-anchor", "middle")
+        .attr("font-size", 13)
+        .attr("fill", "#333");
+
       // Legend
       const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${margin.left + w - 100},${margin.top})`);
-      groups.slice(0, 6).forEach((group, i) => {
+        .attr("transform", `translate(${width - 120},${40})`);
+      categories.slice(0, 8).forEach((cat, i) => {
         legend.append("rect")
           .attr("x", 0)
           .attr("y", i * 18)
           .attr("width", 14)
           .attr("height", 14)
-          .attr("fill", color(group));
+          .attr("fill", color(cat));
         legend.append("text")
           .attr("x", 20)
           .attr("y", i * 18 + 12)
-          .text(group);
+          .text(cat);
       });
     }
   </script>
