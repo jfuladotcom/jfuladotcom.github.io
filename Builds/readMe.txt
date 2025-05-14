@@ -1,7 +1,7 @@
 
 D3 & Google CSV Quad Visuals
 
-https://github.com/jfuladotcom/jfuladotcom.github.io/edit/main/Builds/readMe.txt
+https://jfuladotcom.github.io/Builds/dv-csv-D3GC/DV-CSV.html
 
 ------------------------------------------
 
