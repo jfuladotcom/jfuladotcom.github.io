@@ -67,6 +67,19 @@
     #color-bar-container {
       width: 100%;
       margin: 10px 0 0 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #colorPreview {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #333;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      background: #ff0000;
+      flex-shrink: 0;
+      margin-left: 2px;
     }
     #colorBar {
       width: 100%;
@@ -78,6 +91,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      flex: 1;
     }
     .actions {
       margin-top: 18px;
@@ -133,6 +147,7 @@
       <canvas id="coloringCanvas"></canvas>
     </div>
     <div id="color-bar-container">
+      <div id="colorPreview"></div>
       <canvas id="colorBar" height="36"></canvas>
     </div>
     <div class="actions">
@@ -144,7 +159,11 @@
   <script>
     // --- Color Bar (Full-width color picker) ---
     const colorBar = document.getElementById('colorBar');
+    const colorPreview = document.getElementById('colorPreview');
     let selectedColor = "#ff0000";
+    function updateColorPreview() {
+      colorPreview.style.background = selectedColor;
+    }
     function drawColorBar() {
       const ctx = colorBar.getContext('2d');
       const w = colorBar.width = colorBar.offsetWidth;
@@ -176,7 +195,7 @@
       const ctx = colorBar.getContext('2d');
       const pixel = ctx.getImageData(x, y, 1, 1).data;
       selectedColor = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
-      // Optionally, show a border or indicator for selected color
+      updateColorPreview();
     }
     colorBar.addEventListener('mousedown', function(e) {
       pickColor(e);
@@ -199,6 +218,7 @@
     }
     window.addEventListener('resize', drawColorBar);
     drawColorBar();
+    updateColorPreview();
 
     // --- Painting App ---
     const LINE_ART_SRC = "Weathered_Resilience_BW.jpg"; // Use your own image
