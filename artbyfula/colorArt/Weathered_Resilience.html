@@ -5,41 +5,130 @@
   <title>Color This Artwork!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { background: #f0f0f0; display: flex; flex-direction: column; align-items: center; font-family: sans-serif; }
-    a{ color:#333333;}
-    .toolbar { margin-top: 10px; }
+    body {
+      background: #f0f0f0;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    a {
+      color: #333333;
+      text-decoration: none;
+    }
+    .container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 14px 10px;
+      margin-bottom: 10px;
+    }
+    .toolbar label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 1rem;
+    }
+    .toolbar input[type="color"] {
+      border: none;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      background: none;
+    }
+    .toolbar input[type="range"] {
+      width: 80px;
+      accent-color: #333;
+    }
     #canvas-container {
       width: 100%;
-      max-width: 600px; /* or your image's max width */
       position: relative;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      overflow: hidden;
     }
     canvas {
       width: 100%;
       height: auto;
       display: block;
-      border: 2px solid #333;
       background: #fff;
-      margin-top: 10px;
       touch-action: none;
+      border: none;
     }
-    label { margin-right: 10px; }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 18px;
+      margin-bottom: 10px;
+    }
+    .actions button {
+      padding: 8px 22px;
+      border: none;
+      border-radius: 6px;
+      background: #333;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .actions button:hover {
+      background: #555;
+    }
+    @media (max-width: 600px) {
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .actions {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h2><a href="https://artbyfula.com/" target="_blank">ArtByFula.com</a></h2>
-  <div class="toolbar">
-    <label>
-      Color: <input type="color" id="colorPicker" value="#ff0000">
-    </label>
-    <label>
-      Brush: <input type="range" id="brushSize" min="5" max="40" value="15">
-      <span id="brushValue">15</span>
-    </label>
-    <button id="clearBtn">Clear</button>
-    <button id="saveBtn">Save</button>
-  </div>
-  <div id="canvas-container">
-    <canvas id="coloringCanvas"></canvas>
+  <h2 style="margin-top:18px;"><a href="https://artbyfula.com/" target="_blank">ArtByFula</a></h2>
+  <div class="container">
+    <div class="toolbar">
+      <label>
+        <span>Color:</span>
+        <input type="color" id="colorPicker" value="#ff0000">
+      </label>
+      <label>
+        <span>Brush:</span>
+        <input type="range" id="brushSize" min="5" max="40" value="15">
+        <span id="brushValue">15</span>
+      </label>
+      <label>
+        <span>Opacity:</span>
+        <input type="range" id="opacity" min="0.05" max="1" step="0.05" value="0.2">
+        <span id="opacityValue">0.20</span>
+      </label>
+    </div>
+    <div id="canvas-container">
+      <canvas id="coloringCanvas"></canvas>
+    </div>
+    <div class="actions">
+      <button id="undoBtn">Undo</button>
+      <button id="clearBtn">Clear</button>
+      <button id="saveBtn">Save</button>
+    </div>
   </div>
   <script>
     const LINE_ART_SRC = "Weathered_Resilience_BW.jpg"; // Use your own image
@@ -49,8 +138,11 @@
     const colorPicker = document.getElementById('colorPicker');
     const brushSizeSlider = document.getElementById('brushSize');
     const brushValue = document.getElementById('brushValue');
+    const opacitySlider = document.getElementById('opacity');
+    const opacityValue = document.getElementById('opacityValue');
     const clearBtn = document.getElementById('clearBtn');
     const saveBtn = document.getElementById('saveBtn');
+    const undoBtn = document.getElementById('undoBtn');
     const container = document.getElementById('canvas-container');
 
     let naturalWidth = 0;
@@ -58,6 +150,9 @@
 
     brushSizeSlider.addEventListener('input', () => {
       brushValue.textContent = brushSizeSlider.value;
+    });
+    opacitySlider.addEventListener('input', () => {
+      opacityValue.textContent = Number(opacitySlider.value).toFixed(2);
     });
 
     const lineArt = new Image();
@@ -69,9 +164,7 @@
     };
     lineArt.src = LINE_ART_SRC;
 
-    // Responsive resizing
     function resizeCanvas() {
-      // Set canvas pixel size to match container's width, preserving aspect ratio
       const containerWidth = container.offsetWidth;
       const scale = containerWidth / naturalWidth;
       canvas.width = containerWidth;
@@ -80,7 +173,6 @@
       redrawUserDrawing();
     }
 
-    // Store all strokes as arrays of points for redrawing after resize
     let strokes = [];
     let currentStroke = null;
 
@@ -88,24 +180,21 @@
       const rect = canvas.getBoundingClientRect();
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      // Map to original image coordinates for consistent drawing
       const x = (clientX - rect.left) * (naturalWidth / canvas.width);
       const y = (clientY - rect.top) * (naturalHeight / canvas.height);
       return [x, y];
     }
 
     function drawLineArt() {
-      // Always draw image at full canvas size
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(lineArt, 0, 0, canvas.width, canvas.height);
     }
 
     function redrawUserDrawing() {
-      // Redraw all strokes scaled to current canvas size
       ctx.save();
       ctx.scale(canvas.width / naturalWidth, canvas.height / naturalHeight);
       for (const stroke of strokes) {
-        ctx.globalAlpha = 0.1;
+        ctx.globalAlpha = stroke.opacity;
         ctx.globalCompositeOperation = "multiply";
         ctx.strokeStyle = stroke.color;
         ctx.lineWidth = stroke.size;
@@ -134,6 +223,7 @@
       currentStroke = {
         color: colorPicker.value,
         size: parseInt(brushSizeSlider.value, 10),
+        opacity: parseFloat(opacitySlider.value),
         points: []
       };
       const [x, y] = getCanvasCoords(e);
@@ -150,13 +240,11 @@
       if (!drawing) return;
       const [x, y] = getCanvasCoords(e);
       currentStroke.points.push([x, y]);
-      // Draw only the latest stroke segment for performance
       drawLineArt();
       redrawUserDrawing();
-      // Draw current stroke in progress
       ctx.save();
       ctx.scale(canvas.width / naturalWidth, canvas.height / naturalHeight);
-      ctx.globalAlpha = 0.1;
+      ctx.globalAlpha = currentStroke.opacity;
       ctx.globalCompositeOperation = "multiply";
       ctx.strokeStyle = currentStroke.color;
       ctx.lineWidth = currentStroke.size;
@@ -188,16 +276,22 @@
       drawLineArt();
     });
 
+    undoBtn.addEventListener('click', () => {
+      if (strokes.length > 0) {
+        strokes.pop();
+        drawLineArt();
+        redrawUserDrawing();
+      }
+    });
+
     saveBtn.addEventListener('click', () => {
-      // Temporarily redraw at full resolution for saving
       const tempCanvas = document.createElement('canvas');
       tempCanvas.width = naturalWidth;
       tempCanvas.height = naturalHeight;
       const tempCtx = tempCanvas.getContext('2d');
       tempCtx.drawImage(lineArt, 0, 0, naturalWidth, naturalHeight);
-      // Redraw all strokes at full res
       for (const stroke of strokes) {
-        tempCtx.globalAlpha = 0.1;
+        tempCtx.globalAlpha = stroke.opacity;
         tempCtx.globalCompositeOperation = "multiply";
         tempCtx.strokeStyle = stroke.color;
         tempCtx.lineWidth = stroke.size;
@@ -221,15 +315,14 @@
       link.remove();
     });
 
-    // Responsive: redraw on window resize
     window.addEventListener('resize', () => {
       if (naturalWidth && naturalHeight) {
         resizeCanvas();
       }
     });
 
-    // Initial brush value display
     brushValue.textContent = brushSizeSlider.value;
+    opacityValue.textContent = Number(opacitySlider.value).toFixed(2);
   </script>
 </body>
 </html>
