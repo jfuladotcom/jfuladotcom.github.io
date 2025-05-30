@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
     <title>AR Video Overlay</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Content Security Policy for A-Frame, MindAR, and your own assets -->
-    <meta http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self' https://aframe.io https://cdn.jsdelivr.net;
-        script-src 'self' https://aframe.io https://cdn.jsdelivr.net 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline';
-        style-src 'self' 'unsafe-inline';
-        img-src 'self' data:;
-        media-src 'self';
-        connect-src 'self';
-      ">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
@@ -50,17 +38,10 @@
       </a-scene>
     </div>
     <script>
-      // Catch any silent JS errors for debugging
-      window.onerror = function(message, source, lineno, colno, error) {
-        console.error("Global Error:", message, source, lineno, colno, error);
-      };
-
       document.addEventListener("DOMContentLoaded", () => {
         const video = document.querySelector("#overlay-video");
         document.querySelector("a-scene").addEventListener("targetFound", () => {
-          video.play().catch(err => {
-            console.warn("Autoplay failed:", err);
-          });
+          video.play();
         });
         document.querySelector("a-scene").addEventListener("targetLost", () => {
           video.pause();
