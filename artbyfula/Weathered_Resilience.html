@@ -2,8 +2,16 @@
 <html lang="en">
   <head>
     <title>AR Video Overlay</title>
-    <!-- Content Security Policy for improved security -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://aframe.io https://cdn.jsdelivr.net https://www.w3schools.com; script-src 'self' https://aframe.io https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' https://www.w3schools.com; connect-src 'self';">
+    <!-- CSP allowing A-Frame, MindAR, and Dropbox raw video hosting -->
+    <meta http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self' https://aframe.io https://cdn.jsdelivr.net https://*.dropboxusercontent.com;
+        script-src 'self' https://aframe.io https://cdn.jsdelivr.net 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data:;
+        media-src 'self' https://*.dropboxusercontent.com;
+        connect-src 'self';
+      ">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
@@ -22,9 +30,9 @@
         device-orientation-permission-ui="enabled: true"
       >
         <a-assets>
-          <!-- Public test video from W3Schools. Replace with your own hosted MP4 when ready -->
+          <!-- Dropbox direct video link with raw=1 for direct access -->
           <video id="overlay-video"
-                 src="https://www.w3schools.com/html/mov_bbb.mp4"
+                 src="https://www.dropbox.com/scl/fi/9jbk53p7jfda1tel1xuy1/AR_Weathered_Resilience.mp4?rlkey=wtoiiz5swfh933g1n04ksc7ws&st=elaymv0c&raw=1"
                  preload="auto"
                  crossorigin="anonymous"
                  loop="true"
