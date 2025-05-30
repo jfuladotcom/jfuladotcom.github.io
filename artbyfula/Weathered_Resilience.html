@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>AR Video Overlay</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Content Security Policy for A-Frame, MindAR, and your own assets -->
+    <!-- CSP for A-Frame, MindAR, and your own assets -->
     <meta http-equiv="Content-Security-Policy"
       content="
         default-src 'self' https://aframe.io https://cdn.jsdelivr.net;
@@ -50,7 +50,6 @@
       </a-scene>
     </div>
     <script>
-      // Catch any silent JS errors for debugging
       window.onerror = function(message, source, lineno, colno, error) {
         console.error("Global Error:", message, source, lineno, colno, error);
       };
