@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color This Artwork!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { background: #f0f0f0; display: flex; flex-direction: column; align-items: center; font-family: sans-serif; }
+    a{ color:#333333;}
+    .toolbar { margin-top: 10px; }
+    #canvas-container {
+      width: 100%;
+      max-width: 600px; /* or your image's max width */
+      position: relative;
+    }
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 2px solid #333;
+      background: #fff;
+      margin-top: 10px;
+      touch-action: none;
+    }
+    label { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <h2><a href="https://artbyfula.com/" target="_blank">ArtByFula.com</a></h2>
+  <div class="toolbar">
+    <label>
+      Color: <input type="color" id="colorPicker" value="#ff0000">
+    </label>
+    <label>
+      Brush: <input type="range" id="brushSize" min="5" max="40" value="15">
+      <span id="brushValue">15</span>
+    </label>
+    <button id="clearBtn">Clear</button>
+    <button id="saveBtn">Save</button>
+  </div>
+  <div id="canvas-container">
+    <canvas id="coloringCanvas"></canvas>
+  </div>
+  <script>
+    const LINE_ART_SRC = "Weathered_Resilience_BW.jpg"; // Use your own image
+
+    const canvas = document.getElementById('coloringCanvas');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+    const brushSizeSlider = document.getElementById('brushSize');
+    const brushValue = document.getElementById('brushValue');
+    const clearBtn = document.getElementById('clearBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const container = document.getElementById('canvas-container');
+
+    let naturalWidth = 0;
+    let naturalHeight = 0;
+
+    brushSizeSlider.addEventListener('input', () => {
+      brushValue.textContent = brushSizeSlider.value;
+    });
+
+    const lineArt = new Image();
+    lineArt.onload = function() {
+      naturalWidth = lineArt.width;
+      naturalHeight = lineArt.height;
+      resizeCanvas();
+      drawLineArt();
+    };
+    lineArt.src = LINE_ART_SRC;
+
+    // Responsive resizing
+    function resizeCanvas() {
+      // Set canvas pixel size to match container's width, preserving aspect ratio
+      const containerWidth = container.offsetWidth;
+      const scale = containerWidth / naturalWidth;
+      canvas.width = containerWidth;
+      canvas.height = naturalHeight * scale;
+      drawLineArt();
+      redrawUserDrawing();
+    }
+
+    // Store all strokes as arrays of points for redrawing after resize
+    let strokes = [];
+    let currentStroke = null;
+
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      // Map to original image coordinates for consistent drawing
+      const x = (clientX - rect.left) * (naturalWidth / canvas.width);
+      const y = (clientY - rect.top) * (naturalHeight / canvas.height);
+      return [x, y];
+    }
+
+    function drawLineArt() {
+      // Always draw image at full canvas size
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(lineArt, 0, 0, canvas.width, canvas.height);
+    }
+
+    function redrawUserDrawing() {
+      // Redraw all strokes scaled to current canvas size
+      ctx.save();
+      ctx.scale(canvas.width / naturalWidth, canvas.height / naturalHeight);
+      for (const stroke of strokes) {
+        ctx.globalAlpha = 0.1;
+        ctx.globalCompositeOperation = "multiply";
+        ctx.strokeStyle = stroke.color;
+        ctx.lineWidth = stroke.size;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.beginPath();
+        for (let i = 0; i < stroke.points.length; i++) {
+          const [x, y] = stroke.points[i];
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+        ctx.globalCompositeOperation = "source-over";
+      }
+      ctx.restore();
+    }
+
+    let drawing = false;
+
+    function startDrawing(e) {
+      drawing = true;
+      currentStroke = {
+        color: colorPicker.value,
+        size: parseInt(brushSizeSlider.value, 10),
+        points: []
+      };
+      const [x, y] = getCanvasCoords(e);
+      currentStroke.points.push([x, y]);
+    }
+    function stopDrawing() {
+      if (drawing && currentStroke) {
+        strokes.push(currentStroke);
+        currentStroke = null;
+      }
+      drawing = false;
+    }
+    function draw(e) {
+      if (!drawing) return;
+      const [x, y] = getCanvasCoords(e);
+      currentStroke.points.push([x, y]);
+      // Draw only the latest stroke segment for performance
+      drawLineArt();
+      redrawUserDrawing();
+      // Draw current stroke in progress
+      ctx.save();
+      ctx.scale(canvas.width / naturalWidth, canvas.height / naturalHeight);
+      ctx.globalAlpha = 0.1;
+      ctx.globalCompositeOperation = "multiply";
+      ctx.strokeStyle = currentStroke.color;
+      ctx.lineWidth = currentStroke.size;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      const points = currentStroke.points;
+      ctx.beginPath();
+      for (let i = 0; i < points.length; i++) {
+        const [px, py] = points[i];
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.restore();
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchmove', function(e) { draw(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
+    canvas.addEventListener('touchend', stopDrawing);
+
+    clearBtn.addEventListener('click', () => {
+      strokes = [];
+      drawLineArt();
+    });
+
+    saveBtn.addEventListener('click', () => {
+      // Temporarily redraw at full resolution for saving
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = naturalWidth;
+      tempCanvas.height = naturalHeight;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.drawImage(lineArt, 0, 0, naturalWidth, naturalHeight);
+      // Redraw all strokes at full res
+      for (const stroke of strokes) {
+        tempCtx.globalAlpha = 0.1;
+        tempCtx.globalCompositeOperation = "multiply";
+        tempCtx.strokeStyle = stroke.color;
+        tempCtx.lineWidth = stroke.size;
+        tempCtx.lineCap = "round";
+        tempCtx.lineJoin = "round";
+        tempCtx.beginPath();
+        for (let i = 0; i < stroke.points.length; i++) {
+          const [x, y] = stroke.points[i];
+          if (i === 0) tempCtx.moveTo(x, y);
+          else tempCtx.lineTo(x, y);
+        }
+        tempCtx.stroke();
+        tempCtx.globalAlpha = 1.0;
+        tempCtx.globalCompositeOperation = "source-over";
+      }
+      const imageDataURL = tempCanvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = imageDataURL;
+      link.download = 'my-colored-artwork.png';
+      link.click();
+      link.remove();
+    });
+
+    // Responsive: redraw on window resize
+    window.addEventListener('resize', () => {
+      if (naturalWidth && naturalHeight) {
+        resizeCanvas();
+      }
+    });
+
+    // Initial brush value display
+    brushValue.textContent = brushSizeSlider.value;
+  </script>
+</body>
+</html>
