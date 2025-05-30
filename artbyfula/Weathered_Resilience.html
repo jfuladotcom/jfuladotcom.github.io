@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>AR Video Overlay</title>
-    <!-- CSP allowing A-Frame, MindAR, and Dropbox raw video hosting -->
-    <meta http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self' https://aframe.io https://cdn.jsdelivr.net https://*.dropboxusercontent.com;
-        script-src 'self' https://aframe.io https://cdn.jsdelivr.net 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline';
-        style-src 'self' 'unsafe-inline';
-        img-src 'self' data:;
-        media-src 'self' https://*.dropboxusercontent.com;
-        connect-src 'self';
-      ">
+    <meta charset="utf-8">
+    <title>MindAR Video Overlay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Latest stable A-Frame and MindAR -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
@@ -22,23 +15,24 @@
   <body>
     <div id="ar-container">
       <a-scene
-        mindar-image="imageTargetSrc: ./WeatherStorm.mind; autoStart: true; uiScanning: yes;"
-        embedded
+        mindar-image="imageTargetSrc: https://jfuladotcom.github.io/artbyfula/WeatherStorm.mind; autoStart: true; uiScanning: yes;"
         color-space="sRGB"
-        renderer="precision: mediump; antialias: true;"
+        renderer="colorManagement: true, physicallyCorrectLights"
         vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: true"
+        loading-screen="enabled: false"
+        embedded
       >
         <a-assets>
-          <!-- Use the direct-access Dropbox link below -->
+          <!-- Make sure this is a direct-access link and CORS-enabled -->
           <video id="overlay-video"
-                 src="https://dl.dropboxusercontent.com/scl/fi/9jbk53p7jfda1tel1xuy1/AR_Weathered_Resilience.mp4?rlkey=wtoiiz5swfh933g1n04ksc7ws&st=elaymv0c"
-                 preload="auto"
-                 crossorigin="anonymous"
-                 loop="true"
-                 muted
-                 playsinline>
-          </video>
+            src="https://dl.dropboxusercontent.com/scl/fi/9jbk53p7jfda1tel1xuy1/AR_Weathered_Resilience.mp4?rlkey=wtoiiz5swfh933g1n04ksc7ws&st=elaymv0c"
+            preload="auto"
+            crossorigin="anonymous"
+            loop
+            muted
+            playsinline
+          ></video>
         </a-assets>
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
         <a-entity mindar-image-target="targetIndex: 0">
@@ -56,20 +50,22 @@
       </a-scene>
     </div>
     <script>
-      // Autoplay video when target is found, with error handling
+      // Optional: catch any silent errors
+      window.onerror = function(message, source, lineno, colno, error) {
+        console.error("Global Error:", message, source, lineno, colno, error);
+      };
+
+      // Ensure video only plays when target is found, and pauses when lost
       document.addEventListener("DOMContentLoaded", () => {
         const video = document.querySelector("#overlay-video");
         const scene = document.querySelector("a-scene");
-
         if (!video || !scene) return;
 
-        function safePlay() {
+        scene.addEventListener("targetFound", () => {
           video.play().catch(err => {
             console.warn("Autoplay failed:", err);
           });
-        }
-
-        scene.addEventListener("targetFound", safePlay);
+        });
         scene.addEventListener("targetLost", () => {
           video.pause();
         });
