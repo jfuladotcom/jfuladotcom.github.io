@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI for Artists Workshop</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; background-color: #232832; color:#efefef; } 
+    body{ background-image: linear-gradient(rgba(34, 41, 51, 1), rgba(17, 13, 14, 1)); background-size: cover;  background-position: center;   background-repeat: no-repeat; } 
+    #copyButton{  border:1px #efefef solid; background-color: transparent; color:#efefef; }
+    #textToCopy{ line-height: 1.6em;}
+    .container { position: relative; margin: 0 auto; max-width: 900px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px 100px 20px; } 
+    .section { display: none;  } 
+    .section.active { display: block;  } 
+    .navigation { display: flex; justify-content: space-between; padding: 10px 10px 20px 10px; background-color: #110d0e; position: fixed; bottom: 0; left: 0; right: 0;} 
+    .navigation button { padding: 10px 20px; font-size: 16px; cursor: pointer; font-weight: bold; border: none; border-radius: 5px; border:1px #efefef solid; background-color: #1c1618; color:#efefef; } 
+    .navigation button:hover{ background-color: #45373b;}
+    .navigation button:first-child { margin-right: auto; border:0;  } 
+    .navigation button:last-child { margin-left: auto; border:0;  } 
+    .home-button { position: absolute; top: 10px; right: 10px; width: 80px; z-index: 999; background-color: #3d4353; color:#efefef;} 
+    .home-button:hover{ background-color: #50576c; }
+    .start-btn{ background-color: #f49600; width: 100%; font-weight: bold; margin-top:25px;}
+    .start-btn:hover{ background-color: #f7aa2f; }
+    .logo{ position: absolute; left: 5px; top: 5px; width: 150px; border-radius: 0 0 10px 10px; background-color: #efefef; }
+    .logo > a > img{ width: 100%;}
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; /* Rounded corners for buttons */ } 
+    h1, h2{color: #ea5f12;}
+    p{ text-align: left !important;}
+    ul{ text-align: left !important;}
+    li{ margin-bottom: 10px;}
+    a{  color: #f49600; font-weight: bold;}
+    b{ color: #f49600; }
+    i{ font-weight: bold;}
+    .yellow{ color:#f49700;}
+    @media (max-width: 600px) { 
+    .navigation {} 
+    .navigation button { padding: 10px; font-size: 14px; } }   
+    .camera-container {  position: fixed; bottom: 50px; right: 0; padding: 20px;  display: none; }
+    .camera-svg {  display: block; }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <a href="https://newenglandartcenter.com/neac-events/" target="_blank">
+      <img src="https://newenglandartcenter.com/wp-content/uploads/2024/05/Logo-NEAC.png" alt="NEAC Logo">
+    </a>
+  </div>
+  <button class="home-button" onclick="goHome()">Home</button>
+  <div id="container" class="container">
+
+    <div id="section1" class="section active">
+      <h1>AI Art Prompting for Artists: Unlock the Power of Words</h1>
+      <p>Unlock the full power of AI in your art practice! This workshop will show you how to use prompts not just for creating images, but for editing art descriptions, writing social media posts, shaping your artist story, and researching trends or your online presence.</p>
+        <ul>
+        <li><b>Accelerate Creativity:</b> AI tools can help you brainstorm, iterate, and visualize ideas rapidly.</li>
+        <li><b>Expand Your Toolkit:</b> Access new styles, mediums, and workflows not possible before.</li>
+        <li><b>Stay Relevant:</b> Understanding AI keeps you competitive in a rapidly evolving art landscape.</li>
+      </ul>
+      <p>AI is not a replacement for artists it's a powerful creative ally.</p>
+      <ol>
+        <li><a href="#section2" onclick="goToSection(2); return false;">Create Unique References with Prompts</a></li>
+        <li><a href="#section3" onclick="goToSection(3); return false;">Edit and Enhance Art Descriptions</a></li>
+        <li><a href="#section4" onclick="goToSection(4); return false;">Level Up Your Social Media Content</a></li>
+        <li><a href="#section5" onclick="goToSection(5); return false;">Shape Your Artistic Narrative</a></li>
+        <li><a href="#section6" onclick="goToSection(6); return false;">Spot Trends and Research Your Online Presence</a></li>
+        <li><a href="#section7" onclick="goToSection(7); return false;">Practice: Try These Prompts!</a></li>
+        <li><a href="#section8" onclick="goToSection(8); return false;">Resources & Next Steps</a></li>
+      </ol>
+      <button class="start-btn" onclick="nextSection()">Start</button>
+    </div>
+
+    <div id="section2" class="section">
+      <h2>1. Create Unique References with Prompts</h2>
+      <p>Learn how to write detailed, imaginative prompts that guide AI to generate visuals in your style, mood, and vision.</p>
+      <ul>
+        <li>Combine subject, style, mood, lighting, and composition for powerful results.</li>
+        <li>Example: <i class="yellow">"A full-body figure standing in a relaxed pose, weight shifted onto one leg, the other leg slightly bent. One arm rests loosely at the side while the other is raised, hand brushing the back of the head. Neutral facial expression, simple lighting, plain background for clear silhouette."</i></li>
+      </ul>
+    </div>
+
+    <div id="section3" class="section">
+      <h2>2. Edit and Enhance Art Descriptions</h2>
+      <p>Use AI to craft vivid, engaging descriptions of your artwork for portfolios, websites, and exhibitions.</p>
+      <ul>
+        <li>Prompt example: <i class="yellow">"Rewrite this art description to be more [Insert words here]: [Insert your description]"</i></li>
+        <li>Let AI help you find the right words to connect with your audience and collectors.</li>
+      </ul>
+    </div>
+
+    <div id="section4" class="section">
+      <h2>3. Level Up Your Social Media Content</h2>
+      <p>Generate compelling captions, hashtags, and post ideas that capture attention and grow your audience.</p>
+      <ul>
+        <li>Prompt example: <i class="yellow">"Write an Instagram caption for a [Describe your art here]. Suggest 7 relevant hashtags."</i></li>
+        <li>Experiment with different tones: playful, mysterious, educational, etc.</li>
+      </ul>
+    </div>
+
+    <div id="section5" class="section">
+      <h2>4. Shape Your Artistic Narrative</h2>
+      <p>Ask AI to help you articulate your story as an artist refining your bio, artist statements, and more.</p>
+      <ul>
+        <li>Prompt example: <i class="yellow">"Summarize my artistic journey in 100 words based on this bio: [your bio]"</i></li>
+        <li>Use AI to explore new ways to present your vision and values.</li>
+      </ul>
+    </div>
+
+    <div id="section6" class="section">
+      <h2>5. Spot Trends and Research Your Online Presence</h2>
+      <p>Use prompts to research current art trends, discover new styles, and see how you appear online.</p>
+      <ul>
+        <li>Prompt example: <i class="yellow">"What are the top emerging trends in art this year?"</i></li>
+        <li>Prompt example: <i class="yellow">"What information does the internet have about [your name/artist name] as an artist?"</i></li>
+        <li>Use insights to evolve your style, branding, and online strategy.</li>
+      </ul>
+    </div>
+
+    <div id="section7" class="section">
+      <h2>6. Practice: Try These Prompts!</h2>
+      <!-- <button id="copyButton">Copy Example Prompt</button> -->
+      <p id="textToCopy" class="yellow">
+        "Rewrite this description of my painting to be more [Insert words here]: [paste your description here]"
+      </p>
+      <ul>
+        <li>Modify for images, captions, bios, or trend research see what works best for you.</li>
+        <li>Share your results and discuss what worked best!</li>
+      </ul>
+    </div>
+
+    <div id="section8" class="section">
+      <h2>7. Resources & Next Steps</h2>
+      <ul>
+        <li><b>Prompt Ai:</b> Adobe Firefly, Google Labs, Perplexity.ai</li>
+        <li><b>AI Art Communities:</b> OpenArt, Discord groups, Reddit forums</li>
+        <li><b>Experiment:</b> Practice daily and keep a prompt journal for your best results</li>
+      </ul>
+      <button class="start-btn" onclick="restartApp()">Back to the start</button>
+    </div>
+
+  </div>
+  <div class="navigation">
+    <button onclick="prevSection()">Previous</button>
+    <button onclick="nextSection()">Next</button>
+  </div>
+  <script>
+    let currentSection = 1;
+    const totalSections = 8;
+    function updateSections() {
+      for (let i = 1; i <= totalSections; i++) {
+        const section = document.getElementById(`section${i}`);
+        if (i === currentSection) {
+          section.classList.add('active');
+        } else {
+          section.classList.remove('active');
+        }
+      }
+      window.scrollTo(0, 0);
+    }
+    function nextSection() {
+      if (currentSection < totalSections) {
+        currentSection++;
+        updateSections();
+        updateURL();
+      }
+    }
+    function prevSection() {
+      if (currentSection > 1) {
+        currentSection--;
+        updateSections();
+        updateURL();
+      }
+    }
+    function goHome() {
+      currentSection = 1;
+      updateSections();
+      updateURL();
+    }
+    function restartApp() { goHome(); }
+    function goToSection(sectionNumber) {
+      if (sectionNumber >= 1 && sectionNumber <= totalSections) {
+        currentSection = sectionNumber;
+        updateSections();
+        updateURL();
+      }
+    }
+    function updateURL() {
+      history.pushState(null, '', `#section${currentSection}`);
+    }
+    window.addEventListener('hashchange', function() {
+      const sectionNumber = parseInt(window.location.hash.slice(8));
+      if (!isNaN(sectionNumber)) {
+        goToSection(sectionNumber);
+      }
+    });
+    if (window.location.hash) {
+      const sectionNumber = parseInt(window.location.hash.slice(8));
+      if (!isNaN(sectionNumber)) {
+        goToSection(sectionNumber);
+      } else {
+        updateURL();
+      }
+    } else {
+      updateURL();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const copyButton = document.getElementById('copyButton');
+      const textToCopy = document.getElementById('textToCopy');
+      if(copyButton && textToCopy){
+        copyButton.addEventListener('click', () => {
+          const text = textToCopy.innerText || textToCopy.textContent;
+          navigator.clipboard.writeText(text).then(() => {
+            copyButton.textContent = 'Copied!';
+          }).catch(err => {
+            console.error('Failed to copy: ', err);
+            copyButton.textContent = 'Copy failed';
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
