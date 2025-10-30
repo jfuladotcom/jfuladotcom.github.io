@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hunger to Reclaim Childhood</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    margin: 0;
+    background: #f0f0f0;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .hungerText{
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  header {
+    background: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    
+    padding: 12px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  #policy{
+    position: relative;
+    margin: 10px auto 0 auto;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  #collapsibleContent{
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
+  #menuToggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+
+  #logoText {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0 0 0 15px;
+  }
+
+  nav {
+    background: #444;
+    color: #fff;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 52px;
+    left: 0;
+    width: 200px;
+    z-index: 9;
+  }
+a {
+    text-decoration: none;
+    color: #fff !important;
+    cursor: pointer;
+    
+  }
+  a:hover {
+    color: #fff;
+  }
+
+  nav a {
+    padding: 12px;
+    text-decoration: none;
+    color: #fff;
+    border-bottom: 1px solid #555;
+  }
+
+  nav a:hover {
+    background: #555;
+  }
+
+  .container {
+    padding: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  #mainSelection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .imageOption {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .imageOption:hover {
+    transform: scale(1.05);
+  }
+
+  .imageOption img {
+    width: 100%;
+    display: block;
+  }
+
+  #appContent {
+    display: none;
+  }
+
+  #backButton {
+    background: #333;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    position: absolute;
+    right: 10px;
+    border: 1px #fff solid;
+    top: 10px;
+    display: none;
+  }
+
+  /* Existing styling from your app */
+  a { color: #333; text-decoration: none; }
+  .toolbar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 14px 10px;
+    margin-bottom: 10px;
+  }
+
+  .toolbar label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1rem;
+  }
+
+  .toolbar input[type="range"] {
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  #canvas-container {
+    width: 100%;
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+  }
+
+  canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fff;
+    touch-action: none;
+    border: none;
+  }
+
+  #color-bar-container {
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #colorPreview {
+    width: 36px;
+    height: 36px;
+    border-radius: 20%;
+    border: 2px solid #333;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    background: #ff0000;
+  }
+
+  #colorBar {
+    width: 100%;
+    height: 36px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    cursor: crosshair;
+  }
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .actions button {
+    padding: 8px 22px;
+    border: none;
+    border-radius: 6px;
+    background: #333;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+  }
+
+  .actions button:hover {
+    background: #555;
+  }
+
+/* Style all range sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* Chrome, Edge, Safari */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #666;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #666;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-track {
+  background: #ccc;
+  border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #666;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  background: #666;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <button id="menuToggle">&#9776;</button>
+  <div id="logoText"><a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Art by Fula </a></div>
+  <button id="backButton">Back</button>
+</header>
+
+<nav id="menu">  
+  <a href="HungerToReclaimChildhood.html" target="_self">Select Drawing</a>  
+  <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Full Story</a>  
+  <a href="https://fineartamerica.com/profiles/fernando-fula" target="_blank">Get Prints Here</a> 
+</nav>
+
+<div class="container">
+  <div class="hungerText">Hunger to Reclaim Childhood</div>
+  <!-- Initial Screen -->
+  <div id="mainSelection">
+    <div class="imageOption" data-image="1"><img src="https://raw.githubusercontent.com/jfuladotcom/ArtbyFula/refs/heads/main/HungerToReclaimChildhood/THTRC-01.jpg"></div>
+    <div class="imageOption" data-image="2"><img src="https://raw.githubusercontent.com/jfuladotcom/ArtbyFula/refs/heads/main/HungerToReclaimChildhood/THTRC-02.jpg"></div>
+    <div class="imageOption" data-image="3"><img src="https://raw.githubusercontent.com/jfuladotcom/ArtbyFula/refs/heads/main/HungerToReclaimChildhood/THTRC-03.jpg"></div>
+    <div class="imageOption" data-image="4"><img src="https://raw.githubusercontent.com/jfuladotcom/ArtbyFula/refs/heads/main/HungerToReclaimChildhood/THTRC-04.jpg"></div>
+  </div>
+
+  <!-- Coloring App Screen -->
+  <div id="appContent">
+    
+    <div id="canvas-container">
+      <canvas id="coloringCanvas"></canvas>
+    </div>
+
+    <div id="color-bar-container">
+      <div id="colorPreview"></div>
+      <canvas id="colorBar" height="36"></canvas>
+    </div>
+
+    <div class="toolbar">
+      <label>
+        Brush:
+        <input type="range" id="brushSize" min="5" max="40" value="15">
+        <span id="brushValue">15</span>
+      </label>
+      <label>
+        Opacity:
+        <input type="range" id="opacity" min="0.05" max="1" step="0.05" value="0.2">
+        <span id="opacityValue">0.20</span>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button id="undoBtn">Undo</button>
+      <button id="restartBtn">Restart</button>
+      <button id="saveBtn">Save</button>
+    </div>
+  </div>
+
+   <div class="footer">
+    <button id="policy" onclick="toggleVisibility()">Terms & Privacy Policy</button>
+    <div id="collapsibleContent" style="display: none;">
+        <p>This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: 
+        Educational use only, No warranty or liability assumed, User responsible for legal compliance</p>                 
+        <p>This website is hosted on GitHub Pages. We do not collect or store any personal information or use analytics/tracking cookies. However, GitHub may collect technical data (such as IP addresses and browser information) for security and performance purposes, as described in the 
+        <a href="https://docs.github.com/privacy" target="_blank" rel="noopener" style="text-decoration: underline;">GitHub Privacy Statement</a>.
+        </p>
+        <p>
+        For more information, please refer to GitHub’s privacy practices.
+        </p>
+    </div>
+</div>
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const menu = document.getElementById('menu');
+  const mainSelection = document.getElementById('mainSelection');
+  const appContent = document.getElementById('appContent');
+  const backButton = document.getElementById('backButton');
+  const imageOptions = document.querySelectorAll('.imageOption');
+
+  menuToggle.addEventListener('click', () => {
+    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  // Store the current loaded image globally
+  let currentImage = null;
+
+  imageOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      const imgSrc = opt.querySelector('img').src;
+
+      // Switch UI screens
+      mainSelection.style.display = 'none';
+      appContent.style.display = 'block';
+
+      // Load the selected image into the canvas
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // If needed for external images
+      img.onload = () => {
+        currentImage = img;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        strokes = [];  // Clear existing drawings
+      };
+      img.src = imgSrc;
+
+      drawColorBar();
+    });
+  });
+
+  backButton.addEventListener('click', () => {
+    appContent.style.display = 'none';
+    mainSelection.style.display = 'grid';
+  });
+
+  const colorBar = document.getElementById('colorBar');
+  const colorPreview = document.getElementById('colorPreview');
+  let selectedColor = "#ff0000";
+  function updateColorPreview() {
+    colorPreview.style.background = selectedColor;
+  }
+  function drawColorBar() {
+    const ctxC = colorBar.getContext('2d');
+    const w = colorBar.width = colorBar.offsetWidth;
+    const h = colorBar.height;
+    const grad = ctxC.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, "rgb(255, 0, 0)");
+    grad.addColorStop(0.17, "rgb(255, 255, 0)");
+    grad.addColorStop(0.33, "rgb(0, 255, 0)");
+    grad.addColorStop(0.5, "rgb(0, 255, 255)");
+    grad.addColorStop(0.67, "rgb(0, 0, 255)");
+    grad.addColorStop(0.83, "rgb(255, 0, 255)");
+    grad.addColorStop(1, "rgb(255, 0, 0)");
+    ctxC.fillStyle = grad;
+    ctxC.fillRect(0, 0, w, h);
+    const grad2 = ctxC.createLinearGradient(0, 0, 0, h);
+    grad2.addColorStop(0, "rgba(255,255,255,1)");
+    grad2.addColorStop(0.5, "rgba(255,255,255,0)");
+    grad2.addColorStop(0.5, "rgba(0,0,0,0)");
+    grad2.addColorStop(1, "rgba(0,0,0,1)");
+    ctxC.fillStyle = grad2;
+    ctxC.fillRect(0, 0, w, h);
+  }
+
+colorBar.addEventListener('click', function(e) {
+  const rect = colorBar.getBoundingClientRect();
+  // Calculate scale factors because canvas width might differ from CSS width
+  const scaleX = colorBar.width / rect.width;
+  const scaleY = colorBar.height / rect.height;
+
+  // Calculate correct canvas-relative coordinates
+  const x = (e.clientX - rect.left) * scaleX;
+  const y = (e.clientY - rect.top) * scaleY;
+
+  const ctxC = colorBar.getContext('2d');
+  const pixel = ctxC.getImageData(x, y, 1, 1).data;
+  
+  selectedColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+  updateColorPreview();
+});
+
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = canvas.getContext('2d');
+  const brushSizeSlider = document.getElementById('brushSize');
+  const brushValue = document.getElementById('brushValue');
+  const opacitySlider = document.getElementById('opacity');
+  const opacityValue = document.getElementById('opacityValue');
+  const undoBtn = document.getElementById('undoBtn');
+  const restartBtn = document.getElementById('restartBtn');
+  const saveBtn = document.getElementById('saveBtn');
+
+  let strokes = [];
+  let currentStroke = null;
+  let drawing = false;
+
+  // Initialize canvas size (will be updated when image loads)
+  canvas.width = canvas.offsetWidth;
+  canvas.height = 400;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+function getCoords(e) {
+  const rect = canvas.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+  // Calculate scale factors for width and height
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+
+  // Adjust coordinates to canvas space
+  const x = (clientX - rect.left) * scaleX;
+  const y = (clientY - rect.top) * scaleY;
+  return [x, y];
+}
+
+
+  function startDraw(e) {
+    drawing = true;
+    currentStroke = {
+      color: selectedColor,
+      size: parseInt(brushSizeSlider.value, 10),
+      opacity: parseFloat(opacitySlider.value),
+      points: []
+    };
+    const [x, y] = getCoords(e);
+    currentStroke.points.push([x, y]);
+  }
+
+  function endDraw() {
+    if (drawing && currentStroke) {
+      strokes.push(currentStroke);
+      currentStroke = null;
+    }
+    drawing = false;
+  }
+
+  function drawMove(e) {
+    if (!drawing) return;
+    const [x, y] = getCoords(e);
+    currentStroke.points.push([x, y]);
+    redrawAll();
+  }
+
+  function redrawAll() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the background image first to keep it visible
+    if (currentImage) {
+      ctx.drawImage(currentImage, 0, 0);
+    } else {
+      // Optional white background if no image loaded
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Draw all strokes on top
+    for (const stroke of strokes.concat(currentStroke ? [currentStroke] : [])) {
+      ctx.globalAlpha = stroke.opacity;
+      ctx.globalCompositeOperation = "multiply";
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = stroke.size;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      stroke.points.forEach(([px, py], i) => {
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1.0;
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('touchstart', startDraw);
+  canvas.addEventListener('mousemove', drawMove);
+  canvas.addEventListener('touchmove', drawMove, { passive: false });
+  canvas.addEventListener('mouseup', endDraw);
+  canvas.addEventListener('touchend', endDraw);
+
+  undoBtn.addEventListener('click', () => {
+    strokes.pop();
+    redrawAll();
+  });
+
+  restartBtn.addEventListener('click', () => {
+    strokes = [];
+    if (currentImage) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(currentImage, 0, 0);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  });
+
+  saveBtn.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'my-colored-artwork.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  brushSizeSlider.addEventListener('input', () => {
+    brushValue.textContent = brushSizeSlider.value;
+  });
+
+  opacitySlider.addEventListener('input', () => {
+    opacityValue.textContent = Number(opacitySlider.value).toFixed(2);
+  });
+
+  updateColorPreview();
+
+  function toggleVisibility() {
+    var content = document.getElementById("collapsibleContent");
+    if (content.style.display === "none") {
+        content.style.display = "block";
+    } else {
+        content.style.display = "none";
+    }
+}
+
+</script>
+
+</body>
+</html>
