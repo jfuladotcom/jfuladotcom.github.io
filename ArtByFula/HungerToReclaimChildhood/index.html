@@ -5,283 +5,62 @@
 <title>Hunger to Reclaim Childhood</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body {
-    margin: 0;
-    background: #f0f0f0;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  .hungerText{
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #333;
-  }
 
-  header {
-    background: #333;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    
-    padding: 12px 16px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  #policy{
-    position: relative;
-    margin: 10px auto 0 auto;
-    width: 100%;
-    cursor: pointer;
-  }
-
-  #collapsibleContent{
-    background-color: #333;
-    color: #fff;
-    padding: 8px;
-    margin-top: 5px;
-  }
-  
-  #menuToggle {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.6rem;
-    cursor: pointer;
-  }
-
-  #logoText {
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 0 0 0 15px;
-  }
-
-  nav {
-    background: #444;
-    color: #fff;
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 52px;
-    left: 0;
-    width: 200px;
-    z-index: 9;
-  }
-a {
-    text-decoration: none;
-    color: #fff !important;
-    cursor: pointer;
-    
-  }
-  a:hover {
-    color: #fff;
-  }
-
-  nav a {
-    padding: 12px;
-    text-decoration: none;
-    color: #fff;
-    border-bottom: 1px solid #555;
-  }
-
-  nav a:hover {
-    background: #555;
-  }
-
-  .container {
-    padding: 15px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  #mainSelection {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .imageOption {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-
-  .imageOption:hover {
-    transform: scale(1.05);
-  }
-
-  .imageOption img {
-    width: 100%;
-    display: block;
-  }
-
-  #appContent {
-    display: none;
-  }
-
-  #backButton {
-    background: #333;
-    color: #fff;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-bottom: 15px;
-    position: absolute;
-    right: 10px;
-    border: 1px #fff solid;
-    top: 10px;
-    display: none;
-  }
-
-  /* Existing styling from your app */
-  a { color: #333; text-decoration: none; }
-  .toolbar {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    align-items: center;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    padding: 14px 10px;
-    margin-bottom: 10px;
-  }
-
-  .toolbar label {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 1rem;
-  }
-
-  .toolbar input[type="range"] {
-    width: 100%;
-    margin-top: 6px;
-  }
-
-  #canvas-container {
-    width: 100%;
-    position: relative;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    overflow: hidden;
-  }
-
-  canvas {
-    width: 100%;
-    height: auto;
-    display: block;
-    background: #fff;
-    touch-action: none;
-    border: none;
-  }
-
-  #color-bar-container {
-    width: 100%;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  #colorPreview {
-    width: 36px;
-    height: 36px;
-    border-radius: 20%;
-    border: 2px solid #333;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-    background: #ff0000;
-  }
-
-  #colorBar {
-    width: 100%;
-    height: 36px;
-    border-radius: 8px;
-    border: 2px solid #ddd;
-    cursor: crosshair;
-  }
-
-.actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 18px;
-  }
-
-  .actions button {
-    padding: 8px 22px;
-    border: none;
-    border-radius: 6px;
-    background: #333;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-    width: 100%;
-  }
-
-  .actions button:hover {
-    background: #555;
-  }
-
-/* Style all range sliders */
-input[type="range"] {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 6px;
-  background: #ccc;
-  border-radius: 5px;
-  outline: none;
-}
-
-/* Chrome, Edge, Safari */
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #666;
-  cursor: pointer;
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-  background: #666;
-}
-
-/* Firefox */
-input[type="range"]::-moz-range-track {
-  background: #ccc;
-  border-radius: 5px;
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #666;
-  cursor: pointer;
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-  background: #666;
-}
-
+    body { margin: 0; background: #f0f0f0; font-family: 'Segoe UI', sans-serif; }
+    .hungerText { text-align: center; font-weight: bold; margin-bottom: 15px; color: #333; }
+    header { background: #333; color: #fff; display: flex; align-items: center; padding: 12px 16px; position: sticky; top: 0; z-index: 10; }
+    #policy { position: relative; margin: 10px auto 0 auto; width: 100%; cursor: pointer; }
+    #collapsibleContent { background-color: #333; color: #fff; padding: 8px; margin-top: 5px; }
+    #menuToggle { background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; }
+    #logoText { font-size: 1.2rem; font-weight: bold; padding: 0 0 0 15px; }
+    nav { background: #444; color: #fff; display: none; flex-direction: column; position: absolute; top: 52px; left: 0; width: 200px; z-index: 9; }
+    a { text-decoration: none; color: #fff !important; cursor: pointer; }
+    a:hover { color: #fff; }
+    nav a { padding: 12px; text-decoration: none; color: #fff; border-bottom: 1px solid #555; }
+    nav a:hover { background: #555; }
+    .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+    #mainSelection { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+    .imageOption { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+    .imageOption:hover { transform: scale(1.05); }
+    .imageOption img { width: 100%; display: block; }
+    #appContent { display: none; }
+    #backButton { background: #333; color: #fff; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; margin-bottom: 15px; position: absolute; right: 10px; border: 1px #fff solid; top: 10px; display: none; }
+    a { color: #333; text-decoration: none; }
+    .toolbar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; align-items: center; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 14px 10px; margin-bottom: 10px; }
+    .toolbar label { display: flex; flex-direction: column; align-items: flex-start; font-size: 1rem; }
+    .toolbar input[type="range"] { width: 100%; margin-top: 6px; }
+    #canvas-container { width: 100%; position: relative; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; }
+    canvas { width: 100%; height: auto; display: block; background: #fff; touch-action: none; border: none; }
+    #color-bar-container { width: 100%; margin: 10px 0; display: flex; align-items: center; gap: 12px; }
+    #colorPreview { width: 36px; height: 36px; border-radius: 20%; border: 2px solid #333; box-shadow: 0 1px 4px rgba(0,0,0,0.12); background: #ff0000; }
+    #colorBar { width: 100%; height: 36px; border-radius: 8px; border: 2px solid #ddd; cursor: crosshair; }
+    .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+    .actions button { padding: 8px 22px; border: none; border-radius: 6px; background: #333; color: #fff; font-size: 1rem; cursor: pointer; transition: background 0.2s; width: 100%; }
+    .actions button:hover { background: #555; }
+    input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: #ccc; border-radius: 5px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #666; cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb:hover { background: #666; }
+    input[type="range"]::-moz-range-track { background: #ccc; border-radius: 5px; }
+    input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #666; cursor: pointer; }
+    input[type="range"]::-moz-range-thumb:hover { background: #666; }
+    .info-icon { font-size: 24px; cursor: pointer; color: #efefef; display: inline-block; user-select: none; }
+    .dialog-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .dialog-content { background: white; padding: 20px; max-width: 600px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); text-align: left; margin: 0 15px; height: 500px; overflow: auto; }
+    .close-btn { text-align: center; width: 50%; background: #333333; border: none; color: white; padding: 8px 15px; margin-top: 15px; border-radius: 3px; cursor: pointer; float: right; }
+    header { display: flex; align-items: center; }
+    #menuToggle { flex: 0 0 10%; text-align: center;  }
+    #logoText { flex: 0 0 80%; text-align: center; font-size: 16px;}
+    .info-icon { flex: 0 0 10%; text-align: left; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <header>
   <button id="menuToggle">&#9776;</button>
-  <div id="logoText"><a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Art by Fula </a></div>
-  <button id="backButton">Back</button>
+  <div id="logoText">
+    <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Hunger to Reclaim Childhood</a>
+  </div>
+  <span class="info-icon" id="infoIcon" title="How to use the app">&#9432;</span>
 </header>
 
 <nav id="menu">  
@@ -290,8 +69,57 @@ input[type="range"]::-moz-range-thumb:hover {
   <a href="https://fineartamerica.com/profiles/fernando-fula?tab=artworkgalleries&artworkgalleryid=1241302" target="_blank">Get Prints Here</a> 
 </nav>
 
+<!-- Dialog overlay -->
+<div class="dialog-overlay" id="infoDialog">
+  <div class="dialog-content">
+    <div class="instructions">
+    <h2>Instructions for Using Hunger to Reclaim Childhood Coloring App</h2>
+
+    <ol>
+      <li><strong>Select Drawing</strong><br>
+        On the main screen, choose one of the four artwork images by clicking or tapping on it. This will open the coloring workspace with the chosen image loaded.
+      </li>
+
+      <li><strong>Color the Drawing</strong><br>
+        <ul>
+          <li>Use the color bar at the bottom to pick a color. Click or tap on the color spectrum to update the brush color.</li>
+          <li>Adjust the brush size with the "Brush" slider to make thicker or thinner strokes.</li>
+          <li>Adjust the "Opacity" slider to control color transparency.</li>
+        </ul>
+      </li>
+
+      <li><strong>Draw on the Canvas</strong><br>
+        Use your mouse or touch to paint on the image. Drag to draw with your selected settings.
+        <ul>
+          <li>Use the <em>Undo</em> button to remove the last stroke.</li>
+          <li>Use the <em>Restart</em> button to clear all your coloring and start fresh.</li>
+        </ul>
+      </li>
+
+      <li><strong>Save Your Artwork</strong><br>
+        When finished, click the <em>Save</em> button to download your colored image as a PNG file.
+      </li>
+
+      <li><strong>Navigate Back</strong><br>
+        Use the <em>☰</em> button in the top left corner to access "Select Drawing" return to the image selection screen and choose a different drawing.
+      </li>
+
+      <li><strong>Menu Navigation</strong><br>
+        Use the ☰ menu button in the header to access links such as the "Full Story" behind the artwork and where to purchase prints.
+      </li>
+
+      <li><strong>Terms & Privacy</strong><br>
+        Click the <em>Terms & Privacy Policy</em> button at the bottom to read about usage terms and privacy details.
+      </li>
+    </ol>
+  </div>
+
+    
+    <button class="close-btn" id="closeDialogBtn">Close</button>
+  </div>
+</div>
+
 <div class="container">
-  <div class="hungerText">Hunger to Reclaim Childhood</div>
   <!-- Initial Screen -->
   <div id="mainSelection">
     <div class="imageOption" data-image="1"><img src="THTRC-01.jpg"></div>
@@ -386,10 +214,6 @@ input[type="range"]::-moz-range-thumb:hover {
     });
   });
 
-  backButton.addEventListener('click', () => {
-    appContent.style.display = 'none';
-    mainSelection.style.display = 'grid';
-  });
 
   const colorBar = document.getElementById('colorBar');
   const colorPreview = document.getElementById('colorPreview');
@@ -579,11 +403,32 @@ function getCoords(e) {
     }
 }
 
+  // Get elements
+  const infoIcon = document.getElementById('infoIcon');
+  const infoDialog = document.getElementById('infoDialog');
+  const closeDialogBtn = document.getElementById('closeDialogBtn');
+
+  // Show dialog when info icon clicked
+  infoIcon.addEventListener('click', () => {
+    infoDialog.style.display = 'flex';
+  });
+
+  // Hide dialog when close button clicked
+  closeDialogBtn.addEventListener('click', () => {
+    infoDialog.style.display = 'none';
+  });
+
+  // Optional: Close dialog when clicking outside dialog content
+  infoDialog.addEventListener('click', (event) => {
+    if (event.target === infoDialog) {
+      infoDialog.style.display = 'none';
+    }
+  });
+
 </script>
 
 </body>
 </html>
-
 
 
 
