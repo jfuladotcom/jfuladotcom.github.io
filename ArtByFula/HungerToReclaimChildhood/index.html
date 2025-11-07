@@ -32,6 +32,7 @@
     #colorBar { width: 100%; height: 36px; border-radius: 8px; border: 2px solid #ddd; cursor: crosshair; }
     #menuToggle { flex: 0 0 10%; text-align: center;  }    
     
+    .instructions{ width: 95%;}
     .hungerText { text-align: center; font-weight: bold; margin-bottom: 15px; color: #333; }
     .container { padding: 15px; max-width: 600px; margin: 0 auto; }    
     .imageOption { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
@@ -50,9 +51,9 @@
     .dialog-contentTwo { background: white; padding: 20px; max-width: 600px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); text-align: left; margin: 0 15px; height: 500px; overflow: auto; position: relative;}
     .close-btn { text-align: center; background: #333333; border: none; color: white; padding: 8px 15px;  border-radius: 3px; cursor: pointer; float: right; }
     .info-icon { flex: 0 0 10%; text-align: left; cursor: pointer; }
-    .footer{position:fixed;bottom:0;width:100%;height:60px;background:#222;display:flex;justify-content:space-around;align-items:center;color:#fff;z-index:1000}
-    .footer .col{flex:1;text-align:center;cursor:pointer;user-select:none}
-    .icon-placeholder{font-size:24px;display:inline-block;width:36px;height:36px;background:#555;border-radius:6px;line-height:36px;color:#fff}
+    .footer{position:fixed;bottom:0;width:101%;height:60px;background:#222;justify-content:space-around;align-items:center;color:#fff; display: none; z-index:1000; }
+    .footer .col{flex:1;text-align:center;cursor:pointer;user-select:none; border-right: 1px #666 solid;}
+    .icon-placeholder{font-size:24px;display:inline-block;width:36px;height:36px;border-radius:6px;line-height:36px;color:#fff}
     .overlay{position:fixed;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,.4);display:none;z-index:999}
     .overlay.active{display:block}
     .slide-panel{position:fixed;left:0;bottom:0;width:100%;max-height:300px;background:#f8f8f8;box-shadow:0 -4px 10px rgba(0,0,0,.2);transform:translateY(100%);transition:transform .3s ease-in-out;z-index:1001;padding:20px;box-sizing:border-box;overflow-y:auto}
@@ -65,7 +66,7 @@
     .hamburger.active div:nth-child(1){transform:rotate(45deg) translate(6px,6px)}
     .hamburger.active div:nth-child(2){opacity:0}
     .hamburger.active div:nth-child(3){transform:rotate(-45deg) translate(7px,-7px)}
-    .side-panel{position:fixed;top:0;left:-250px;width:250px;height:100vh;background:#f5f5f5;box-shadow:2px 0 5px rgba(0,0,0,.3);padding:60px 20px 20px;box-sizing:border-box;transition:left .3s ease; z-index: 888;}
+    .side-panel{position:fixed;top:0;left:-250px;width:250px;height:100vh;background:#f5f5f5;box-shadow:2px 0 5px rgba(0,0,0,.3);padding:60px 20px 20px;box-sizing:border-box;transition:left .3s ease; z-index: 1000;}
     .side-panel.active{left:0}
     .side-panel ul{list-style:none;padding:0;margin:0}
     .side-panel ul li{padding:12px 10px;margin-bottom:10px;border-radius:6px;cursor:pointer;user-select:none; border-bottom: 1px #ddd solid;}    
@@ -97,7 +98,7 @@
 <!-- Side panel with 3 placeholder items -->
 <nav id="sidePanel" class="side-panel" aria-hidden="true" role="navigation">
   <ul>    
-    <li tabindex="0"> <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Full Story</a>  </li>
+    <li tabindex="0"> <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Read Full Story</a>  </li>
     <li tabindex="0"> <a href="index.html" target="_self">Select Drawing</a> </li>
     <li tabindex="0"><a href="https://fineartamerica.com/profiles/fernando-fula?tab=artworkgalleries&artworkgalleryid=1241302" target="_blank">Get Prints Here</a> </li>
     <li tabindex="0"  id="infoIcon" title="How to use the app">How to Use App </li>
@@ -126,8 +127,7 @@
           <li><strong>Draw on the Canvas</strong><br>
             Use your mouse or touch to paint on the image. Drag to draw with your selected settings.
             <ul>
-              <li>Use the <em>Undo</em> button to remove the last stroke.</li>
-              <li>Use the <em>Restart</em> button to clear all your coloring and start fresh.</li>
+              <li>Use the <em>Undo</em> button to remove the last stroke.</li>              
             </ul>
           </li>
           <li><strong>Save Your Artwork</strong><br>
@@ -171,7 +171,17 @@
     <div class="imageOption" data-image="2"><img src="THTRC-02.jpg"></div>
     <div class="imageOption" data-image="3"><img src="THTRC-03.jpg"></div>
     <div class="imageOption" data-image="4"><img src="THTRC-04.jpg"></div>
+    
   </div>
+    <div id="terms">
+        <h3>Terms & Privacy Policy</h3>
+        <p>This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: </p>
+        <p>Educational use only, No warranty or liability assumed, User responsible for legal compliance</p>
+        <p>These line drawings are the original creations of Fernanodo Fula. Users are permitted to color these images for personal use only. Any reproduction, distribution, or commercial use without explicit permission is prohibited.</p>
+        <p>This website is hosted on GitHub Pages. We do not collect or store any personal information or use analytics/tracking cookies. However, GitHub may collect technical data (such as IP addresses and browser information) for security and performance purposes, as described in the 
+        <a href="https://docs.github.com/privacy" target="_blank" rel="noopener" style="color: #ff1100 !important;">GitHub Privacy Statement</a>.</p>
+        <p>For more information, please refer to GitHub’s privacy practices.</p>
+      </div>
 
   <!-- Coloring App Screen -->
   <div id="appContent">  
@@ -191,6 +201,8 @@
       <canvas id="colorBar" height="36"></canvas>
     </div>
 
+    
+
     <!-- end of appcontent -->
   </div>
 
@@ -198,7 +210,7 @@
 </div>
 
 <!-- Footer with 3 columns -->
-  <div class="footer">
+  <div class="footer" id="footer">
     <div class="col" data-panel="panel1" title="Brush Size">
       <div class="icon-placeholder">
        <i class="material-icons">brush</i>
@@ -252,6 +264,8 @@
   const appContent = document.getElementById('appContent');
   const backButton = document.getElementById('backButton');
   const imageOptions = document.querySelectorAll('.imageOption');
+  const footerContent = document.getElementById('footer'); 
+  const terms = document.getElementById('terms'); 
 
 
   // Store the current loaded image globally
@@ -264,6 +278,8 @@
       // Switch UI screens
       mainSelection.style.display = 'none';
       appContent.style.display = 'block';
+      footerContent.style.display = 'flex';
+      terms.style.display = 'none';
 
       // Load the selected image into the canvas
       const img = new Image();
@@ -516,14 +532,62 @@ function getCoords(e) {
 
   //footer controls
 
-    const footerCols = document.querySelectorAll('.footer .col');
-  const panels = document.querySelectorAll('.slide-panel');
-  const overlay = document.getElementById('overlay');
+const footerCols = document.querySelectorAll('.footer .col');
+const panels = document.querySelectorAll('.slide-panel');
+const overlay = document.getElementById('overlay');
+const hamburger = document.getElementById('hamburger');
+const sidePanel = document.getElementById('sidePanel');
+const closeIcon = document.getElementById('closeIcon'); // Assuming you add a close icon with this id
+
+function toggleMenu() {
+  const isActive = hamburger.classList.toggle('active');
+  sidePanel.classList.toggle('active', isActive);
+
+  hamburger.setAttribute('aria-expanded', isActive);
+  sidePanel.setAttribute('aria-hidden', !isActive);
+
+  // Toggle overlay visibility based on menu state
+  if (isActive) {
+    overlay.classList.add('active');
+  } else {
+    overlay.classList.remove('active');
+  }
+}
+
+// Close menu function for reuse (to close menu and overlay)
+function closeMenu() {
+  hamburger.classList.remove('active');
+  sidePanel.classList.remove('active');
+
+  hamburger.setAttribute('aria-expanded', false);
+  sidePanel.setAttribute('aria-hidden', true);
+  overlay.classList.remove('active');
+}
+
+hamburger.addEventListener('click', toggleMenu);
+
+// Accessibility: toggle via keyboard (Enter or Space)
+hamburger.addEventListener('keydown', (e) => {
+  if(e.key === "Enter" || e.key === " "){
+    e.preventDefault();
+    toggleMenu();
+  }
+});
+
+// Close panel when clicking overlay outside the panel
+overlay.addEventListener('click', closeMenu);
+
+// Close panel when clicking close icon
+if (closeIcon) {
+  closeIcon.addEventListener('click', closeMenu);
+}
+
 
   // Function to close all panels
   function closeAllPanels() {
     panels.forEach(panel => panel.classList.remove('active'));
     overlay.classList.remove('active');
+    
   }
 
   // Toggle panel open/close
@@ -547,12 +611,14 @@ function getCoords(e) {
     const closeBtn = panel.querySelector('.close-btn');
     closeBtn.addEventListener('click', () => {
       closeAllPanels();
+      
     });
   });
 
   // Close panel if click outside the panel (on overlay)
   overlay.addEventListener('click', () => {
     closeAllPanels();
+   
   });
 
   // Optional: Prevent clicks inside panel from closing it
@@ -562,28 +628,7 @@ function getCoords(e) {
     });
   });
 
-  const hamburger = document.getElementById('hamburger');
-  const sidePanel = document.getElementById('sidePanel');
   
-
-  function toggleMenu() {
-    const isActive = hamburger.classList.toggle('active');
-    sidePanel.classList.toggle('active', isActive);
-  
-    hamburger.setAttribute('aria-expanded', isActive);
-    sidePanel.setAttribute('aria-hidden', !isActive);
-  }
-
-  hamburger.addEventListener('click', toggleMenu);
-  
-
-  // Accessibility: toggle via keyboard (Enter or Space)
-  hamburger.addEventListener('keydown', (e) => {
-    if(e.key === "Enter" || e.key === " "){
-      e.preventDefault();
-      toggleMenu();
-    }
-  });
 
 </script>
 
