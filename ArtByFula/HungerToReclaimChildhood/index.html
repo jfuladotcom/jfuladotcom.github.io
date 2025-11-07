@@ -6,118 +6,163 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 
-    body { margin: 0; background: #f0f0f0; font-family: 'Segoe UI', sans-serif; }
-    .hungerText { text-align: center; font-weight: bold; margin-bottom: 15px; color: #333; }
-    header { background: #333; color: #fff; display: flex; align-items: center; padding: 12px 16px; position: sticky; top: 0; z-index: 10; }
-    #policy { position: relative; margin: 10px auto 0 auto; width: 100%; cursor: pointer; }
-    #collapsibleContent { background-color: #333; color: #fff; padding: 8px; margin-top: 5px; }
-    #menuToggle { background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; }
-    #logoText { font-size: 1.2rem; font-weight: bold; padding: 0 0 0 15px; }
-    nav { background: #444; color: #fff; display: none; flex-direction: column; position: absolute; top: 52px; left: 0; width: 200px; z-index: 9; }
-    a { text-decoration: none; color: #fff !important; cursor: pointer; }
-    a:hover { color: #fff; }
-    nav a { padding: 12px; text-decoration: none; color: #fff; border-bottom: 1px solid #555; }
-    nav a:hover { background: #555; }
-    .container { padding: 15px; max-width: 600px; margin: 0 auto; }
-    #mainSelection { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
-    .imageOption { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
-    .imageOption:hover { transform: scale(1.05); }
-    .imageOption img { width: 100%; display: block; }
-    #appContent { display: none; }
-    #backButton { background: #333; color: #fff; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; margin-bottom: 15px; position: absolute; right: 10px; border: 1px #fff solid; top: 10px; display: none; }
+    body { margin: 0 0 65px 0; background: #f0f0f0; font-family: 'Segoe UI', sans-serif; }
+    header { background: #333; color: #fff; display: flex; align-items: center; padding: 12px 16px; position: sticky; top: 0; z-index: 9999;}
     a { color: #333; text-decoration: none; }
-    .toolbar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; align-items: center; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 14px 10px; margin-bottom: 10px; }
-    .toolbar label { display: flex; flex-direction: column; align-items: flex-start; font-size: 1rem; }
-    .toolbar input[type="range"] { width: 100%; margin-top: 6px; }
-    #canvas-container { width: 100%; position: relative; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; }
-    canvas { width: 100%; height: auto; display: block; background: #fff; touch-action: none; border: none; }
-    #color-bar-container { width: 100%; margin: 10px 0; display: flex; align-items: center; gap: 12px; }
-    #colorPreview { width: 36px; height: 36px; border-radius: 20%; border: 2px solid #333; box-shadow: 0 1px 4px rgba(0,0,0,0.12); background: #ff0000; }
-    #colorBar { width: 100%; height: 36px; border-radius: 8px; border: 2px solid #ddd; cursor: crosshair; }
-    .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
-    .actions button { padding: 8px 22px; border: none; border-radius: 6px; background: #333; color: #fff; font-size: 1rem; cursor: pointer; transition: background 0.2s; width: 100%; }
-    .actions button:hover { background: #555; }
+    canvas { width: 100%; height: auto; display: block; background: #fff; touch-action: none; border: none; }    
     input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: #ccc; border-radius: 5px; outline: none; }
     input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #666; cursor: pointer; }
     input[type="range"]::-webkit-slider-thumb:hover { background: #666; }
     input[type="range"]::-moz-range-track { background: #ccc; border-radius: 5px; }
     input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #666; cursor: pointer; }
     input[type="range"]::-moz-range-thumb:hover { background: #666; }
+    header { display: flex; align-items: center; }
+    
+    #policy { position: relative; margin: 10px auto 0 auto; width: 100%; cursor: pointer; }
+    #collapsibleContent { background-color: #333; color: #fff; padding: 8px; margin-top: 5px; }
+    #menuToggle { background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer;  }
+    #logoText{ position: relative; margin: 0 auto; }
+    #logoText > a > img{ max-width: 300px;}   
+    #mainSelection { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+    #appContent { display: none; }
+    #backButton { background: #333; color: #fff; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; margin-bottom: 15px; position: absolute; right: 10px; border: 1px #fff solid; top: 10px; display: none; }
+    #canvas-container { width: 100%; position: relative; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; }
+    #color-bar-container { width: 100%; margin: 10px 0; display: flex; align-items: center; gap: 12px; }
+    #colorPreview { width: 36px; height: 36px; border-radius: 20%; border: 2px solid #333; box-shadow: 0 1px 4px rgba(0,0,0,0.12); background: #ff0000; }
+    #colorBar { width: 100%; height: 36px; border-radius: 8px; border: 2px solid #ddd; cursor: crosshair; }
+    #menuToggle { flex: 0 0 10%; text-align: center;  }    
+    
+    .hungerText { text-align: center; font-weight: bold; margin-bottom: 15px; color: #333; }
+    .container { padding: 15px; max-width: 600px; margin: 0 auto; }    
+    .imageOption { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+    .imageOption:hover { transform: scale(1.05); }
+    .imageOption img { width: 100%; display: block; }
+    .toolbar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; align-items: center; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 14px 10px; margin-bottom: 10px; }
+    .toolbar label { display: flex; flex-direction: column; align-items: flex-start; font-size: 1rem; }
+    .toolbar input[type="range"] { width: 100%; margin-top: 6px; }
+    .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+    .actions button {  border: none; border-radius: 6px; background: transparent; color: #333; font-size: 1rem; cursor: pointer; transition: background 0.2s; width: 100%; }
+    .actions button:hover { background: transparent; }    
     .info-icon { font-size: 24px; cursor: pointer; color: #efefef; display: inline-block; user-select: none; }
     .dialog-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
-    .dialog-content { background: white; padding: 20px; max-width: 600px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); text-align: left; margin: 0 15px; height: 500px; overflow: auto; }
-    .close-btn { text-align: center; width: 50%; background: #333333; border: none; color: white; padding: 8px 15px; margin-top: 15px; border-radius: 3px; cursor: pointer; float: right; }
-    header { display: flex; align-items: center; }
-    #menuToggle { flex: 0 0 10%; text-align: center;  }
-    #logoText { flex: 0 0 80%; text-align: center; font-size: 16px;}
+    .dialog-content { background: white; padding: 20px; max-width: 600px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); text-align: left; margin: 0 15px; height: 500px; overflow: auto; position: relative;}
+    .dialog-overlayTwo { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .dialog-contentTwo { background: white; padding: 20px; max-width: 600px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); text-align: left; margin: 0 15px; height: 500px; overflow: auto; position: relative;}
+    .close-btn { text-align: center; background: #333333; border: none; color: white; padding: 8px 15px;  border-radius: 3px; cursor: pointer; float: right; }
     .info-icon { flex: 0 0 10%; text-align: left; cursor: pointer; }
+    .footer{position:fixed;bottom:0;width:100%;height:60px;background:#222;display:flex;justify-content:space-around;align-items:center;color:#fff;z-index:1000}
+    .footer .col{flex:1;text-align:center;cursor:pointer;user-select:none}
+    .icon-placeholder{font-size:24px;display:inline-block;width:36px;height:36px;background:#555;border-radius:6px;line-height:36px;color:#fff}
+    .overlay{position:fixed;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,.4);display:none;z-index:999}
+    .overlay.active{display:block}
+    .slide-panel{position:fixed;left:0;bottom:0;width:100%;max-height:300px;background:#f8f8f8;box-shadow:0 -4px 10px rgba(0,0,0,.2);transform:translateY(100%);transition:transform .3s ease-in-out;z-index:1001;padding:20px;box-sizing:border-box;overflow-y:auto}
+    .slide-panel.active{transform:translateY(0)}
+    .close-btn{position:absolute;top:12px;right:12px;font-size:22px;font-weight:bold;cursor:pointer;user-select:none}
+    .close-btn:hover{color:#444}
+    .panel-content{font-size:16px;color:#333}
+    .hamburger{position:fixed;top:15px;left:20px;width:25px;height:16px;cursor:pointer;z-index:1100;display:flex;flex-direction:column;justify-content:space-between}
+    .hamburger div{height:2px;background:#fff;border-radius:2px;transition:all .3s ease}
+    .hamburger.active div:nth-child(1){transform:rotate(45deg) translate(6px,6px)}
+    .hamburger.active div:nth-child(2){opacity:0}
+    .hamburger.active div:nth-child(3){transform:rotate(-45deg) translate(7px,-7px)}
+    .side-panel{position:fixed;top:0;left:-250px;width:250px;height:100vh;background:#f5f5f5;box-shadow:2px 0 5px rgba(0,0,0,.3);padding:60px 20px 20px;box-sizing:border-box;transition:left .3s ease; z-index: 888;}
+    .side-panel.active{left:0}
+    .side-panel ul{list-style:none;padding:0;margin:0}
+    .side-panel ul li{padding:12px 10px;margin-bottom:10px;border-radius:6px;cursor:pointer;user-select:none; border-bottom: 1px #ddd solid;}    
+    .overlayM{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:1040}
+    .overlayM.active{opacity:1;pointer-events:auto}
+    .column-10 { flex: 10%; display: flex; align-items: center; justify-content: center; color: #fff; }
+    .column-90 { flex: 90%; display: flex; align-items: center;  justify-content: center; color: #fff; }
+
 </style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 
 <header>
-  <button id="menuToggle">&#9776;</button>
-  <div id="logoText">
-    <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Hunger to Reclaim Childhood</a>
+  <div class="column-10">
+    <div id="hamburger" class="hamburger" aria-label="Toggle menu" tabindex="0" role="button" aria-expanded="false">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
-  <span class="info-icon" id="infoIcon" title="How to use the app">&#9432;</span>
+  <div class="column-90">
+    <div id="logoText">
+      <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank"><img src="logo.png"></a>
+    </div>
+  </div>
 </header>
 
-<nav id="menu">  
-  <a href="index.html" target="_self">Select Drawing</a>  
-  <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Full Story</a>  
-  <a href="https://fineartamerica.com/profiles/fernando-fula?tab=artworkgalleries&artworkgalleryid=1241302" target="_blank">Get Prints Here</a> 
+<!-- Side panel with 3 placeholder items -->
+<nav id="sidePanel" class="side-panel" aria-hidden="true" role="navigation">
+  <ul>    
+    <li tabindex="0"> <a href="https://artbyfula.com/hunger-to-reclaim-childhood" target="_blank">Full Story</a>  </li>
+    <li tabindex="0"> <a href="index.html" target="_self">Select Drawing</a> </li>
+    <li tabindex="0"><a href="https://fineartamerica.com/profiles/fernando-fula?tab=artworkgalleries&artworkgalleryid=1241302" target="_blank">Get Prints Here</a> </li>
+    <li tabindex="0"  id="infoIcon" title="How to use the app">How to Use App </li>
+    <li tabindex="0" id="infoIconTwo">Privacy & Terms</li>      
+  </ul>
 </nav>
+
 
 <!-- Dialog overlay -->
 <div class="dialog-overlay" id="infoDialog">
   <div class="dialog-content">
     <div class="instructions">
-    <h2>Instructions for Using Hunger to Reclaim Childhood Coloring App</h2>
-
-    <ol>
-      <li><strong>Select Drawing</strong><br>
-        On the main screen, choose one of the four artwork images by clicking or tapping on it. This will open the coloring workspace with the chosen image loaded.
-      </li>
-
-      <li><strong>Color the Drawing</strong><br>
-        <ul>
-          <li>Use the color bar at the bottom to pick a color. Click or tap on the color spectrum to update the brush color.</li>
-          <li>Adjust the brush size with the "Brush" slider to make thicker or thinner strokes.</li>
-          <li>Adjust the "Opacity" slider to control color transparency.</li>
-        </ul>
-      </li>
-
-      <li><strong>Draw on the Canvas</strong><br>
-        Use your mouse or touch to paint on the image. Drag to draw with your selected settings.
-        <ul>
-          <li>Use the <em>Undo</em> button to remove the last stroke.</li>
-          <li>Use the <em>Restart</em> button to clear all your coloring and start fresh.</li>
-        </ul>
-      </li>
-
-      <li><strong>Save Your Artwork</strong><br>
-        When finished, click the <em>Save</em> button to download your colored image as a PNG file.
-      </li>
-
-      <li><strong>Navigate Back</strong><br>
-        Use the <em>☰</em> button in the top left corner to access "Select Drawing" return to the image selection screen and choose a different drawing.
-      </li>
-
-      <li><strong>Menu Navigation</strong><br>
-        Use the ☰ menu button in the header to access links such as the "Full Story" behind the artwork and where to purchase prints.
-      </li>
-
-      <li><strong>Terms & Privacy</strong><br>
-        Click the <em>Terms & Privacy Policy</em> button at the bottom to read about usage terms and privacy details.
-      </li>
-    </ol>
-  </div>
-
-    
-    <button class="close-btn" id="closeDialogBtn">Close</button>
+      <div class="close-btn" id="closeDialogBtn" title="Close Panel">&times;</div>
+        <h2>Instructions for Using Hunger to Reclaim Childhood Coloring App</h2>
+        <ol>
+          <li><strong>Select Drawing</strong><br>
+            On the main screen, choose one of the four artwork images by clicking or tapping on it. This will open the coloring workspace with the chosen image loaded.
+          </li>
+          <li><strong>Color the Drawing</strong><br>
+            <ul>
+              <li>Use the color bar at the bottom to pick a color. Click or tap on the color spectrum to update the brush color.</li>
+              <li>Adjust the brush size with the "Brush" slider to make thicker or thinner strokes.</li>
+              <li>Adjust the "Opacity" slider to control color transparency.</li>
+            </ul>
+          </li>
+          <li><strong>Draw on the Canvas</strong><br>
+            Use your mouse or touch to paint on the image. Drag to draw with your selected settings.
+            <ul>
+              <li>Use the <em>Undo</em> button to remove the last stroke.</li>
+              <li>Use the <em>Restart</em> button to clear all your coloring and start fresh.</li>
+            </ul>
+          </li>
+          <li><strong>Save Your Artwork</strong><br>
+            When finished, click the <em>Save</em> button to download your colored image as a PNG file.
+          </li>
+          <li><strong>Navigate Back</strong><br>
+            Use the <em>☰</em> button in the top left corner to access "Select Drawing" return to the image selection screen and choose a different drawing.
+          </li>
+          <li><strong>Menu Navigation</strong><br>
+            Use the ☰ menu button in the header to access links such as the "Full Story" behind the artwork and where to purchase prints.
+          </li>
+          <li><strong>Terms & Privacy</strong><br>
+            Click the <em>Terms & Privacy Policy</em> button at the bottom to read about usage terms and privacy details.
+          </li>
+        </ol>
+    </div>    
   </div>
 </div>
+
+<!-- Dialog overlay -->
+<div class="dialog-overlayTwo" id="infoDialogTwo">
+  <div class="dialog-contentTwo">
+    <div class="instructions">
+       <div class="close-btn" id="closeDialogBtnTwo" title="Close Panel">&times;</div>
+      <h3>Terms & Privacy Policy</h3>
+      <p>This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: </p>
+      <p>Educational use only, No warranty or liability assumed, User responsible for legal compliance</p>
+      <p>These line drawings are the original creations of Fernanodo Fula. Users are permitted to color these images for personal use only. Any reproduction, distribution, or commercial use without explicit permission is prohibited.</p>
+      <p>This website is hosted on GitHub Pages. We do not collect or store any personal information or use analytics/tracking cookies. However, GitHub may collect technical data (such as IP addresses and browser information) for security and performance purposes, as described in the 
+      <a href="https://docs.github.com/privacy" target="_blank" rel="noopener" style="color: #ff1100 !important;">GitHub Privacy Statement</a>.</p>
+      <p>For more information, please refer to GitHub’s privacy practices.</p>
+    </div>    
+  </div>
+</div>   
+
 
 <div class="container">
   <!-- Initial Screen -->
@@ -129,14 +174,14 @@
   </div>
 
   <!-- Coloring App Screen -->
-  <div id="appContent">
-
-    <div class="actions">
-      <button id="undoBtn">Undo</button>
-      <button id="restartBtn">Restart</button>
-      <button id="saveBtn">Save</button>
-    </div>
+  <div id="appContent">  
       
+    <!-- <div class="actions">
+      <button id="undoBtn"><i class="material-icons">undo</i><br/>Undo</button>
+      <button id="restartBtn"><i class="material-icons">restart_alt</i><br/>Restart</button>
+      <button id="saveBtn"><i class="material-icons">save</i><br/>Save</button>
+    </div> -->
+
     <div id="canvas-container">
       <canvas id="coloringCanvas"></canvas>
     </div>
@@ -146,47 +191,68 @@
       <canvas id="colorBar" height="36"></canvas>
     </div>
 
-    <div class="toolbar">
-      <label>
-        Brush:
-        <input type="range" id="brushSize" min="5" max="40" value="15">
-        <span id="brushValue">15</span>
-      </label>
-      <label>
-        Opacity:
-        <input type="range" id="opacity" min="0.05" max="1" step="0.05" value="0.2">
-        <span id="opacityValue">0.20</span>
-      </label>
-    </div>
-
-
+    <!-- end of appcontent -->
   </div>
 
-   <div class="footer">
-    <button id="policy" onclick="toggleVisibility()">Terms & Privacy Policy</button>
-    <div id="collapsibleContent" style="display: none;">
-        <p>This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: 
-        Educational use only, No warranty or liability assumed, User responsible for legal compliance</p>
-        <p>These line drawings are the original creations of Fernanodo Fula. Users are permitted to color these images for personal use only. Any reproduction, distribution, or commercial use without explicit permission is prohibited.</p>
-        <p>This website is hosted on GitHub Pages. We do not collect or store any personal information or use analytics/tracking cookies. However, GitHub may collect technical data (such as IP addresses and browser information) for security and performance purposes, as described in the 
-        <a href="https://docs.github.com/privacy" target="_blank" rel="noopener" style="text-decoration: underline;">GitHub Privacy Statement</a>.
-        </p>
-        <p>
-        For more information, please refer to GitHub’s privacy practices.
-        </p>
-    </div>
+  <!-- End of container -->
 </div>
+
+<!-- Footer with 3 columns -->
+  <div class="footer">
+    <div class="col" data-panel="panel1" title="Brush Size">
+      <div class="icon-placeholder">
+       <i class="material-icons">brush</i>
+      </div>
+    </div>
+    <div class="col" data-panel="panel2" title="Brush Opacity">
+      <div class="icon-placeholder">
+       <i class="material-icons">opacity</i>
+      </div>
+    </div>
+    <div class="col"  title="Undo">
+      <div class="icon-placeholder"> 
+       <i class="material-icons"  id="undoBtn" >undo</i>
+      </div>
+    </div>
+    <div class="col" title="Save">
+      <div class="icon-placeholder"> 
+       <i class="material-icons"  id="saveBtn">save</i>
+      </div>
+    </div>
+  </div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay"></div>
+
+<!-- Slide up panels -->
+<div id="panel1" class="slide-panel">
+  <div class="close-btn" title="Close Panel">&times;</div>
+  <div class="panel-content">
+    <h3>Brush || <span id="brushValue">15</span>  <input type="range" id="brushSize" min="5" max="40" value="15"></h3>
+  </div>
+</div>
+
+<div id="panel2" class="slide-panel">
+  <div class="close-btn" title="Close Panel">&times;</div>
+  <div class="panel-content">
+    <h3>Opacity ||   <span id="opacityValue">0.20</span>  <input type="range" id="opacity" min="0.05" max="1" step="0.05" value="0.2"></h3>       
+  </div>
+</div>
+
+<div id="panel3" class="slide-panel">
+  <div class="close-btn" title="Close Panel">&times;</div>
+  <div class="panel-content">
+     
+  </div>
+</div>
+
 <script>
-  const menuToggle = document.getElementById('menuToggle');
-  const menu = document.getElementById('menu');
+  
   const mainSelection = document.getElementById('mainSelection');
   const appContent = document.getElementById('appContent');
   const backButton = document.getElementById('backButton');
   const imageOptions = document.querySelectorAll('.imageOption');
 
-  menuToggle.addEventListener('click', () => {
-    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-  });
 
   // Store the current loaded image globally
   let currentImage = null;
@@ -270,7 +336,7 @@ colorBar.addEventListener('click', function(e) {
   const opacitySlider = document.getElementById('opacity');
   const opacityValue = document.getElementById('opacityValue');
   const undoBtn = document.getElementById('undoBtn');
-  const restartBtn = document.getElementById('restartBtn');
+  // const restartBtn = document.getElementById('restartBtn');
   const saveBtn = document.getElementById('saveBtn');
 
   let strokes = [];
@@ -369,15 +435,15 @@ function getCoords(e) {
     redrawAll();
   });
 
-  restartBtn.addEventListener('click', () => {
-    strokes = [];
-    if (currentImage) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(currentImage, 0, 0);
-    } else {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-  });
+  // restartBtn.addEventListener('click', () => {
+  //   strokes = [];
+  //   if (currentImage) {
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //     ctx.drawImage(currentImage, 0, 0);
+  //   } else {
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //   }
+  // });
 
   saveBtn.addEventListener('click', () => {
     const link = document.createElement('a');
@@ -424,6 +490,98 @@ function getCoords(e) {
   infoDialog.addEventListener('click', (event) => {
     if (event.target === infoDialog) {
       infoDialog.style.display = 'none';
+    }
+  });
+
+  const infoIconTwo = document.getElementById('infoIconTwo');
+  const infoDialogTwo = document.getElementById('infoDialogTwo');
+  const closeDialogBtnTwo = document.getElementById('closeDialogBtnTwo');
+
+  // Show dialog when info icon clicked
+  infoIconTwo.addEventListener('click', () => {
+    infoDialogTwo.style.display = 'flex';
+  });
+
+  // Hide dialog when close button clicked
+  closeDialogBtnTwo.addEventListener('click', () => {
+    infoDialogTwo.style.display = 'none';
+  });
+
+  // Optional: Close dialog when clicking outside dialog content
+  infoDialogTwo.addEventListener('click', (event) => {
+    if (event.target === infoDialogTwo) {
+      infoDialogTwo.style.display = 'none';
+    }
+  });
+
+  //footer controls
+
+    const footerCols = document.querySelectorAll('.footer .col');
+  const panels = document.querySelectorAll('.slide-panel');
+  const overlay = document.getElementById('overlay');
+
+  // Function to close all panels
+  function closeAllPanels() {
+    panels.forEach(panel => panel.classList.remove('active'));
+    overlay.classList.remove('active');
+  }
+
+  // Toggle panel open/close
+  footerCols.forEach(col => {
+    col.addEventListener('click', () => {
+      const targetId = col.getAttribute('data-panel');
+      const targetPanel = document.getElementById(targetId);
+
+      if (targetPanel.classList.contains('active')) {
+        closeAllPanels();
+      } else {
+        closeAllPanels();
+        targetPanel.classList.add('active');
+        overlay.classList.add('active');
+      }
+    });
+  });
+
+  // Close panel on clicking close icon
+  panels.forEach(panel => {
+    const closeBtn = panel.querySelector('.close-btn');
+    closeBtn.addEventListener('click', () => {
+      closeAllPanels();
+    });
+  });
+
+  // Close panel if click outside the panel (on overlay)
+  overlay.addEventListener('click', () => {
+    closeAllPanels();
+  });
+
+  // Optional: Prevent clicks inside panel from closing it
+  panels.forEach(panel => {
+    panel.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  const hamburger = document.getElementById('hamburger');
+  const sidePanel = document.getElementById('sidePanel');
+  
+
+  function toggleMenu() {
+    const isActive = hamburger.classList.toggle('active');
+    sidePanel.classList.toggle('active', isActive);
+  
+    hamburger.setAttribute('aria-expanded', isActive);
+    sidePanel.setAttribute('aria-hidden', !isActive);
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+  
+
+  // Accessibility: toggle via keyboard (Enter or Space)
+  hamburger.addEventListener('keydown', (e) => {
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      toggleMenu();
     }
   });
 
