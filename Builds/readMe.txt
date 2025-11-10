@@ -1,6 +1,6 @@
 PDF PostCard Creator
 
-https://jfuladotcom.github.io/Builds/promptpal/pdfPostCard.html
+https://jfuladotcom.github.io/Builds/pdfPostCard.html
 
 ------------------------------------------
 
