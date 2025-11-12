@@ -78,7 +78,10 @@
       <input type="text" id="backPhone" placeholder="Enter phone number here" required />
     </label>
     <label>
-      <input type="text" id="backWebsite" placeholder="enter website here" required />
+      <input type="email" id="backEmail" placeholder="Enter email address here" required />
+    </label>
+    <label>
+      <input type="text" id="backWebsite" placeholder="Enter website here" required />
     </label>
     <label>Logo Image:
       <input type="file" id="backLogo" accept="image/*" required />
@@ -90,7 +93,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.3/jspdf.umd.min.js"></script>
 <script>
- async function generatePDF() {
+async function generatePDF() {
   try {
     const { jsPDF } = window.jspdf;
 
@@ -98,6 +101,7 @@
     const backContent = safeString(document.getElementById("backContent").value);
     const backName = safeString(document.getElementById("backName").value);
     const backPhone = safeString(document.getElementById("backPhone").value);
+    const backEmail = safeString(document.getElementById("backEmail").value);
     const backWebsite = safeString(document.getElementById("backWebsite").value);
 
     const frontImageFile = document.getElementById("frontImage").files[0];
@@ -121,56 +125,54 @@
 
     doc.addPage();
 
-    // Vertical dividing line at 3.5 inch
+    // Vertical dividing line
     doc.setDrawColor(0);
     doc.setLineWidth(0.01);
-    doc.line(3.5, .3, 3.5, 4.8);
+    doc.line(3.5, 0.3, 3.5, 4.8);
 
     const paddingLeft = 0.3;
-    const maxTextWidth = 3.5 - 2 * paddingLeft; // left side content width minus padding
+    const maxTextWidth = 3.5 - 2 * paddingLeft;
 
-    // Header and content at top
+    // Header & content
     let y = 0.5;
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(20);
+    doc.setFontSize(15);
     doc.text(backHeader, paddingLeft, y, { maxWidth: maxTextWidth });
 
     y += 0.25;
     doc.setFontSize(10);
     doc.text(backContent, paddingLeft, y, { maxWidth: maxTextWidth });
 
-    // Position Name, Phone, Website stacked at bottom with no gaps
+    // Stack Name, Phone, Email, Website
     const pageHeight = 5;
     const bottomMargin = 1;
     const fontSizePt = 10;
     const fontSizeInches = fontSizePt / 60;
 
-    // Calculate y for stacked lines from bottom
     const yWebsite = pageHeight - bottomMargin;
-    const yPhone = yWebsite - fontSizeInches;
+    const yEmail = yWebsite - fontSizeInches;
+    const yPhone = yEmail - fontSizeInches;
     const yName = yPhone - fontSizeInches;
 
     doc.setFontSize(fontSizePt);
-    doc.text(`${backName}`, paddingLeft, yName);
-    doc.text(`${backPhone}`, paddingLeft, yPhone);
-    doc.text(`${backWebsite}`, paddingLeft, yWebsite);
+    doc.text(backName, paddingLeft, yName);
+    doc.text(backPhone, paddingLeft, yPhone);
+    doc.text(backEmail, paddingLeft, yEmail);
+    doc.text(backWebsite, paddingLeft, yWebsite);
 
-    // Calculate logo width based on fixed height preserving aspect ratio
-    const logoFixedHeightInches = 0.75; // fixed logo height
+    // Logo
+    const logoFixedHeightInches = 0.75;
     const dimensions = await loadImageDimensions(backLogoData);
     const scaledWidth = (dimensions.width / dimensions.height) * logoFixedHeightInches;
-
-    // Logo image just below Website line with a small gap
     const logoGap = 0.1;
     const yLogo = yWebsite + logoGap;
 
     doc.addImage(backLogoData, "PNG", paddingLeft, yLogo, scaledWidth, logoFixedHeightInches);
 
-    // Open PDF in new tab instead of downloading
+    // Open PDF in new tab
     const pdfBlob = doc.output("blob");
     const url = URL.createObjectURL(pdfBlob);
     window.open(url, "_blank");
-
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   } catch (err) {
     console.error("Error during PDF generation: ", err);
@@ -178,7 +180,6 @@
   }
 }
 
-// Helper functions
 function safeString(value) {
   return value ? String(value) : "";
 }
@@ -206,7 +207,6 @@ function loadImageDimensions(base64Img) {
     img.src = base64Img;
   });
 }
-
 </script>
 
 </body>
