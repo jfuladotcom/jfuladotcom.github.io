@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Human GenAi</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 13px; margin: 0; padding: 20px; line-height: 1.5em; color: #333;  }  
+        body { font-family: Arial, sans-serif; font-size: 13px; margin: 0; padding: 0; line-height: 1.5em; color: #333;  }  
         .container{ position: relative; margin: 0 auto; max-width: 900px;}
         h2{ text-align: center;}
         hr{ color:#efefef;}
@@ -15,11 +15,18 @@
         #grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; } 
         .app { border: 1px solid #ddd; padding: 10px;  border-radius: 10px;  filter: drop-shadow(5px 5px 3px #efefef); background-color: #fff;} 
         .app img { width: 100%; height: auto; }
-        .banner{text-align: center;}
-        .wrapper{ position: relative; margin: 0 auto; max-width: 80%; }
-        .banner > img{ width: 100%;}
+
+        .banner {  position: relative;  text-align: center;  background-image: url('imgs/banner.jpg');  background-attachment: fixed;  background-position: top center;
+                   background-repeat: no-repeat;  height: 300px;  display: flex;  align-items: center;  justify-content: center;  color: white;  background-size: 100%;
+                   overflow: hidden; box-shadow: 0px 3px 10px rgba(0,0,0,.3); border-bottom: 5px #333 solid; margin: 0 0 30px 0; }
+        .banner::before {  content: "";  position: absolute;  inset: 0;  background: rgba(0, 0, 0, 0.4); }
+        .banner > div {  position: relative;  z-index: 2;  margin: 0 auto;  max-width: 900px;  padding: 20px; }
+        .banner > div > img {  width: 100%;  height: auto;  border-radius: 8px;   }
+        
+        .wrapper{ position: relative; margin: 0 auto; max-width: 80%; }        
         .styleLink{ color:#b37010; font-weight: bold; }
-        .footer{ text-align: center;}
+        .footer{ text-align: center; background: #f2f2f2; margin: 25px 0 0 0;}
+        .footer > div{position: relative; margin: 0 auto; max-width: 800px; padding: 8px;}
         a{text-decoration: none; color:#333; }
         
         /* Media Queries for Responsiveness */
@@ -38,11 +45,16 @@
 </head>
 <body>
     
-    <div class="container">
-        <div class="banner"><img src="human-GenAi.png"></div>
+    <div class="banner">
+        <div><img src="human-GenAi.png"></div>
+    </div>
+    <div class="container">        
         <div class="wrapper">
             <div id="mission">                        
-                <p>My mission is to empower people through the transformative potential of Generative AI. I believe that this groundbreaking technology is breaking down barriers to understanding and accessibility, making knowledge, tools, and opportunities available to everyone—regardless of their background. By harnessing the power of GenAI, I aim to uplift individuals and communities, driving unprecedented economic growth and creating a future where innovation is truly inclusive.</p>
+                <p>My mission is to empower people through the transformative potential of Generative AI. This technology is redefining how we learn, 
+                    create, and connect breaking down barriers to knowledge, accessibility, and opportunity. By using GenAI to make advanced tools and 
+                    information universally available, I aim to uplift individuals and communities, spark innovation across industries, and drive 
+                    inclusive economic growth. My goal is to help build a future where the benefits of artificial intelligence are shared by everyone.</p>
             </div>
             <input type="text" id="search" placeholder="Search for apps here...">            
             <!-- end of wrapper -->
@@ -153,6 +165,13 @@
                 thumbnail: "imgs/thmb-014.png",
                 keywords: ["LLM", "Ai", "data, labeling" ],
                 link: "https://github.com/jfuladotcom/CreativeDataLabeling"
+            },
+          {
+                title: "Post Card PDF Generator",
+                description: "This is an app that will generate a post card in 5 x 7 format. ",
+                thumbnail: "imgs/thmb-015.png",
+                keywords: ["PDF", "post card", "print" ],
+                link: "https://jfuladotcom.github.io/Builds/pdfPostCard.html"
             }
 
             
@@ -193,21 +212,27 @@
     
         renderApps(apps);
     </script>
-    <p>&nbsp;</p>
-    <hr>
-    <div class="footer">
-        <p>This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: 
-            Educational use only, No warranty or liability assumed, User responsible for legal compliance</p>            
-            <i>95% of this website and apps were created using GenAi</i></br>
-            <a class="styleLink" href="https://github.com/jfuladotcom" target="_blank">My Github jfuladotcom</a>
-        </p>
-        <p>This website is hosted on GitHub Pages. We do not collect or store any personal information or use analytics/tracking cookies. However, GitHub may collect technical data (such as IP addresses and browser information) for security and performance purposes, as described in the 
-          <a href="https://docs.github.com/privacy" target="_blank" rel="noopener" style="text-decoration: underline;">GitHub Privacy Statement</a>.
-        </p>
-        <p>
-          For more information, please refer to GitHub’s privacy practices.
-        </p>
-    </div>
+    
+    
+<!-- end of container -->
 </div>
+
+    <div class="footer">
+        <div>
+            <p>This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: 
+                Educational use only, No warranty or liability assumed, User responsible for legal compliance</p>            
+                <i>95% of this website and apps were created using GenAi</i></br>
+                <a class="styleLink" href="https://github.com/jfuladotcom" target="_blank">My Github jfuladotcom</a>
+            </p>
+            <p>This website is hosted on GitHub Pages. We do not collect or store any personal information or use analytics/tracking cookies. However, GitHub may collect technical data (such as IP addresses and browser information) for security and performance purposes, as described in the 
+            <a href="https://docs.github.com/privacy" target="_blank" rel="noopener" style="text-decoration: underline;">GitHub Privacy Statement</a>.
+            </p>
+            <p>
+            For more information, please refer to GitHub’s privacy practices.
+            </p>
+        </div>  
+        <!-- end of footer       -->
+    </div>
+
 </body>
 </html>
