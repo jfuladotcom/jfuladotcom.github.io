@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talk to AI</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; background-color: #232832; color:#efefef; } 
+    body{ background-image: linear-gradient(rgba(34, 41, 51, 1), rgba(17, 13, 14, 1)); background-size: cover;  background-position: center;   background-repeat: no-repeat; } 
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; /* Rounded corners for buttons */ } 
+    h1, h2{color: #ea5f12; line-height: 2.5rem;}
+    p{ text-align: left !important;}
+    ul{ text-align: left !important;}
+    li{ margin-bottom: 10px;}
+    a{  color: #f49600; font-weight: bold;}
+    b{ color: #f49600; }
+    i{ font-weight: bold;}
+
+    #copyButton{  border:1px #efefef solid; background-color: transparent; color:#efefef; }
+    #textToCopy{ line-height: 1.6em;}
+    
+    .container { position: relative; margin: 0 auto; max-width: 900px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px 100px 20px; } 
+    .section { display: none; line-height: 1.5rem; } 
+    .section.active { display: block;  } 
+    .navigation { display: flex; justify-content: space-between; padding: 10px 10px 20px 10px; background-color: #110d0e; position: fixed; bottom: 0; left: 0; right: 0;} 
+    .navigation button { padding: 10px 20px; font-size: 16px; cursor: pointer; font-weight: bold; border: none; border-radius: 5px; border:1px #efefef solid; background-color: #1c1618; color:#efefef; } 
+    .navigation button:hover{ background-color: #45373b;}
+    .navigation button:first-child { margin-right: auto; border:0;  } 
+    .navigation button:last-child { margin-left: auto; border:0;  } 
+    .home-button { position: absolute; top: 10px; left: 10px; width: 80px; z-index: 999; background-color: #3d4353; color:#efefef;} 
+    .home-button:hover{ background-color: #50576c; }
+    .start-btn{ background-color: #f49600; width: 100%; font-weight: bold; margin-top:25px;}
+    .start-btn:hover{ background-color: #f7aa2f; }
+    .logo{ position: absolute; left: 15px; top: 15px; max-width: 100px; border-radius: 0 0 10px 10px;  }
+    .logo > a > img{ width: 100%;}
+    .yellow{ color:#f49700;}    
+    .orange{ color:#ea5f12;}    
+    .navigation {} 
+    .navigation button { padding: 10px; font-size: 14px; } 
+    .camera-container {  position: fixed; bottom: 50px; right: 0; padding: 20px;  display: none; }
+    .camera-svg {  display: block; }
+
+    @media (max-width: 600px) { }
+  </style>
+</head>
+<body>
+  <button class="home-button" onclick="goHome()">Home</button>
+  <div id="container" class="container">
+
+    <div id="section1" class="section active">
+      <h1>Talking to the Smartest Being Alive <br/> (Who Knows Nothing About You)</h1>
+      <p>Imagine you’re talking to the world’s smartest person who just woke up from a thousand-year nap. You ask them a question, and they immediately start answering but they have no idea who you are, what you know, or what language you even speak. That’s what it’s like when you talk to an AI with no context.</p>
+      <p>AI isn’t Google. You’re not throwing a question into the void and scrolling through a list of results, pretending you’ll check page two (we never do). Instead, you’re having a conversation with a system that’s trying to understand you. The better it knows your goal, your background, and even your style of thinking, the better it can tailor its answers. </p>
+      <p>We’re transitioning from solo investigation into true collaboration where research and discovery become a partnership between human curiosity and machine intelligence. This transition is more than mere convenience; it marks the beginning of closing the gap between searching, finding, collecting, translating, and understanding. We are in the age of removing the traditional barriers that once stood between knowledge and action.</p>
+      
+        <ul>
+        <li><b>Accelerate Creativity:</b> AI tools can help you brainstorm, iterate, and visualize ideas rapidly.</li>
+        <li><b>Expand Your Toolkit:</b> Access new styles, mediums, and workflows not possible before.</li>
+        <li><b>Stay Relevant:</b> Understanding AI keeps you competitive in a rapidly evolving art landscape.</li>
+      </ul>
+      <p>AI is not a replacement for people, it's a powerful ally.</p>
+      <ol>
+        <li><a href="#section2" onclick="goToSection(2); return false;">A New Kind of Conversation</a></li>
+        <li><a href="#section3" onclick="goToSection(3); return false;">Context - The Secret Ingredient</a></li>
+        <li><a href="#section4" onclick="goToSection(4); return false;">The Language of Thought - LLMs</a></li>
+        <li><a href="#section5" onclick="goToSection(5); return false;">Shaping the Output The Art of Balance</a></li>
+        <li><a href="#section6" onclick="goToSection(6); return false;">Beyond Prompts - Enter the Agents</a></li>
+        <li><a href="#section7" onclick="goToSection(7); return false;">The Mindset Shift - Teaching the Machine to Think With You</a></li>
+        <li><a href="#section8" onclick="goToSection(8); return false;">Prompt Library</a></li>
+      </ol>
+      <button class="start-btn" onclick="nextSection()">Start</button>
+    </div>
+
+    <div id="section2" class="section">
+      <h2>1. A New Kind of Conversation</h2>
+      <p><i class="orange">Picture this:</i> you open your laptop and type your first message to AI. You ask it something simple  “How can I learn coding fast?” You wait for the answer like it’s Google, expecting a list of tutorials and videos.</p>
+      <p>But AI doesn’t search it thinks. It gathers everything it knows, blends it together, and tailors an answer for you. The only problem? It doesn’t know who you are yet. That’s why your job, before anything else, is to set the stage.</p>
+      <p><i class="orange">When you start a new chat, tell it about yourself:</i> your skill level, what you want to achieve, even how you like information delivered. That’s how AI stops guessing and starts collaborating.</p>
+      <i class="yellow">Example:</i>
+      <p class="yellow">Think of AI like meeting a genius traveler who knows everything about the world’s history but has never heard of your hometown. Before you can ask meaningful questions, you need to give them your map.</p>
+    </div>
+
+    <div id="section3" class="section">
+      <h2>2. Context – The Secret Ingredient</h2>
+      <p><span class="orange">AI prompting isn’t about magic words; it’s about context.</span> Think of it like meeting a new teammate. The first thing you do is introduce yourself.</p>
+      <p class="orange">The better you frame the situation, the smarter your results. For example:</p>
+      <ol>
+        <li>“I’m a beginner with no coding experience.”</li>
+        <li>“I learn best from examples and analogies.”</li>
+        <li>“Explain new terms simply as if you’re teaching a friend.”</li>
+      </ol>
+      <p>Context tells AI how to think with you, not at you. It turns information into understanding and transforms random output into something built exactly for your brain.</p>
+      <i class="yellow">Example:</i>
+      <p class="yellow">Asking an AI “Write a marketing strategy” with no details is like asking a chef to “make dinner.” If you add, “for a small bakery launching an online store on a tight budget,” you’ll get recipes that actually make sense.</p>
+    </div>
+
+     <div id="section4" class="section">
+      <h2>3. The Language of Thought - LLMs</h2>
+      <p>Behind the scenes, large language models (LLMs) act like translators for human thought. They take our messy ideas and shape them into structured reasoning, code, summaries, and creative concepts.</p>
+        <p>You’re not coding in some abstract machine language anymore you’re coding in your language. Every time you write a prompt, you’re teaching an analytical partner how to think like you.</p>
+        <i class="yellow">Example:</i>
+        <p class="yellow">Google is like a library index it points you to books. AI is like a friendly librarian who listens, thinks, and writes a summary tailored to what you actually need.</p>
+    </div>
+
+    <div id="section5" class="section">
+      <h2>4. Shaping the Output The Art of Balance</h2>
+        <p>You’ve probably noticed AI sometimes gets too creative or too stiff. That’s because of the “temperature knob.”</p>
+        <ol>
+          <li>A low temperature (0.2) keeps answers focused and logical.</li>
+          <li>A high temperature (1.0) encourages imagination and diverse ideas.</li>
+        </ol>
+        <p>Experiment with it like seasoning food: find the right mix of precision and creativity for your task. And there are other ingredients too: top-p, top-k, frequency and presence penalties each shaping how your AI writes, reasons, and repeats.</p>
+        <i class="yellow">Example:</i>
+        <p class="yellow">A low temperature makes AI write like a lawyer, formal and precise. A high one makes it sound like a storyteller or artist. It’s the difference between reading a report and hearing a campfire story.</p>
+    </div>
+
+    <div id="section6" class="section">
+      <h2>5. Beyond Prompts  Enter the Agents</h2>
+          <p>Now, imagine promoting your AI from assistant to operator. Enter AI agents. These are self-directed digital teammates that can plan, reason, execute tasks, and even call other tools on your behalf.</p>
+          <p>They remember past instructions, use APIs, and adjust strategies in real time.</p>
+          <p class="orange">Their workflow looks like this:</p>
+          <ol>
+            <li>Understand the objective.</li>
+            <li>Plan the approach.</li>
+            <li>Execute and analyze.</li>
+            <li>Improve through feedback.</li>
+          </ol>
+          <p>To manage them, a Super Admin ensures everything is safe, secure, and organized   keeping your expanding AI team aligned with your goals.</p>
+          
+          <p class="yellow">Picture this: you tell your AI agent, “Research local competitors, draft a summary, and email me the findings.” The agent does it, no copy-pasting required. It’s like having an employee who never gets tired or distracted.</p>
+    </div>
+
+    <div id="section7" class="section">
+      <h2>6. The Mindset Shift - Teaching the Machine to Think With You</h2>
+      <!-- <button id="copyButton">Copy Example Prompt</button> -->
+        <p>This isn’t just a tech lesson; it’s a new relationship with information itself.</p>
+        <p>We’re not searching anymore, we’re teaching.</p>
+        <p>We feed AI data, context, goals, and in return, it helps us think, build, and create.</p>
+        <p>AI isn’t replacing understanding; it’s amplifying it. The better we feed and guide it, the smarter and more human-aligned it becomes. That’s the future   not just using AI, but growing with it.</p>
+        <i class="yellow">Example:</i>
+        <p>Think of AI like training a loyal dog or mentoring a new teammate. The more you communicate, the more it learns your style and anticipates what you need. Over time, it stops following commands   and starts collaborating.</p>      
+    </div>
+
+    <div id="section8" class="section">
+      <h2>7. Prompt Library</h2>
+      <ul>
+        <li><b>Prompt Ai:</b> Adobe Firefly, Google Labs, Perplexity.ai</li>
+        <li><b>AI Art Communities:</b> OpenArt, Discord groups, Reddit forums</li>
+        <li><b>Experiment:</b> Practice daily and keep a prompt journal for your best results</li>
+      </ul>
+      <button class="start-btn" onclick="restartApp()">Back to the start</button>
+    </div>
+
+  </div>
+  <div class="navigation">
+    <button onclick="prevSection()">Previous</button>
+    <button onclick="nextSection()">Next</button>
+  </div>
+  <script>
+    let currentSection = 1;
+    const totalSections = 8;
+    function updateSections() {
+      for (let i = 1; i <= totalSections; i++) {
+        const section = document.getElementById(`section${i}`);
+        if (i === currentSection) {
+          section.classList.add('active');
+        } else {
+          section.classList.remove('active');
+        }
+      }
+      window.scrollTo(0, 0);
+    }
+    function nextSection() {
+      if (currentSection < totalSections) {
+        currentSection++;
+        updateSections();
+        updateURL();
+      }
+    }
+    function prevSection() {
+      if (currentSection > 1) {
+        currentSection--;
+        updateSections();
+        updateURL();
+      }
+    }
+    function goHome() {
+      currentSection = 1;
+      updateSections();
+      updateURL();
+    }
+    function restartApp() { goHome(); }
+    function goToSection(sectionNumber) {
+      if (sectionNumber >= 1 && sectionNumber <= totalSections) {
+        currentSection = sectionNumber;
+        updateSections();
+        updateURL();
+      }
+    }
+    function updateURL() {
+      history.pushState(null, '', `#section${currentSection}`);
+    }
+    window.addEventListener('hashchange', function() {
+      const sectionNumber = parseInt(window.location.hash.slice(8));
+      if (!isNaN(sectionNumber)) {
+        goToSection(sectionNumber);
+      }
+    });
+    if (window.location.hash) {
+      const sectionNumber = parseInt(window.location.hash.slice(8));
+      if (!isNaN(sectionNumber)) {
+        goToSection(sectionNumber);
+      } else {
+        updateURL();
+      }
+    } else {
+      updateURL();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const copyButton = document.getElementById('copyButton');
+      const textToCopy = document.getElementById('textToCopy');
+      if(copyButton && textToCopy){
+        copyButton.addEventListener('click', () => {
+          const text = textToCopy.innerText || textToCopy.textContent;
+          navigator.clipboard.writeText(text).then(() => {
+            copyButton.textContent = 'Copied!';
+          }).catch(err => {
+            console.error('Failed to copy: ', err);
+            copyButton.textContent = 'Copy failed';
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
