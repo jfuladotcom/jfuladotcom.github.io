@@ -8,3 +8,8 @@ https://jfuladotcom.github.io/HumanGenAi/index.html
 This open source project is provided strictly for educational purposes only. By accessing or using these apps, you agree to the following: Educational use only, No warranty or liability assumed, User responsible for legal compliance
 
 95% of this website and apps were created using GenAi
+
+---------------------------------------------------------------------------------------
+
+Talking To AI - Presentation
+https://jfuladotcom.github.io/HumanGenAi/TalkingToAI/index.html
