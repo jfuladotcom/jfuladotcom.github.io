@@ -29,6 +29,8 @@
     .navigation button:last-child { margin-left: auto; border:0;  } 
     .home-button { position: absolute; top: 10px; left: 10px; width: 80px; z-index: 999; background-color: #3d4353; color:#efefef;} 
     .home-button:hover{ background-color: #50576c; }
+    .created-button { position: absolute; top: 10px; right: 10px; width: 225px; z-index: 999; background-color: #3d4353; color:#efefef;} 
+    .created-button:hover{ background-color: #50576c; }
     .start-btn{ background-color: #f49600; width: 100%; font-weight: bold; margin-top:25px;}
     .start-btn:hover{ background-color: #f7aa2f; }
     .logo{ position: absolute; left: 15px; top: 15px; max-width: 100px; border-radius: 0 0 10px 10px;  }
@@ -45,6 +47,7 @@
 </head>
 <body>
   <button class="home-button" onclick="goHome()">Home</button>
+  <button class="created-button" onclick="jfula()">Created by: JFula.com</button>
   <div id="container" class="container">
 
     <div id="section1" class="section active">
@@ -189,6 +192,11 @@
       updateSections();
       updateURL();
     }
+    
+    function jfula() {
+        window.open('https://jfula.com/', '_blank');
+    }
+    
     function restartApp() { goHome(); }
     function goToSection(sectionNumber) {
       if (sectionNumber >= 1 && sectionNumber <= totalSections) {
