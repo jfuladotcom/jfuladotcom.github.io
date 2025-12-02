@@ -9,12 +9,14 @@
     body{ background-image: linear-gradient(rgba(34, 41, 51, 1), rgba(17, 13, 14, 1)); background-size: cover;  background-position: center;   background-repeat: no-repeat; } 
     button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; /* Rounded corners for buttons */ } 
     h1, h2{color: #ea5f12; line-height: 2.5rem;}
+    h3, h4{color: #f49600;}
     p{ text-align: left !important;}
     ul{ text-align: left !important;}
     li{ margin-bottom: 10px;}
     a{  color: #f49600; font-weight: bold;}
     b{ color: #f49600; }
     i{ font-weight: bold;}
+    blockquote {  background: #3a4251; border-left: 4px solid #f49600; padding: 20px; margin: 20px 0; font-size: 1em; font-style: italic; border-radius: 8px;  }
 
     #copyButton{  border:1px #efefef solid; background-color: transparent; color:#efefef; }
     #textToCopy{ line-height: 1.6em;}
@@ -35,8 +37,8 @@
     .start-btn:hover{ background-color: #f7aa2f; }
     .logo{ position: absolute; left: 15px; top: 15px; max-width: 100px; border-radius: 0 0 10px 10px;  }
     .logo > a > img{ width: 100%;}
-    .yellow{ color:#f49700;}    
-    .orange{ color:#ea5f12;}    
+    .yellow{ color:#f49700;}    .bad{ color: #f34646;}
+    .orange{ color:#ea5f12;}    .better{color: #3cae62;}
     .navigation {} 
     .navigation button { padding: 10px; font-size: 14px; } 
     .camera-container {  position: fixed; bottom: 50px; right: 0; padding: 20px;  display: none; }
@@ -146,7 +148,93 @@
 
     <div id="section8" class="section">
       <h2>7. Prompt Library</h2>
-      <p>Coming Soon...</p>      
+      <span class="yellow">Click any prompt box to instantly copy expert prompts for AI collaboration. Organized into 8 categories from context setting and goal clarification to agent style operators and meta-prompts this library transforms vague AI chats into productive partnerships, perfect for presentations or daily use.</span>
+            <section>
+              <h2>1. Introduce yourself (context prompts)</h2>
+              <blockquote tabindex="0" title="Click to copy">I'm [role] with [experience level] in [domain]. My goal is [goal]. I prefer explanations that are [style: e.g., visual, step-by-step, or analogy-driven]. Before answering, ask up to three clarifying questions about my context.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Assume you just woke up after 1,000 years and know nothing about me. Ask me the most important 5 questions to understand my background, my project, and how to best help me.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Act as a collaborative partner, not just a question-answer machine. Start by summarizing your understanding of who I am and what I'm trying to achieve, then propose how you can help.</blockquote>
+            </section>
+
+            <section>
+              <h2>2. Clarify the goal (task framing)</h2>
+              <blockquote tabindex="0" title="Click to copy">Help me define my goal more clearly. Ask questions, then rewrite my goal as: 'From [current state] to [desired outcome] by [timeframe], measured by [success metric].'</blockquote>
+              <blockquote tabindex="0" title="Click to copy">I'm not sure exactly what I need. Based on this rough idea: [paste idea], suggest 3 possible concrete tasks we could work on together and recommend one to start with.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Before solving anything, restate the problem in your own words, list assumptions you are making about my goal, and ask me to confirm or correct them.</blockquote>
+            </section>
+
+            <section>
+              <h2>3. Teach the AI your style</h2>
+              <blockquote tabindex="0" title="Click to copy">Here is how I like information: [bullets: e.g., short, structured, with examples, minimal jargon]. When you answer, follow that style and tell me if my request is missing anything critical.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Act like a [tone: e.g., coach / tutor / consultant / engineer / storyteller]. Use that voice while keeping the content accurate and practical.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Explain this to me as if I'm [beginner / intermediate / expert] in [topic]. If I seem confused, automatically slow down and add simpler examples.</blockquote>
+            </section>
+
+            <section>
+              <h2>4. Turn vague asks into good prompts</h2>
+               
+                <p class="yellow">You can show "bad vs better" using these:</p>
+                <div class="bad">Bad: "Write a marketing strategy."</div>
+                <div class="better">Better: "Create a marketing strategy for a small local bakery launching an online store on a tight budget. Audience: [describe]. Channels: [list]. Constraints: [time, budget, skills]. Deliver: a 90-day plan with weekly actions."</div>
+                <br/>
+                <div class="bad">Bad: "Help me learn coding fast."</div>
+                <div class="better">Better: "I'm new to coding and want to learn [language] to achieve [goal] in [timeframe]. I can commit [X hours/week]. Design a learning path with weekly milestones, practice tasks, and how I should use you as a tutor."</div>
+               
+                <blockquote tabindex="0" title="Click to copy">
+                  <ul>
+                    <li>Role you should play: [role]</li>
+                    <li>My background: [summary]</li>
+                    <li>Goal & constraints: [goal, time, tools]</li>
+                    <li>Output format: [bullets, table, code, checklist]</li>
+                    <li>Level & tone: [beginner/expert, formal/casual]</li>
+                  </ul>
+                </blockquote>
+            </section>
+
+            <section>
+              <h2>5. AI as collaborator (not a search box)</h2>
+              <blockquote tabindex="0" title="Click to copy">Don't just answer; propose a plan. First, give a 3-step plan for how we should tackle this together. Then execute step 1 and ask for my feedback before continuing.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Treat this as an ongoing collaboration. At each step, tell me: what you're doing, why, and what you need from me to improve the result.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">When I give you a draft (idea, email, code, slide), respond with:<br>
+                A quick diagnosis of strengths and weaknesses,<br>
+                3 concrete improvement suggestions,<br>
+                An improved version,<br>
+                One question to help refine further.</blockquote>
+            </section>
+
+            <section>
+              <h2>6. Control creativity (temperature-style prompts)</h2>
+              <p class="yellow">These let you talk about "temperature knobs" in human terms:</p>
+              <blockquote tabindex="0" title="Click to copy">Give me a low-creativity answer: precise, cautious, and focused on reliability, like a careful lawyer.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Now give me a high-creativity version: exploratory, full of fresh angles and metaphors, like a storyteller. Keep facts accurate.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">For each idea, label it as: Safe & Conventional / Balanced / Bold & Unusual so I can choose how creative to go.</blockquote>
+            </section>
+
+            <section>
+              <h2>7. Agents / operator-style prompts</h2>
+              <p class="yellow">To connect with the "promote your AI from assistant to operator" idea, use:</p>
+              <blockquote tabindex="0" title="Click to copy">You are my AI operator. For this request, you should:<br>
+                Plan the steps,<br>
+                Ask any missing questions,<br>
+                Execute as much as possible on your own,<br>
+                Present a summary plus next-step suggestions for me.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Act as an autonomous research assistant. Task: [research goal]. You should search, synthesize, and produce:<br>
+                A short executive summary,<br>
+                Key findings,<br>
+                Risks or gaps,<br>
+                Questions you still have for me.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Behave like a project manager AI. Given this objective: [objective], create a mini-roadmap, assign yourself subtasks, and walk me through progress step by step.</blockquote>
+            </section>
+
+            <section>
+              <h2>8. Meta-prompts to improve prompts</h2>
+              <p class="yellow">These are great to end the library and show "we're not searching, we're teaching":</p>
+              <blockquote tabindex="0" title="Click to copy">Critique my last prompt. Rewrite it to be clearer, more contextual, and more actionable for you, and explain what you changed and why.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">From our conversation so far, create a 'profile prompt' that describes who I am, how I think, and how you should work with me. I'll reuse it at the start of future chats.</blockquote>
+              <blockquote tabindex="0" title="Click to copy">Suggest 5 reusable prompts I can save in a personal library for: learning, writing, decision-making, brainstorming, and planning, tailored to my background.</blockquote>
+            </section>
+
+
       <button class="start-btn" onclick="restartApp()">Back to the start</button>
     </div>
 
@@ -235,6 +323,38 @@
         });
       }
     });
+
+
+
+    // this is code for copying prompts
+
+     document.querySelectorAll('blockquote').forEach(block => {
+    block.addEventListener('click', () => {
+      const textToCopy = block.textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          alert('Prompt copied to clipboard!');
+        }).catch(err => {
+          alert('Failed to copy text: ' + err);
+        });
+      } else {
+        // Fallback for unsupported browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = textToCopy;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          alert('Prompt copied to clipboard!');
+        } catch (err) {
+          alert('Failed to copy text: ' + err);
+        }
+        document.body.removeChild(textArea);
+      }
+    });
+  });
+
+
   </script>
 </body>
 </html>
