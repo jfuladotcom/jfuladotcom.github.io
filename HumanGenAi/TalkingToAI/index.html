@@ -17,6 +17,7 @@
     b{ color: #f49600; }
     i{ font-weight: bold;}
     blockquote {  background: #3a4251; border-left: 4px solid #f49600; padding: 20px; margin: 20px 0; font-size: 1em; font-style: italic; border-radius: 8px;  }
+    .blockquote {  background: #3a4251; border-left: 4px solid #f49600; padding: 20px; margin: 20px 0; font-size: 1em; font-style: italic; border-radius: 8px;  }
 
     #copyButton{  border:1px #efefef solid; background-color: transparent; color:#efefef; }
     #textToCopy{ line-height: 1.6em;}
@@ -43,6 +44,10 @@
     .navigation button { padding: 10px; font-size: 14px; } 
     .camera-container {  position: fixed; bottom: 50px; right: 0; padding: 20px;  display: none; }
     .camera-svg {  display: block; }
+    .img-container{ position: relative; max-width: 600px; margin: 0 auto; text-align: center; }
+    .img-container > img{ width: 90%;}
+    .img-container-DB{ position: relative;  margin: 0 auto; text-align: center; }
+    .img-container-DB > img{ width: 90%;}    
 
     @media (max-width: 600px) { }
   </style>
@@ -71,11 +76,25 @@
         <li><a href="#section5" onclick="goToSection(5); return false;">Shaping the Output The Art of Balance</a></li>
         <li><a href="#section6" onclick="goToSection(6); return false;">Beyond Prompts - Enter the Agents</a></li>
         <li><a href="#section7" onclick="goToSection(7); return false;">The Mindset Shift - Teaching the Machine to Think With You</a></li>
-        <li><a href="#section8" onclick="goToSection(8); return false;">Prompt Library</a></li>
       </ol>
-      <button class="start-btn" onclick="nextSection()">Start</button>
-    </div>
+      
+        <hr/><hr/>      
+          <div class="blockquote"><a href="#section8" onclick="goToSection(8); return false;">Prompt Library</a> Organized into 8 categories from context setting and goal clarification to agent style operators.</div>
+        <hr/><hr/>      
 
+      <h2>This process provides a high-level overview of what happens whenever AI is activated within a feature or application.</h2>
+      <p>In Python, prompts are used to instruct AI models to perform targeted tasks by providing clear, detailed input. For example, you can write a prompt that asks an AI to summarize a document, generate code, answer questions, or extract information from text. The more specific and context-rich your prompt, the more accurate and useful the AI’s response will be. Experiment with different prompt styles-such as giving examples, specifying the output format, or breaking tasks into steps-to see how the model’s output changes for your use case.</p>
+      <ol>
+        <li><a href="#section9" onclick="goToSection(9); return false;">AI App Process Diagram</a></li>
+        <li><a href="#section10" onclick="goToSection(10); return false;">Summarize My Data Table</a></li>
+        <li><a href="#section11" onclick="goToSection(11); return false;">Using Python Code</a></li>
+        <li><a href="#section12" onclick="goToSection(12); return false;">API's Models, & Credentials</a></li>
+        <li><a href="#section13" onclick="goToSection(13); return false;">In code Prompt-text</a></li>
+        <li><a href="#section14" onclick="goToSection(14); return false;">Front-End Builds</a></li>        
+      </ol>
+      <!-- <button class="start-btn" onclick="nextSection()">Start</button> -->
+    </div>
+    
     <div id="section2" class="section">
       <h2>1. A New Kind of Conversation</h2>
       <p><i class="orange">Picture this:</i> you open your laptop and type your first message to AI. You ask it something simple  “How can I learn coding fast?” You wait for the answer like it’s Google, expecting a list of tutorials and videos.</p>
@@ -234,7 +253,60 @@
               <blockquote tabindex="0" title="Click to copy">Suggest 5 reusable prompts I can save in a personal library for: learning, writing, decision-making, brainstorming, and planning, tailored to my background.</blockquote>
             </section>
 
+    </div>
 
+    <div id="section9" class="section">
+      <h2>1. AI App Process</h2>
+      <p>This process provides a high-level overview of what happens whenever AI is activated within a feature or application.</p>
+        <div class="img-container">
+          <img src="imgs/ICP-01.png" alt="High level App Process">
+        </div>
+    </div>
+
+     <div id="section10" class="section">
+      <h2>2. Summarize My Data Table</h2>
+      <p>A user activates the feature: <span class="yellow">"Summarize My Data Table"</span> A panel that provides instant, AI-generated summaries of the currently visible data. </p>
+        <div class="img-container">
+          <img src="imgs/ICP-02.png" alt="High level App Process">
+        </div>
+    </div>
+
+    <div id="section11" class="section">
+      <h2>3. Using Python Code</h2>
+        <div class="img-container">
+          <p>The most widely used coding language for AI apps is <span class="yellow">Python</span> due to its simple syntax, extensive libraries (like TensorFlow, PyTorch, and scikit-learn), and strong community support.</p>
+          <img src="imgs/ICP-03.png" alt="High level App Process">
+        </div>
+    </div>
+
+    <div id="section12" class="section">
+      <h2>4. API's Models, & Credentials</h2>
+        <div class="img-container">
+          <p>The first trigger is imported libraries or API clients then a specified <span class="yellow">model</span> you want to use along with your authentication credentials. </p>
+          <img src="imgs/ICP-04.png" alt="High level App Process">
+        </div>
+    </div>
+
+    <div id="section13" class="section">
+      <h2>5. In code Prompt-text</h2>
+      <p>Next, <span class="yellow">prompt-text</span> inputs or instructions-to the model through function calls, and the model returns generated responses. This integration lets your Python app interact seamlessly with the AI, enabling it to process prompts and deliver intelligent outputs in real time.</p>
+        <div class="img-container">
+          <img src="imgs/ICP-05.png" alt="High level App Process">
+        </div>
+    </div>
+
+    <div id="section14" class="section">
+      <h2>6. Front-End Builds</h2>
+      <p>Basic Layout of <span class="yellow">HTML, CSS, and JavaScript </span>is utilized to communicate and render a front-end interface visual for the end user.</p>
+      <ul>
+          <li>HTML: Structures the content.</li>
+          <li>CSS (styles.css): Styles and positions the elements.</li>
+          <li>JavaScript (script.js): Adds interactivity.</li>
+      </ul>              
+      <div class="img-container-DB">
+        <img src="imgs/ICP-06.png" alt="High level App Process">
+      </div>
+      
       <button class="start-btn" onclick="restartApp()">Back to the start</button>
     </div>
 
@@ -245,7 +317,7 @@
   </div>
   <script>
     let currentSection = 1;
-    const totalSections = 8;
+    const totalSections = 14;
     function updateSections() {
       for (let i = 1; i <= totalSections; i++) {
         const section = document.getElementById(`section${i}`);
